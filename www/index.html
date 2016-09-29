@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+  <head>
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular-route.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular-animate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+    <title>ExpressPay</title>
+    <style>
+      /*.scanDiv {
+        position: relative;
+        top: 90%;
+      }*/
+      .scannedResult {
+        height: 500px;
+        background: url("img/barcode.png") no-repeat;
+        /* background-attachment: fixed; */
+        background-size: contain;
+        background-position: 12px;
+      }
+      .branddiv {
+        padding: 10px;
+        border-bottom: 1px solid white;
+        background-color: rgba(63, 119, 220, 0.88);
+        color: white;
+      }
+      .branddiv strong {}
+      .menudiv {}
+      .menudiv strong {}
+      .menuheader {
+        /*background-color: #0075ff;*/
+      }
+      .pills {}
+      .pills li {}
+      .menudiv {
+        display: block;
+      }
+      .menudiv .col-xs-3 {
+        border-right: 2px solid white;
+        border-bottom: 2px solid white;
+        background-color: black;
+        padding-top: 12px;
+        text-align: center;
+        padding-bottom: 6px;
+        font-size: 19px;
+        color: white;
+        cursor: pointer;
+      }
+      .barcodeglyph {
+        font-size: 230px;
+        top: 81px;
+        color: rgba(0, 0, 0, 0.17);
+      }
+      .scancontent {
+        text-align: center;
+      }
+      .scanbutton {
+        display: block;
+        position: absolute;
+        padding-left: 40px;
+        padding-right: 40px;
+        top: 67%;
+        left: 32%;
+      }
+      .scandiv {
+        text-align: center;
+        position: relative;
+        top: 100px;
+      }
+
+    </style>
+  </head>
+  <body ng-app="expresspayapp">
+    <div class="sliderMenu"></div>
+    <div class="maincontent">
+      <header class="menuheader">
+        <div class="row branddiv">
+          <div class="col-xs-12">
+            <strong>Express Pay</strong>
+          </div>
+        </div>
+        <div class="menudiv">
+          <div class="col-xs-3">
+            <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
+          </div>
+          <div class="col-xs-3">
+            <a href="#/cart">
+              <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+            </a>
+          </div>
+          <div class="col-xs-3">
+            <span class="glyphicon glyphicon-sunglasses" aria-hidden="true"></span>
+          </div>
+          <div class="col-xs-3" style="border-right:none">
+            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+          </div>
+        </div>
+      </header>
+      <div class="subcontent" ng-view>
+        <!-- <div class="scancontent">
+          <span class="glyphicon glyphicon-barcode barcodeglyph"></span>
+          <div class="scandiv" style="text-align: center;">
+            <button type="button" class="btn btn-primary" style="padding-left: 45px;padding-right: 45px;">
+              <span class="glyphicon glyphicon-barcode"></span>&nbsp;&nbsp;Scan</button>
+
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="cordova.js"></script>
+  <script type="text/javascript" src="js/index.js"></script>
+  <script type="text/javascript">
+    var expressPayModule = angular.module("expresspayapp", ["ngRoute"]);
+    expressPayModule.config([
+      '$routeProvider',
+      function($routeProvider) {
+        $routeProvider.when('/scan', {
+          templateUrl: 'view/scanview.html',
+          controller: 'scanController'
+        }).when('/cart', {
+          templateUrl: 'view/cartview.html',
+          controller: 'cartController'
+        }).otherwise({redirectTo: '/scan'});
+      }
+    ]);
+
+    expressPayModule.service("testService", function() {
+      var shoppingList = [];
+      this.setShoppingList = function(values) {
+        shoppingList.push(values);
+      }
+      this.getShoppinList = function() {
+        return shoppingList;
+      }
+    })
+
+    expressPayModule.controller("scanController", function($scope, testService) {
+      $scope.scaneBarCode = function() {
+        console.log("Pressed");
+        cordova.plugins.barcodeScanner.scan(function(result) {
+          if (!result.cancelled) {
+            var value = result.text;
+            testService.setShoppingList(value);
+            console.log("THE VALUE IS : " + value);
+          }
+        }, function(error) {
+          alert("Scanning failed: " + error);
+        });
+      }
+    });
+
+    expressPayModule.controller("cartController", function($scope, testService) {
+      $scope.shoppingList = testService.getShoppinList();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+/platforms/android
+/plugins/cordova-plugin-barcodescanner
+/plugins/cordova-plugin-camera
+/plugins/cordova-plugin-whitelist
+/plugins/cordova-plugin-compat
