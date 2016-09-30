@@ -1,5 +1,10 @@
 <div class="cartview">
-  <ul>
-    <li ng-repeat="shop in shoppingList track by $index">{{shop}}</li>
-  </ul>
+    <ul class="list-group">
+        <li class="list-group-item" ng-repeat="shop in shoppingList track by $index">
+            <strong>{{shop}}</strong>
+            <button type="button" class="btn btn-default trashcan" aria-label="Left Align">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            </button>
+        </li>
+    </ul>
 </div>
