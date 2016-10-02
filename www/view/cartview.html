@@ -1,8 +1,8 @@
 <div class="cartview">
     <ul class="list-group">
-        <li class="list-group-item" ng-repeat="shop in shoppingList track by $index">
-            <strong>{{shop}}</strong>
-            <button type="button" class="btn btn-default trashcan" aria-label="Left Align">
+        <li class="list-group-item cartgroup" ng-repeat="shop in shoppingList track by $index">
+            <strong>{{shop.name}}</strong>
+            <button type="button" class="btn btn-default trashcan" ng-click="removeItem(shop.id)" aria-label="Left Align">
                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
             </button>
         </li>
