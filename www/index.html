@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-  <head>
+<head>
     <meta name="format-detection" content="telephone=no">
     <meta name="msapplication-tap-highlight" content="no">
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
@@ -16,260 +16,322 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css" />
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
     <title>ExpressPay</title>
     <style>
-      .scannedResult {
-        height: 500px;
-        background: url("img/barcode.png") no-repeat;
-        background-size: contain;
-        background-position: 12px;
-      }
+    .scannedResult {
+            height: 500px;
+            background: url("img/barcode.png") no-repeat;
+            background-size: contain;
+            background-position: 12px;
+        }
 
-      .branddiv {
-        padding: 10px;
-        /*border-bottom: 1px solid white;*/
-        background-color: rgb(239, 94, 83);
-        color: white;
-      }
+        .branddiv {
+            padding: 10px;
+            /*border-bottom: 1px solid white;*/
+            background-color: rgb(92, 184, 92);
+            color: white;
+        }
 
-      .menuheader {
-        position: fixed;
-        width: 100%;
-        top: 0;
-        z-index: 1;
-      }
+        .menuheader {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1;
+        }
 
-      .menudiv {
-        display: block;
-      }
+        .menudiv {
+            display: block;
+        }
 
-      .menudiv .col-xs-3 {
-        border-right: 2px solid #201e23;
-        border-bottom: 2px solid #201e23;
-        background-color: #363538;
-        padding-top: 12px;
-        text-align: center;
-        padding-bottom: 6px;
-        font-size: 19px;
-        color: white;
-        cursor: pointer;
-        height: 63px;
-      }
+        .menudiv .col-xs-3 {
+            border-right: 2px solid #201e23;
+            background-color: #363538;
+            padding-top: 12px;
+            text-align: center;
+            padding-bottom: 6px;
+            font-size: 19px;
+            color: white;
+            cursor: pointer;
+            height: 63px;
+        }
 
-      .menudiv .col-xs-3 a {
-        color: white;
-      }
-      .menudiv .col-xs-3 a:active {
-        color: black;
-      }
+        .menudiv .col-xs-3 a {
+            color: white;
+        }
 
-      .barcodeglyph {
-        font-size: 230px;
-        top: 81px;
-        color: rgba(0, 0, 0, 0.17);
-      }
+        .menudiv .col-xs-3 a:active {
+            color: black;
+        }
 
-      .scancontent {
-        text-align: center;
-      }
+        .barcodeglyph {
+            font-size: 230px;
+            top: 81px;
+            color: rgba(0, 0, 0, 0.17);
+        }
 
-      .scanbutton {
-        background-color: #ef5e53;
-        border-color: #ef5e53;
-      }
+        .scancontent {
+            text-align: center;
+        }
 
-      .scandiv {
-        text-align: center;
-        position: relative;
-        top: 100px;
-      }
+        .scanbutton {
+            /*background-color: #ef5e53;
+            border-color: #ef5e53;*/
+        }
 
-      .subcontent {
-        top: 105px;
-        position: relative;
-      }
+        .scandiv {
+            text-align: center;
+            position: relative;
+            top: 100px;
+        }
 
-      .customactive {
-        background-color: #201e23 !important;
-        color: #ef5e53 !important;
-        border-bottom: 1px solid #ef5e53 !important;
-      }
+        .subcontent {
+            top: 138px;
+            position: relative;
+        }
 
-      .trashcan {
-        float: right;
-        position: relative;
-        top: -7px;
-        color: #fff;
-        background-color: #363538;
-        border-color: #201e23;
-      }
-      .descpara {
-        font-size: 13px;
-        font-weight: 900;
-      }
-      .cartgroup {
-        background-color: #ef5e53;
-        border: 0;
-        border-top: 1px solid #201e23;
-        border-bottom: 1px solid #201e23;
-      }
-      .cartgroup:first-child {
-        border-radius: 0;
-      }
-      .cartgroup:last-child {
-        border-radius: 0;
-      }
-      .overlaycontent {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        z-index: 2;
-        background-color: #363538;
-      }
+        .customactive {
+            background-color: #201e23 !important;
+            color: #428039 !important;
+            border-bottom: 4px solid #5cb85c !important;
+        }
 
+        .toolbuttons {
+            float: right;
+            position: relative;
+            color: #fff;
+            background-color: #363538;
+            border-color: #201e23;
+        }
+
+        .trashcan {
+            top: 18px;
+        }
+
+        .descpara {
+            font-size: 13px;
+            font-weight: 900;
+        }
+
+        .cartgroup {
+            background-color: #eaeaea;
+            border: 0;
+            /*border-top: 6px solid #201e23;*/
+            border-bottom: 1px solid #e0e0e0;
+            -webkit-box-shadow: 0px 10px 26px -9px rgba(0, 0, 0, 0.75);
+            -moz-box-shadow: 0px 10px 26px -9px rgba(0, 0, 0, 0.75);
+            box-shadow: 0px 10px 26px -9px rgba(0, 0, 0, 0.75);
+            padding-top: 18px;
+            padding-bottom: 18px;
+            margin-top: 2%;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .cartgroup:first-child,
+        .cartgroup:last-child {
+            border-radius: 1px;
+        }
+
+        .overlaycontent {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            background-color: #363538;
+        }
+
+        .paybutton {
+            float: right;
+            width: 90px;
+            font-weight: 900;
+            color: white;
+            background-color: #363538;
+            border-color: #201e23;
+        }
+
+        .paybutton:hover {
+            color: white;
+            background-color: #363538;
+            border-color: #201e23;
+        }
+
+        .customcontainer {
+            padding-right: 0;
+            padding-left: 0;
+        }
+
+        .divider {
+            height: 1px;
+            width: 123px;
+            background-color: #929292;
+            position: relative;
+            top: 9px;
+        }
+    }
     </style>
     <script type="text/javascript">
-      $(document).ready(function() {
+        $(document).ready(function() {
 
-        $('.car').slick({arrows:false,mobileFirst:true});
-
-        $(".scanlink").children(".col-xs-3").addClass("customactive");
-        $(".scanlink").addClass("customa");
-        $(".menudiv a").click(function() {
-          $(".menudiv a").each(function(index) {
-            if ($(this).children(".col-xs-3").hasClass("customactive")) {
-              $(this).children(".col-xs-3").removeClass("customactive")
-              return false;
-            }
-          });
-          $(this).children(".col-xs-3").addClass("customactive");
-        });
-      });
-    </script>
-  </head>
-  <body ng-app="expresspayapp">
-    <div class="overlaycontent">
-      <div class="car" style="height:100%">
-        <div style="color:white;height: 100%;background-color: black;">A</div>
-        <div style="color:white;height: 100%;background-color: black;">B</div>
-        <!-- <div style="color:white">B</div>
-        <div style="color:white">C</div> -->
-      </div>
-    </div>
-    <div class="maincontent">
-      <header class="menuheader">
-        <div class="row branddiv">
-          <div class="col-xs-12">
-            <strong>Express Pay</strong>
-          </div>
-        </div>
-        <div class="menudiv">
-          <a href="#/scan" class="scanlink">
-            <div class="col-xs-3">
-              <!-- <a href="#/scan" class="scanlink"> -->
-              <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
-              <p class="descpara">
-                Shop
-              </p>
-            </div>
-          </a>
-          <a href="#/cart" id="triggers">
-            <div class="col-xs-3">
-              <span class="glyphicon glyphicon-shopping-cart animated infinite pulse" aria-hidden="true"></span>
-              <p class="descpara">
-                Cart
-              </p>
-            </div>
-          </a>
-          <a href="#/cart">
-            <div class="col-xs-3">
-              <span class="glyphicon glyphicon-sunglasses" aria-hidden="true"></span>
-              <p class="descpara">
-                Offers
-              </p>
-            </div>
-          </a>
-          <div class="col-xs-3" style="border-right:none">
-            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-            <p class="descpara">
-              Discover
-            </p>
-          </div>
-        </div>
-      </header>
-      <div class="subcontent" ng-view></div>
-    </div>
-  </div>
-  <script type="text/javascript" src="cordova.js"></script>
-  <script type="text/javascript" src="js/index.js"></script>
-  <script type="text/javascript">
-    var expressPayModule = angular.module("expresspayapp", ["ngRoute"]);
-    expressPayModule.config([
-      '$routeProvider',
-      function($routeProvider) {
-        $routeProvider.when('/scan', {
-          templateUrl: 'view/scanview.html',
-          controller: 'scanController'
-        }).when('/cart', {
-          templateUrl: 'view/cartview.html',
-          controller: 'cartController'
-        }).otherwise({redirectTo: '/scan'});
-      }
-    ]);
-
-    expressPayModule.controller("scanController", function($scope, inventoryService, $timeout) {
-      $scope.scaneBarCode = function() {
-        console.log("Pressed");
-        // $timeout(function() {
-        //   angular.element('#triggers').trigger('click');
-        // }, 100);
-        //var array = ['123', '223'];
-
-        //for (var i = 0; i < array.length; i++) {
-        // inventoryService.setShoppingList("1", function(responseBody) {
-        //   console.log("Item added in cart " + responseBody);
-        //   $timeout(function() {
-        //     angular.element('#triggers').trigger('click');
-        //   }, 100);
-        // });
-
-        cordova.plugins.barcodeScanner.scan(function(result) {
-          if (!result.cancelled) {
-            var value = result.text;
-            console.log("SCANNED CODE " + value);
-            inventoryService.setShoppingList(value, function(responseBody) {
-              console.log("Item added in cart");
-              $timeout(function() {
-                angular.element('#triggers').trigger('click');
-              }, 100);
+            //$('.car').slick({arrows:false,mobileFirst:true});
+            $(".paybutton").prop('disabled', true);
+            $('.paybutton').css("display", "none");
+            $(".scanlink").children(".col-xs-3").addClass("customactive");
+            $(".scanlink").addClass("customa");
+            $(".menudiv a").click(function() {
+                $(".menudiv a").each(function(index) {
+                    if ($(this).children(".col-xs-3").hasClass("customactive")) {
+                        $(this).children(".col-xs-3").removeClass("customactive")
+                        return false;
+                    }
+                });
+                $(this).children(".col-xs-3").addClass("customactive");
             });
-            //console.log("THE VALUE IS : " + value);
-          }
-        }, function(error) {
-          alert("Scanning failed: " + error);
         });
-      }
-    });
+    </script>
+</head>
 
-    expressPayModule.controller("cartController", function($scope, inventoryService) {
-      $scope.shoppingList = inventoryService.getShoppinList();
+<body ng-app="expresspayapp">
+    <!-- <div class="overlaycontent">
+      <div class="car" style="height:100%">
+        <div style="color:white;height: 100%;background-color: black;"><img src="img/c.png" alt=""  align="middle"/></div>
+        <div style="color:white;height: 100%;background-color: black;">B</div>
 
-      $scope.removeItem = function(itemId) {
-        if ($scope.shoppingList.length > 0) {
-          angular.forEach($scope.shoppingList, function(value, key) {
-            console.log(key);
-            if (value.id == itemId) {
-              $scope.shoppingList.splice(key, 1);
-              return false;
+      </div>
+    </div>-->
+    <div class="maincontent">
+        <header class="menuheader">
+            <div class="row branddiv">
+                <div class="col-xs-12">
+                    <strong style="font-size: x-large;">Express Pay</strong>
+                    <!-- <span><button type="button" class="btn btn-default paybutton" ng name="button">Pay</button></span> -->
+                </div>
+            </div>
+            <div class="menudiv">
+                <a href="#/scan" class="scanlink">
+                    <div class="col-xs-3">
+                        <!-- <a href="#/scan" class="scanlink"> -->
+                        <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
+                        <p class="descpara">
+                            Shop
+                        </p>
+                    </div>
+                </a>
+                <a href="#/cart" id="triggers">
+                    <div class="col-xs-3">
+                        <span class="glyphicon glyphicon-shopping-cart animated infinite pulse" aria-hidden="true"></span>
+                        <p class="descpara">
+                            Cart
+                        </p>
+                    </div>
+                </a>
+                <a href="#/cart">
+                    <div class="col-xs-3" style="height: 62px;border-right: 1px solid #201F20;">
+                        <span class="glyphicon glyphicon-sunglasses" aria-hidden="true"></span>
+                        <p class="descpara">
+                            Offers
+                        </p>
+                    </div>
+                </a>
+                <div class="col-xs-3" style="border-right:none">
+                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                    <p class="descpara">
+                        Discover
+                    </p>
+                </div>
+            </div>
+        </header>
+        <div class="subcontent" ng-view></div>
+    </div>
+    </div>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript">
+        var expressPayModule = angular.module("expresspayapp", ["ngRoute"]);
+        expressPayModule.config([
+            '$routeProvider',
+            function($routeProvider) {
+                $routeProvider.when('/scan', {
+                    templateUrl: 'view/scanview.html',
+                    controller: 'scanController'
+                }).when('/cart', {
+                    templateUrl: 'view/cartview.html',
+                    controller: 'cartController'
+                }).otherwise({
+                    redirectTo: '/scan'
+                });
             }
-          });
-        }
-      }
-    });
-  </script>
-  <script type="text/javascript" src="service/inventoryservice.js"></script>
+        ]);
+
+        expressPayModule.controller("scanController", function($scope, inventoryService, $timeout) {
+            $('.paybutton').css("display", "none");
+            $scope.scaneBarCode = function() {
+                console.log("Pressed");
+                // $timeout(function() {
+                //   angular.element('#triggers').trigger('click');
+                // }, 100);
+                //var array = ['123', '223'];
+
+
+                inventoryService.setShoppingList("1111", "2222", function(responseBody) {
+                    console.log("Item added in cart " + responseBody);
+                    $timeout(function() {
+                        angular.element('#triggers').trigger('click');
+                    }, 100);
+                });
+                inventoryService.setShoppingList("1111", "2223", function(responseBody) {
+                    console.log("Item added in cart " + responseBody);
+                    $timeout(function() {
+                        angular.element('#triggers').trigger('click');
+                    }, 100);
+                });
+                inventoryService.setShoppingList("1111", "2224", function(responseBody) {
+                    console.log("Item added in cart " + responseBody);
+                    $timeout(function() {
+                        angular.element('#triggers').trigger('click');
+                    }, 100);
+                });
+
+                // cordova.plugins.barcodeScanner.scan(function(result) {
+                //     if (!result.cancelled) {
+                //         var value = result.text;
+                //         console.log("SCANNED CODE " + value);
+                //         inventoryService.setShoppingList(value, function(responseBody) {
+                //             console.log("Item added in cart");
+                //             $timeout(function() {
+                //                 angular.element('#triggers').trigger('click');
+                //             }, 100);
+                //         });
+                //         //console.log("THE VALUE IS : " + value);
+                //     }
+                // }, function(error) {
+                //     alert("Scanning failed: " + error);
+                // });
+            }
+        });
+
+        expressPayModule.controller("cartController", function($scope, inventoryService) {
+            $('.paybutton').css("display", "inline-block");
+            $scope.shoppingList = inventoryService.getShoppinList();
+            $scope.getImage = function(imageUrl) {
+                console.log(imageUrl);
+                return imageUrl + ".jpg";
+            }
+            $scope.removeItem = function(itemId) {
+                if ($scope.shoppingList.length > 0) {
+                    angular.forEach($scope.shoppingList, function(value, key) {
+                        console.log(key);
+                        if (value.itemId == itemId) {
+                            $scope.shoppingList.splice(key, 1);
+                            return false;
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+    <script type="text/javascript" src="service/inventoryservice.js"></script>
 </body>
 
 </html>
