@@ -133,6 +133,9 @@
         .cartgroup:last-child {
             border-radius: 1px;
         }
+        .cartgroup:first-child{
+          margin-top: 0;
+        }
 
         .overlaycontent {
             position: absolute;
@@ -278,20 +281,20 @@
                     console.log("Item added in cart " + responseBody);
                     $timeout(function() {
                         angular.element('#triggers').trigger('click');
-                    }, 100);
+                    }, 700);
                 });
-                inventoryService.setShoppingList("1111", "2223", function(responseBody) {
-                    console.log("Item added in cart " + responseBody);
-                    $timeout(function() {
-                        angular.element('#triggers').trigger('click');
-                    }, 100);
-                });
-                inventoryService.setShoppingList("1111", "2224", function(responseBody) {
-                    console.log("Item added in cart " + responseBody);
-                    $timeout(function() {
-                        angular.element('#triggers').trigger('click');
-                    }, 100);
-                });
+                // inventoryService.setShoppingList("1111", "2223", function(responseBody) {
+                //     console.log("Item added in cart " + responseBody);
+                //     $timeout(function() {
+                //         angular.element('#triggers').trigger('click');
+                //     }, 100);
+                // });
+                // inventoryService.setShoppingList("1111", "2224", function(responseBody) {
+                //     console.log("Item added in cart " + responseBody);
+                //     $timeout(function() {
+                //         angular.element('#triggers').trigger('click');
+                //     }, 100);
+                // });
 
                 // cordova.plugins.barcodeScanner.scan(function(result) {
                 //     if (!result.cancelled) {
@@ -314,6 +317,7 @@
         expressPayModule.controller("cartController", function($scope, inventoryService) {
             $('.paybutton').css("display", "inline-block");
             $scope.shoppingList = inventoryService.getShoppinList();
+            $scope.totalPrice = inventoryService.getTotalPrice();
             $scope.getImage = function(imageUrl) {
                 console.log(imageUrl);
                 return imageUrl + ".jpg";
