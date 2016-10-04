@@ -12,6 +12,9 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular-route.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular-animate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.proto.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
@@ -20,7 +23,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
     <title>ExpressPay</title>
     <style>
-    .scannedResult {
+        .scannedResult {
             height: 500px;
             background: url("img/barcode.png") no-repeat;
             background-size: contain;
@@ -87,8 +90,9 @@
         }
 
         .subcontent {
-            top: 138px;
+            top: 115px;
             position: relative;
+            border-top: 3px solid black;
         }
 
         .customactive {
@@ -122,8 +126,8 @@
             -webkit-box-shadow: 0px 10px 26px -9px rgba(0, 0, 0, 0.75);
             -moz-box-shadow: 0px 10px 26px -9px rgba(0, 0, 0, 0.75);
             box-shadow: 0px 10px 26px -9px rgba(0, 0, 0, 0.75);
-            padding-top: 18px;
-            padding-bottom: 18px;
+            padding-top: 0px;
+            padding-bottom: 0px;
             margin-top: 2%;
             padding-left: 0;
             padding-right: 0;
@@ -133,8 +137,9 @@
         .cartgroup:last-child {
             border-radius: 1px;
         }
-        .cartgroup:first-child{
-          margin-top: 0;
+
+        .cartgroup:first-child {
+            margin-top: 0;
         }
 
         .overlaycontent {
@@ -172,7 +177,58 @@
             position: relative;
             top: 9px;
         }
-    }
+
+        .cartpanel {
+            margin-bottom: 0px;
+        }
+
+        .cartbody {
+            padding-right: 0px;
+            padding-left: 0px;
+        }
+
+        .cartdesc {
+            padding-left: 0px;
+            line-height: 19px;
+            font-size: 13px;
+        }
+
+        .custompanelfooter {
+            padding: 0px;
+        }
+
+        .toolcolumn {
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .paymentfooter {
+            position: fixed;
+            top: 92%;
+            width: 100%;
+            text-align: center;
+            height: 8%;
+        }
+
+        .custommodelcontent {
+            overflow: hidden;
+            border: none;
+            border-radius: 13px;
+        }
+
+        .custommodalheader {
+            background-color: #ca3d3a;
+            color: white;
+        }
+
+        .edmodal {
+            overflow: visible;
+        }
+
+        .edmodal-body {
+            overflow-y: visible !important;
+        }
     </style>
     <script type="text/javascript">
         $(document).ready(function() {
@@ -278,23 +334,23 @@
 
 
                 inventoryService.setShoppingList("1111", "2222", function(responseBody) {
-                    console.log("Item added in cart " + responseBody);
-                    $timeout(function() {
-                        angular.element('#triggers').trigger('click');
-                    }, 700);
+                    //console.log("Item added in cart " + responseBody);
+                    // $timeout(function() {
+                    //     angular.element('#triggers').trigger('click');
+                    // }, 700);
                 });
-                // inventoryService.setShoppingList("1111", "2223", function(responseBody) {
-                //     console.log("Item added in cart " + responseBody);
-                //     $timeout(function() {
-                //         angular.element('#triggers').trigger('click');
-                //     }, 100);
-                // });
-                // inventoryService.setShoppingList("1111", "2224", function(responseBody) {
-                //     console.log("Item added in cart " + responseBody);
-                //     $timeout(function() {
-                //         angular.element('#triggers').trigger('click');
-                //     }, 100);
-                // });
+                inventoryService.setShoppingList("1111", "2223", function(responseBody) {
+                    //console.log("Item added in cart " + responseBody);
+                    // $timeout(function() {
+                    //     angular.element('#triggers').trigger('click');
+                    // }, 700);
+                });
+                inventoryService.setShoppingList("1111", "2224", function(responseBody) {
+                    //console.log("Item added in cart " + responseBody);
+                    // $timeout(function() {
+                    //     angular.element('#triggers').trigger('click');
+                    // }, 700);
+                });
 
                 // cordova.plugins.barcodeScanner.scan(function(result) {
                 //     if (!result.cancelled) {
@@ -315,22 +371,67 @@
         });
 
         expressPayModule.controller("cartController", function($scope, inventoryService) {
+
+            $(".chzn-select").chosen();
+            var scrollHeight = parseFloat($('.paymentfooter').offset().top) - parseFloat($('.toolheader').offset().top) - parseFloat(35);
+            $('.itemListrow').height(scrollHeight);
+
             $('.paybutton').css("display", "inline-block");
+            /*Get Shopping List*/
             $scope.shoppingList = inventoryService.getShoppinList();
+            /*Get Total Items in cart*/
+            $scope.totalItems = inventoryService.getTotalCartItems();
+            /*Get Total Price*/
             $scope.totalPrice = inventoryService.getTotalPrice();
+
             $scope.getImage = function(imageUrl) {
-                console.log(imageUrl);
+                //console.log(imageUrl);
                 return imageUrl + ".jpg";
             }
-            $scope.removeItem = function(itemId) {
-                if ($scope.shoppingList.length > 0) {
-                    angular.forEach($scope.shoppingList, function(value, key) {
-                        console.log(key);
-                        if (value.itemId == itemId) {
-                            $scope.shoppingList.splice(key, 1);
-                            return false;
-                        }
-                    });
+
+            $scope.setItemToDelete = function(itemId) {
+                $scope.iteIdToDelete = itemId;
+            }
+
+            $scope.editItems = function(itemId, itemName, totalQuantity, totalPrice, itemPrice) {
+                console.log(itemId + " " + itemName + " " + totalQuantity + " " + totalPrice);
+                $scope.edititemId = itemId;
+                $scope.edititemName = itemName;
+                $scope.edittotalPrice = totalPrice;
+                $scope.qtychange = totalQuantity;
+                $scope.cloneQuantity = totalQuantity;
+                $scope.editItemPrice = itemPrice;
+            }
+
+
+            $scope.changeFunction = function(intialQuantity, itemPrice, totalPrice, changedQuantity) {
+
+              console.log(intialQuantity+" "+itemPrice+" "+totalPrice+" "+changedQuantity);
+                if (intialQuantity == changedQuantity) {
+                    $scope.edittotalPrice = totalPrice;
+                }else if(intialQuantity > changedQuantity){
+                  $scope.edittotalPrice = totalPrice-(changedQuantity*itemPrice);
+                }else if(intialQuantity < changedQuantity){
+                  $scope.edittotalPrice = totalPrice+(changedQuantity*itemPrice);
+                }
+            }
+
+
+            $scope.removeItem = function(itemId, flag) {
+                console.log(itemId + " " + flag);
+                if (flag) {
+                    if ($scope.shoppingList.length > 0) {
+                        angular.forEach($scope.shoppingList, function(value, key) {
+                            console.log(key);
+                            if (value.itemId == itemId) {
+                                $scope.shoppingList.splice(key, 1);
+                                $scope.totalItems = inventoryService.updateTotalCartItems(value.totalQuantity);
+                                console.log(value.totalPrice);
+                                $scope.totalPrice = inventoryService.updateTotalPrice(value.totalPrice * value.totalQuantity);
+                                return false;
+                            }
+                        });
+                    }
                 }
             }
         });
