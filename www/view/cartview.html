@@ -1,103 +1,199 @@
 <div class="cartview">
-    <div class="row toolheader" style="background-color: #363538;padding: 7px;border-top: 1px solid #4a4a4a;color: white;">
-        <div class="col-xs-12">
-            <!-- <button type="button" class="btn btn-default" name="button">
+    <div class="cartsubmodel" style="display:none;">
+        <div class="row toolheader" style="background-color: #363538;padding: 7px;border-top: 1px solid #4a4a4a;color: white;">
+            <div class="col-xs-12">
+                <!-- <button type="button" class="btn btn-default" name="button">
                 <span class="glyphicon glyphicon-star" aria-hidden="true"></span>&nbsp;Sort by Price</button> -->
-            <strong>
+                <strong>
                   Cart Items ({{totalItems}})
                 </strong>
-            <strong style="float:right;">
+                <strong style="float:right;">
                   Tota Price: Rs.{{totalPrice}}
                 </strong>
+            </div>
         </div>
-    </div>
-    <div class="row itemListrow" style="margin-right:0px;margin-left:0px;overflow-y:auto;">
-        <ul class="list-group">
-            <li class="list-group-item cartgroup" ng-repeat="shop in shoppingList track by $index">
-                <div class="panel panel-default cartpanel">
-                    <div class="panel-body cartbody">
-                        <div class="col-xs-4">
-                            <img ng-src="{{getImage(shop.itemImage)}}" alt="..." class="img-thumbnail img-responsive" />
-                        </div>
-                        <div class="col-xs-8 cartdesc">
-                            <p>
-                                <strong>{{shop.itemName}}</strong>
-                            </p>
-                            <p>
-                                <strong>Price :
+        <div class="row itemListrow" style="margin-right:0px;margin-left:0px;overflow-y:auto;">
+            <ul class="list-group">
+                <li class="list-group-item cartgroup" ng-repeat="shop in shoppingList track by $index">
+                    <div class="panel panel-default cartpanel">
+                        <div class="panel-body cartbody">
+                            <div class="col-xs-4">
+                                <img ng-src="{{getImage(shop.itemImage)}}" alt="..." class="img-thumbnail img-responsive" />
+                            </div>
+                            <div class="col-xs-8 cartdesc">
+                                <p>
+                                    <strong>{{shop.itemName}}</strong>
+                                </p>
+                                <p>
+                                    <strong>Price :
                              <span class="badge">{{shop.itemPrice}}</span>
                              </strong>
-                                <strong>Quantity :
+                                    <strong>Quantity :
                               <span class="badge">{{shop.totalQuantity}}</span>
                             </strong>
-                            </p>
+                                </p>
+
+                            </div>
+                        </div>
+                        <div class="panel-footer custompanelfooter">
+                            <div class="container-fluid" style="padding:0px;">
+                                <div class="col-xs-6 toolcolumn" style="border-right: 1px solid #d6caca;" ng-click="setItemToDelete(shop.itemId)" data-toggle="modal" data-target="#myModal">
+                                    <span class="glyphicon glyphicon-remove">&nbsp;Remove Item</span>
+                                </div>
+                                <div class="col-xs-6 toolcolumn" data-toggle="modal" data-target="#editModal" ng-click="editItems(shop.itemId,shop.itemName,shop.totalQuantity,totalPrice,shop.itemPrice)">
+                                    <span class="glyphicon glyphicon-pencil">&nbsp;Edit Item</span>
+                                </div>
+                            </div>
 
                         </div>
                     </div>
-                    <div class="panel-footer custompanelfooter">
-                        <div class="container-fluid" style="padding:0px;">
-                            <div class="col-xs-6 toolcolumn" style="border-right: 1px solid #d6caca;" ng-click="setItemToDelete(shop.itemId)" data-toggle="modal" data-target="#myModal">
-                                <span class="glyphicon glyphicon-remove">&nbsp;Remove Item</span>
-                            </div>
-                            <div class="col-xs-6 toolcolumn" data-toggle="modal" data-target="#editModal" ng-click="editItems(shop.itemId,shop.itemName,shop.totalQuantity,totalPrice,shop.itemPrice)">
-                                <span class="glyphicon glyphicon-pencil">&nbsp;Edit Item</span>
-                            </div>
-                        </div>
+                </li>
+            </ul>
+        </div>
 
+        <!-- Modal Edit-->
+        <div class="modal edmodal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" style="opacity:1;" data-dismiss="modal" aria-label="Close"><span class="glyphicon glyphicon-remove" style="color:white;" aria-hidden="true"></span></button>
+                        <h4 class="modal-title" id="editModalLabel" style="font-size:13px">{{edititemName}}<strong style="float:right;">Item Price (Rs.{{editItemPrice}})</strong></h4>
                     </div>
-                </div>
-            </li>
-        </ul>
-    </div>
-
-    <!-- Modal Edit-->
-    <div class="modal edmodal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" style="opacity:1;" data-dismiss="modal" aria-label="Close"><span class="glyphicon glyphicon-remove" style="color:white;" aria-hidden="true"></span></button>
-                    <h4 class="modal-title" id="editModalLabel" style="font-size:13px">{{edititemName}}<strong style="float:right;">Item Price (Rs.{{editItemPrice}})</strong></h4>
-                </div>
-                <div class="modal-body edmodal-body">
-                    <span>Quantity : </span>
-                    <input type="number" name="quantity" ng-model="qtychange" ng-change="changeFunction(cloneQuantity, editItemPrice, edittotalPrice, qtychange)" min="1" max="10000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <div style="width: 270px;height: 1px;background-color: #e2e2e2;margin: 13px;"></div>&nbsp;
-                    <span style="float:right">Total Price :
+                    <div class="modal-body edmodal-body">
+                        <span>Quantity : </span>
+                        <input type="number" name="quantity" ng-model="qtychange" style="width: 76px;height: 26px;border: 0;border-bottom: 1px solid #9f9f9f;" ng-change="changeFunction(cloneQuantity, editItemPrice, edittotalPrice, qtychange)" min="1" max="10000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <div style="width: 89%;height: 1px;background-color: #e2e2e2;margin: 13px;"></div>&nbsp;
+                        <span style="float:right">Total Price :
                     <strong>{{edittotalPrice}}</strong></span>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success" style="float:left;width:81px;" ng-click="editFunction(edititemId,qtychange,edittotalPrice)" data-dismiss="modal">Save</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" style="float:left;width:81px;" ng-click="editFunction(edititemId,qtychange,edittotalPrice)" data-dismiss="modal">Save</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <!-- Modal Delete-->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content custommodelcontent">
+                    <div class="modal-header custommodalheader">
+                        <button type="button" class="close" style="opacity:1;" data-dismiss="modal" aria-label="Close"><span class="glyphicon glyphicon-remove" style="color:white;" aria-hidden="true"></span></button>
+                        <h4 class="modal-title" id="myModalLabel">Are you sure ?</h4>
+                    </div>
+                    <div class="modal-body">
+                        It will remove the entire item from the list. (To reduce quantity click <strong>Edit Item</strong>)
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" style="float:left;width:81px;" data-dismiss="modal" ng-click="removeItem(iteIdToDelete,true)">Yes</button>
+                        <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="removeItem(iteIdToDelete,false)">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="paymentfooter">
+            <div class="row" style="height:100%;">
+                <div class="col-xs-12" style="height:100%;">
+                    <button type="button" class="btn btn-success" name="button" style="border-radius:0;width:100%;height:100%;font-size: 22px;font-weight: 900;color: #2d2c2c;">
+                        <span class="glyphicon glyphicon-credit-card" aria-hidden="true"></span>&nbsp;&nbsp;Pay</button>
+                </div>
+            </div>
+        </footer>
     </div>
 
-    <!-- Modal Delete-->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content custommodelcontent">
-                <div class="modal-header custommodalheader">
-                    <button type="button" class="close" style="opacity:1;" data-dismiss="modal" aria-label="Close"><span class="glyphicon glyphicon-remove" style="color:white;" aria-hidden="true"></span></button>
-                    <h4 class="modal-title" id="myModalLabel">Are you sure ?</h4>
-                </div>
-                <div class="modal-body">
-                    It will remove the entire item from the list. (To reduce quantity click <strong>Edit Item</strong>)
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" style="float:left;width:81px;" data-dismiss="modal" ng-click="removeItem(iteIdToDelete,true)">Yes</button>
-                    <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="removeItem(iteIdToDelete,false)">Cancel</button>
+    <!-- Payment -->
+    <div class="container-fluid paymentcontainer">
+        <div class="row headerrow">
+            <strong style="top: 8px;position: relative;font-size: 12px;">Choose Payment Mode</strong>
+            <button type="button" class="btn btn-default" style="float:right;" name="button"><strong>You Pay: Rs.{{totalPrice}}</strong></button>
+        </div>
+
+        <div class="col-xs-3 paymenu">
+            <div class="list-group">
+                <a class="list-group-item payment-group-item"><span class="glyphicon glyphicon-credit-card" aria-hidden="true"></span></a>
+                <a class="list-group-item payment-group-item"><i class="fa fa-university" aria-hidden="true"></i></a>
+                <a class="list-group-item payment-group-item"><i class="fa fa-money" aria-hidden="true"></i></a>
+                <a class="list-group-item payment-group-item"><i class="fa fa-indent" aria-hidden="true"></i></a>
+            </div>
+        </div>
+        <!-- Modal Pay Confirm-->
+        <div class="modal edmodal fade" id="payModal" tabindex="-1" role="dialog" aria-labelledby="payModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" style="opacity:1;" data-dismiss="modal" aria-label="Close"><span class="glyphicon glyphicon-remove" style="color:white;" aria-hidden="true"></span></button>
+                        <h4 class="modal-title" id="payModalLabel" style="font-size:13px">Confirm Your Order</h4>
+                    </div>
+                    <div class="modal-body edmodal-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Quantity</th>
+                                        <th>Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="shop in shoppingList track by $index">
+                                        <td>{{shop.itemName}}</td>
+                                        <td>{{shop.totalQuantity}}</td>
+                                        <td>{{shop.totalPrice*shop.totalQuantity}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td><strong>Total Price</strong></td>
+                                        <td><strong>Rs.{{totalPrice}}</strong></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" style="float:left;width:81px;" ng-click="payAndGetTransactionDetails(shoppingList, totalPrice, 'card')" data-dismiss="modal">Confirm</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    </div>
                 </div>
             </div>
+        </div>
+        <!-- Modal Pay Confirm-->
+
+        <div class="col-xs-9">
+            <div class="row">
+                <div class="col-xs-12" style="padding-bottom:11px;">
+                    <div class="input-group">
+                        <span class="input-group-addon custom-addon">
+                        <span class="glyphicon glyphicon-credit-card"></span>
+                        </span>
+                        <input type="text" class="form-control" placeholder="Card Number" aria-label="...">
+                    </div>
+                    <!-- /input-group -->
+                </div>
+                <div class="col-xs-6">
+                    <div class="input-group">
+                        <span class="input-group-addon custom-addon">
+                          <i class="fa fa-calendar-o" aria-hidden="true"></i>
+                        </span>
+                        <input type="text" class="form-control" placeholder="MM/YY" style="padding: 0px 5px;" aria-label="...">
+                    </div>
+                    <!-- /input-group -->
+                </div>
+                <!-- /.col-lg-6 -->
+                <div class="col-xs-6">
+                    <div class="input-group">
+                        <span class="input-group-addon custom-addon">
+                          <i class="fa fa-lock" aria-hidden="true"></i>
+                        </span>
+                        <input type="text" class="form-control" placeholder="CVV" aria-label="...">
+                    </div>
+                    <!-- /input-group -->
+                </div>
+                <!-- /.col-lg-6 -->
+            </div>
+            <!-- /.row -->
+            <button type="submit" class="btn btn-success" data-toggle="modal" data-target="#payModal" style="position:relative;top:10px;">Pay Now</button>
+            <button type="submit" class="btn btn-danger" style="position:relative;top:10px;float:right;">Cancel</button>
         </div>
     </div>
-
-    <footer class="paymentfooter">
-        <div class="row" style="height:100%;">
-            <div class="col-xs-12" style="height:100%;">
-                <button type="button" class="btn btn-success" name="button" style="border-radius:0;width:100%;height:100%;font-size: 22px;font-weight: 900;color: #2d2c2c;">
-                    <span class="glyphicon glyphicon-credit-card" aria-hidden="true"></span>&nbsp;&nbsp;Pay</button>
-            </div>
-        </div>
-    </footer>
 </div>
