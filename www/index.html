@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-<head>
+  <head>
     <meta name="format-detection" content="telephone=no">
     <meta name="msapplication-tap-highlight" content="no">
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
@@ -19,338 +19,332 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
     <title>ExpressPay</title>
     <style>
-        .scannedResult {
-            height: 500px;
-            background: url("img/barcode.png") no-repeat;
-            background-size: contain;
-            background-position: 12px;
-        }
+      .scannedResult {
+        height: 500px;
+        background: url("img/barcode.png") no-repeat;
+        background-size: contain;
+        background-position: 12px;
+      }
 
-        .branddiv {
-            padding: 10px;
-            /*border-bottom: 1px solid white;*/
-            background-color: rgb(92, 184, 92);
-            color: white;
-        }
+      .branddiv {
+        padding: 10px;
+        /*border-bottom: 1px solid white;*/
+        background-color: rgb(92, 184, 92);
+        color: white;
+      }
 
-        .menuheader {
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 3;
-        }
+      .menuheader {
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 3;
+      }
 
-        .menudiv {
-            display: block;
-        }
+      .menudiv {
+        display: block;
+      }
 
-        .menudiv .col-xs-3 {
-            border-right: 2px solid #201e23;
-            background-color: #363538;
-            padding-top: 12px;
-            text-align: center;
-            padding-bottom: 6px;
-            font-size: 19px;
-            color: white;
-            cursor: pointer;
-            height: 63px;
-        }
+      .menudiv .col-xs-3 {
+        border-right: 2px solid #201e23;
+        background-color: #363538;
+        padding-top: 12px;
+        text-align: center;
+        padding-bottom: 6px;
+        font-size: 19px;
+        color: white;
+        cursor: pointer;
+        height: 63px;
+      }
 
-        .menudiv .col-xs-3 a {
-            color: white;
-        }
+      .menudiv .col-xs-3 a {
+        color: white;
+      }
+      .menudiv .col-xs-3 a:active {
+        color: black;
+      }
 
-        .menudiv .col-xs-3 a:active {
-            color: black;
-        }
+      .barcodeglyph {
+        font-size: 230px;
+        top: 81px;
+        color: rgba(0, 0, 0, 0.17);
+      }
 
-        .barcodeglyph {
-            font-size: 230px;
-            top: 81px;
-            color: rgba(0, 0, 0, 0.17);
-        }
+      .qrcodeglyph {
+        color: rgba(0, 0, 0, 0.17);
+      }
 
-        .qrcodeglyph {
-            color: rgba(0, 0, 0, 0.17);
-        }
+      .scancontent {
+        text-align: center;
+      }
 
-        .scancontent {
-            text-align: center;
-        }
-
-        .scanbutton {
-            /*background-color: #ef5e53;
+      .scanbutton {
+        /*background-color: #ef5e53;
             border-color: #ef5e53;*/
-        }
+      }
 
-        .scandiv {
-            text-align: center;
-            position: relative;
-            top: 100px;
-        }
+      .scandiv {
+        text-align: center;
+        position: relative;
+        top: 100px;
+      }
 
-        .qrdiv {
-            text-align: center;
-            position: relative;
-        }
+      .qrdiv {
+        text-align: center;
+        position: relative;
+      }
 
-        .subcontent {
-            top: 115px;
-            position: relative;
-            border-top: 3px solid black;
-        }
+      .subcontent {
+        top: 115px;
+        position: relative;
+        border-top: 3px solid black;
+      }
 
-        .customactive {
-            background-color: #201e23 !important;
-            color: #428039 !important;
-            border-bottom: 4px solid #5cb85c !important;
-        }
+      .customactive {
+        background-color: #201e23 !important;
+        color: #428039 !important;
+        border-bottom: 4px solid #5cb85c !important;
+      }
 
-        .toolbuttons {
-            float: right;
-            position: relative;
-            color: #fff;
-            background-color: #363538;
-            border-color: #201e23;
-        }
+      .toolbuttons {
+        float: right;
+        position: relative;
+        color: #fff;
+        background-color: #363538;
+        border-color: #201e23;
+      }
 
-        .trashcan {
-            top: 18px;
-        }
+      .trashcan {
+        top: 18px;
+      }
 
-        .descpara {
-            font-size: 13px;
-            font-weight: 900;
-        }
+      .descpara {
+        font-size: 13px;
+        font-weight: 900;
+      }
 
-        .cartgroup {
-            background-color: #eaeaea;
-            border: 0;
-            /*border-top: 6px solid #201e23;*/
-            border-bottom: 1px solid #e0e0e0;
-            -webkit-box-shadow: 0 10px 26px -9px rgba(0, 0, 0, 0.75);
-            -moz-box-shadow: 0 10px 26px -9px rgba(0, 0, 0, 0.75);
-            box-shadow: 0 10px 26px -9px rgba(0, 0, 0, 0.75);
-            padding-top: 0;
-            padding-bottom: 0;
-            margin-top: 2%;
-            padding-left: 0;
-            padding-right: 0;
-        }
+      .cartgroup {
+        background-color: #eaeaea;
+        border: 0;
+        /*border-top: 6px solid #201e23;*/
+        border-bottom: 1px solid #e0e0e0;
+        -webkit-box-shadow: 0 10px 26px -9px rgba(0, 0, 0, 0.75);
+        -moz-box-shadow: 0 10px 26px -9px rgba(0, 0, 0, 0.75);
+        box-shadow: 0 10px 26px -9px rgba(0, 0, 0, 0.75);
+        padding-top: 0;
+        padding-bottom: 0;
+        margin-top: 2%;
+        padding-left: 0;
+        padding-right: 0;
+      }
+      .cartgroup:first-child,
+      .cartgroup:last-child {
+        border-radius: 1px;
+      }
+      .cartgroup:first-child {
+        margin-top: 0;
+      }
 
-        .cartgroup:first-child,
-        .cartgroup:last-child {
-            border-radius: 1px;
-        }
+      .overlaycontent {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+        background-color: #363538;
+      }
 
-        .cartgroup:first-child {
-            margin-top: 0;
-        }
+      .paybutton {
+        float: right;
+        width: 90px;
+        font-weight: 900;
+        color: white;
+        background-color: #363538;
+        border-color: #201e23;
+      }
+      .paybutton:hover {
+        color: white;
+        background-color: #363538;
+        border-color: #201e23;
+      }
 
-        .overlaycontent {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            z-index: 2;
-            background-color: #363538;
-        }
+      .customcontainer {
+        padding-right: 0;
+        padding-left: 0;
+      }
 
-        .paybutton {
-            float: right;
-            width: 90px;
-            font-weight: 900;
-            color: white;
-            background-color: #363538;
-            border-color: #201e23;
-        }
+      .divider {
+        height: 1px;
+        width: 123px;
+        background-color: #929292;
+        position: relative;
+        top: 9px;
+      }
 
-        .paybutton:hover {
-            color: white;
-            background-color: #363538;
-            border-color: #201e23;
-        }
+      .cartpanel {
+        margin-bottom: 0;
+      }
 
-        .customcontainer {
-            padding-right: 0;
-            padding-left: 0;
-        }
+      .cartbody {
+        padding-right: 0;
+        padding-left: 0;
+      }
 
-        .divider {
-            height: 1px;
-            width: 123px;
-            background-color: #929292;
-            position: relative;
-            top: 9px;
-        }
+      .cartdesc {
+        padding-left: 0;
+        line-height: 19px;
+        font-size: 13px;
+      }
 
-        .cartpanel {
-            margin-bottom: 0;
-        }
+      .custompanelfooter {
+        padding: 0;
+      }
 
-        .cartbody {
-            padding-right: 0;
-            padding-left: 0;
-        }
+      .toolcolumn {
+        padding: 12px;
+        text-align: center;
+        cursor: pointer;
+      }
 
-        .cartdesc {
-            padding-left: 0;
-            line-height: 19px;
-            font-size: 13px;
-        }
+      .paymentfooter {
+        position: fixed;
+        top: 92%;
+        width: 100%;
+        text-align: center;
+        height: 8%;
+      }
 
-        .custompanelfooter {
-            padding: 0;
-        }
+      .custommodelcontent {
+        overflow: hidden;
+        border: none;
+        border-radius: 13px;
+      }
 
-        .toolcolumn {
-            padding: 12px;
-            text-align: center;
-            cursor: pointer;
-        }
+      .custommodalheader {
+        background-color: #ca3d3a;
+        color: white;
+      }
 
-        .paymentfooter {
-            position: fixed;
-            top: 92%;
-            width: 100%;
-            text-align: center;
-            height: 8%;
-        }
+      .edmodal {
+        overflow: visible;
+      }
 
-        .custommodelcontent {
-            overflow: hidden;
-            border: none;
-            border-radius: 13px;
-        }
+      .edmodal-body {
+        overflow-y: visible !important;
+      }
 
-        .custommodalheader {
-            background-color: #ca3d3a;
-            color: white;
-        }
+      .paymentcontainer {
+        /*display: none;*/
+        padding: 0;
+        border-bottom: 1px solid #c6c6c6;
+      }
 
-        .edmodal {
-            overflow: visible;
-        }
+      .customtabs> li> a {
+        font-weight: 900;
+        background-color: #5cb85c;
+        color: white;
+      }
 
-        .edmodal-body {
-            overflow-y: visible !important;
-        }
+      .paymenu {
+        padding: 0;
+      }
 
-        .paymentcontainer {
-            /*display: none;*/
-            padding: 0;
-            border-bottom: 1px solid #c6c6c6;
-        }
+      .payment-group-item {
+        padding: 23px 15px;
+        text-align: center;
+        border: 1px solid #FFF;
+        background-color: #363538;
+        cursor: pointer;
+        color: white !important;
+      }
+      .payment-group-item:hover {
+        color: #363538 !important;
+      }
 
-        .customtabs> li> a {
-            font-weight: 900;
-            background-color: #5cb85c;
-            color: white;
-        }
-
-        .paymenu {
-            padding: 0;
-        }
-
-        .payment-group-item {
-            padding: 23px 15px;
-            text-align: center;
-            border: 1px solid #FFF;
-            background-color: #363538;
-            cursor: pointer;
-            color: white !important;
-        }
-
-        .payment-group-item:hover {
-            color: #363538 !important;
-        }
-
-        .activepaymentgroup {
-            background-color: white;
-            color: #363538 !important;
-            border-left: 3px solid #5cb85c;
-        }
-        /*a.payment-group-item {
+      .activepaymentgroup {
+        background-color: white;
+        color: #363538 !important;
+        border-left: 3px solid #5cb85c;
+      }
+      /*a.payment-group-item {
             color: white;
         }*/
+      .payment-group-item:first-child {
+        border-radius: 0;
+        border-top: 0 solid white;
+      }
+      .payment-group-item:last-child {
+        border-radius: 0;
+        border-bottom: 0 solid white;
+      }
 
-        .payment-group-item:first-child {
-            border-radius: 0;
-            border-top: 0px solid white;
-        }
+      .custom-form-control {
+        display: inline;
+      }
 
-        .payment-group-item:last-child {
-            border-radius: 0;
-            border-bottom: 0px solid white;
-        }
+      .custom-form-control {
+        width: 80px;
+      }
 
-        .custom-form-control {
-            display: inline;
-        }
+      .input-group .custom-form-control {
+        width: 80px;
+      }
 
-        .custom-form-control {
-            width: 80px;
-        }
+      .custom-addon {
+        padding: 6px 7px;
+      }
 
-        .input-group .custom-form-control {
-            width: 80px;
-        }
+      .headerrow {
+        margin: 0;
+        color: #7d7d7d;
+        padding: 10px 3px;
+        background-color: #efefef;
+        border-bottom: 1px solid #b3b3b3;
+      }
 
-        .custom-addon {
-            padding: 6px 7px;
-        }
+      .bankcol {
+        padding: 5px;
+      }
 
-        .headerrow {
-            margin: 0;
-            color: #7d7d7d;
-            padding: 10px 3px;
-            background-color: #efefef;
-            border-bottom: 1px solid #b3b3b3;
-        }
+      .bankcol img {
+        cursor: pointer;
+      }
 
-        .bankcol {
-            padding: 5px;
-        }
+      .ordersummarycol {
+        padding-top: 16px;
+        padding-left: 5px;
+        padding-right: 5px;
+      }
 
-        .bankcol img {
-            cursor: pointer;
-        }
+      .activeBank {
+        background-color: #363538;
+      }
 
-        .ordersummarycol {
-            padding-top: 16px;
-            padding-left: 5px;
-            padding-right: 5px;
-        }
-
-        .activeBank {
-            background-color: #363538;
-        }
     </style>
     <script type="text/javascript">
-        $(document).ready(function() {
+      $(document).ready(function() {
 
-            //$('.car').slick({arrows:false,mobileFirst:true});
-            $(".paybutton").prop('disabled', true);
-            $('.paybutton').css("display", "none");
-            $(".scanlink").children(".col-xs-3").addClass("customactive");
-            $(".scanlink").addClass("customa");
-            $(".menudiv a").click(function() {
-                $(".menudiv a").each(function(index) {
-                    if ($(this).children(".col-xs-3").hasClass("customactive")) {
-                        $(this).children(".col-xs-3").removeClass("customactive")
-                        return false;
-                    }
-                });
-                $(this).children(".col-xs-3").addClass("customactive");
-            });
+        //$('.car').slick({arrows:false,mobileFirst:true});
+        $(".paybutton").prop('disabled', true);
+        $('.paybutton').css("display", "none");
+        $(".scanlink").children(".col-xs-3").addClass("customactive");
+        $(".scanlink").addClass("customa");
+        $(".menudiv a").click(function() {
+          $(".menudiv a").each(function(index) {
+            if ($(this).children(".col-xs-3").hasClass("customactive")) {
+              $(this).children(".col-xs-3").removeClass("customactive")
+              return false;
+            }
+          });
+          $(this).children(".col-xs-3").addClass("customactive");
         });
+      });
     </script>
-</head>
+  </head>
 
-<body ng-app="expresspayapp">
+  <body ng-app="expresspayapp">
     <!-- <div class="overlaycontent">
       <div class="car" style="height:100%">
         <div style="color:white;height: 100%;background-color: black;"><img src="img/c.png" alt=""  align="middle"/></div>
@@ -359,322 +353,365 @@
       </div>
     </div>-->
     <div class="maincontent">
-        <header class="menuheader">
-            <div class="row branddiv">
-                <div class="col-xs-12">
-                    <strong style="font-size: x-large;">Express Pay</strong>
-                    <!-- <span><button type="button" class="btn btn-default paybutton" ng name="button">Pay</button></span> -->
-                </div>
+      <header class="menuheader">
+        <div class="row branddiv">
+          <div class="col-xs-12">
+            <strong style="font-size: x-large;">Express Pay</strong>
+            <!-- <span><button type="button" class="btn btn-default paybutton" ng name="button">Pay</button></span> -->
+          </div>
+        </div>
+        <div class="menudiv">
+          <a href="#/scan" class="scanlink">
+            <div class="col-xs-3">
+              <!-- <a href="#/scan" class="scanlink"> -->
+              <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
+              <p class="descpara">
+                Shop
+              </p>
             </div>
-            <div class="menudiv">
-                <a href="#/scan" class="scanlink">
-                    <div class="col-xs-3">
-                        <!-- <a href="#/scan" class="scanlink"> -->
-                        <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
-                        <p class="descpara">
-                            Shop
-                        </p>
-                    </div>
-                </a>
-                <a href="#/cart" id="triggers">
-                    <div class="col-xs-3">
-                        <span class="glyphicon glyphicon-shopping-cart animated infinite pulse" aria-hidden="true"></span>
-                        <p class="descpara">
-                            Cart
-                        </p>
-                    </div>
-                </a>
-                <a href="#/cart">
-                    <div class="col-xs-3">
-                        <span class="glyphicon glyphicon-sunglasses" aria-hidden="true"></span>
-                        <p class="descpara">
-                            Offers
-                        </p>
-                    </div>
-                </a>
-                <div class="col-xs-3" style="border-right:none">
-                    <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-                    <p class="descpara">
-                        Discover
-                    </p>
-                </div>
+          </a>
+          <a href="#/cart" class="cartLink" id="triggers">
+            <div class="col-xs-3">
+              <span class="glyphicon glyphicon-shopping-cart animated infinite pulse" aria-hidden="true"></span>
+              <p class="descpara">
+                Cart
+              </p>
             </div>
-        </header>
-        <div class="subcontent" ng-view></div>
+          </a>
+          <a href="#/offers">
+            <div class="col-xs-3">
+              <span class="glyphicon glyphicon-sunglasses" aria-hidden="true"></span>
+              <p class="descpara">
+                Offers
+              </p>
+            </div>
+          </a>
+          <div class="col-xs-3" style="border-right:none">
+            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+            <p class="descpara">
+              Discover
+            </p>
+          </div>
+        </div>
+      </header>
+      <div class="subcontent" ng-view></div>
     </div>
-    </div>
-    <script type="text/javascript" src="cordova.js"></script>
-    <script type="text/javascript" src="js/index.js"></script>
-    <script type="text/javascript">
-        var expressPayModule = angular.module("expresspayapp", ["ngRoute"]);
-        expressPayModule.config([
-            '$routeProvider',
-            function($routeProvider) {
-                $routeProvider.when('/scan', {
-                    templateUrl: 'view/scanview.html',
-                    controller: 'scanController'
-                }).when('/cart', {
-                    templateUrl: 'view/cartview.html',
-                    controller: 'cartController'
-                }).otherwise({
-                    redirectTo: '/scan'
-                });
-            }
-        ]);
+  </div>
+  <script type="text/javascript" src="cordova.js"></script>
+  <script type="text/javascript" src="js/index.js"></script>
+  <script type="text/javascript">
+    var expressPayModule = angular.module("expresspayapp", ["ngRoute"]);
+    expressPayModule.config([
+      '$routeProvider',
+      function($routeProvider) {
+        $routeProvider.when('/scan', {
+          templateUrl: 'view/scanview.html',
+          controller: 'scanController'
+        }).when('/cart', {
+          templateUrl: 'view/cartview.html',
+          controller: 'cartController'
+        }).when('/offers', {
+          templateUrl: 'view/offerview.html',
+          controller: 'offerController'
+        }).otherwise({redirectTo: '/scan'});
+      }
+    ]);
 
-        expressPayModule.controller("scanController", function($scope, inventoryService, $timeout) {
-            $('.paybutton').css("display", "none");
-            $scope.scaneBarCode = function() {
-                console.log("Pressed");
-                // $timeout(function() {
-                //   angular.element('#triggers').trigger('click');
-                // }, 100);
-                //var array = ['123', '223'];
+    expressPayModule.controller("scanController", function($scope, inventoryService, $timeout) {
+      $('.paybutton').css("display", "none");
+      $scope.scaneBarCode = function() {
+        console.log("Pressed");
+        // $timeout(function() {
+        //   angular.element('#triggers').trigger('click');
+        // }, 100);
+        //var array = ['123', '223'];
 
-                inventoryService.setShoppingList("1111", "2222", function(responseBody) {
-                    //console.log("Item added in cart " + responseBody);
-                    // $timeout(function() {
-                    //     angular.element('#triggers').trigger('click');
-                    // }, 700);
-                });
-                inventoryService.setShoppingList("1111", "2223", function(responseBody) {
-                    //console.log("Item added in cart " + responseBody);
-                    // $timeout(function() {
-                    //     angular.element('#triggers').trigger('click');
-                    // }, 700);
-                });
-                inventoryService.setShoppingList("1111", "2224", function(responseBody) {
-                    //console.log("Item added in cart " + responseBody);
-                    // $timeout(function() {
-                    //     angular.element('#triggers').trigger('click');
-                    // }, 700);
-                });
-
-                // cordova.plugins.barcodeScanner.scan(function(result) {
-                //     if (!result.cancelled) {
-                //         var value = result.text;
-                //         console.log("SCANNED CODE " + value);
-                //         inventoryService.setShoppingList(value, function(responseBody) {
-                //             console.log("Item added in cart");
-                //             $timeout(function() {
-                //                 angular.element('#triggers').trigger('click');
-                //             }, 100);
-                //         });
-                //         //console.log("THE VALUE IS : " + value);
-                //     }
-                // }, function(error) {
-                //     alert("Scanning failed: " + error);
-                // });
-            }
+        inventoryService.setShoppingList("1111", "2222", function(responseBody) {
+          //console.log("Item added in cart " + responseBody);
+          // $timeout(function() {
+          //     angular.element('#triggers').trigger('click');
+          // }, 700);
+        });
+        inventoryService.setShoppingList("1111", "2223", function(responseBody) {
+          //console.log("Item added in cart " + responseBody);
+          // $timeout(function() {
+          //     angular.element('#triggers').trigger('click');
+          // }, 700);
+        });
+        inventoryService.setShoppingList("1111", "2224", function(responseBody) {
+          //console.log("Item added in cart " + responseBody);
+          // $timeout(function() {
+          //     angular.element('#triggers').trigger('click');
+          // }, 700);
         });
 
-        expressPayModule.controller("cartController", function($scope, inventoryService, transactionService) {
-            $('.paymentcontainer').css('display', 'none');
-            $('.paynow').click(function() {
-                $('.cartsubmodel').css('display', 'none');
-                $('.paymentcontainer').css('display', 'inline');
-            });
-            $('.paycancle').click(function() {
-                $('.paymentcontainer').css('display', 'none');
-                $('.cartsubmodel').css('display', 'inline');
-            })
+        // cordova.plugins.barcodeScanner.scan(function(result) {
+        //     if (!result.cancelled) {
+        //         var value = result.text;
+        //         console.log("SCANNED CODE " + value);
+        //         inventoryService.setShoppingList(value, function(responseBody) {
+        //             console.log("Item added in cart");
+        //             $timeout(function() {
+        //                 angular.element('#triggers').trigger('click');
+        //             }, 100);
+        //         });
+        //         //console.log("THE VALUE IS : " + value);
+        //     }
+        // }, function(error) {
+        //     alert("Scanning failed: " + error);
+        // });
+      }
+    });
 
-            $scope.resetImageBackdrop = function(bankselected) {
-                $('.bankcol').closest('.activeBank').removeClass("activeBank");
-                $('.paybankbtn').prop('disabled', false);
-                $scope.selectedBank = bankselected;
-            }
+    expressPayModule.controller("cartController", function($scope, inventoryService, transactionService) {
 
-
-            $('.paybtn').prop('disabled', true);
-            $('.paybankbtn').prop('disabled', true);
-            $('.bankcol').click(function() {
-                $('.bankcol').closest('.activeBank').removeClass("activeBank");
-                $(this).addClass('activeBank');
-                var val = $(this).find('img').attr('alt');
-                $scope.$apply(function() {
-                    $('.paybankbtn').prop('disabled', false);
-                    $scope.selectedBank = val;
-                    console.log("IMG " + $scope.selectedBank);
-                })
-
-            })
-            $('.cardGroup').click(function() {
-                $('.paymentmethodbank').css('display', 'none')
-                $('.paymentmethodcash').css('display', 'none');
-                $('.paymentmethodshopcard').css('display', 'none');
-                $('.paymentmethodcard').css('display', 'inline-block')
-            });
-            $('.bankGroup').click(function() {
-                $('.paymentmethodcard').css('display', 'none');
-                $('.paymentmethodcash').css('display', 'none');
-                $('.paymentmethodshopcard').css('display', 'none');
-                $('.paymentmethodbank').css('display', 'inline-block')
-
-            });
-            $('.cashGroup').click(function() {
-                $('.paymentmethodbank').css('display', 'none')
-                $('.paymentmethodcard').css('display', 'none');
-                $('.paymentmethodshopcard').css('display', 'none');
-                $('.paymentmethodcash').css('display', 'inline-block')
-            });
-            $('.shopCardGroup').click(function() {
-                $('.paymentmethodbank').css('display', 'none')
-                $('.paymentmethodcard').css('display', 'none');
-                $('.paymentmethodcash').css('display', 'none')
-                $('.paymentmethodshopcard').css('display', 'block')
-            });
-
-            $('.cardnumber').keypress(function(event) {
-                var keycode = event.which;
-                console.log(event.currentTarget.className);
-                if (!(event.shiftKey == false && (keycode == 46 || keycode == 8 || keycode == 37 || keycode == 39 || (keycode >= 48 && keycode <= 57)))) {
-                    event.preventDefault();
-                }
-            });
-
-            $(".payment-group-item").click(function() {
-                $(".payment-group-item").each(function(index) {
-                    if ($(this).hasClass("activepaymentgroup")) {
-                        $(this).removeClass("activepaymentgroup")
-                        return false;
-                    }
-                });
-                $(this).addClass('activepaymentgroup');
-            });
-            var scrollHeight = parseFloat($('.paymentfooter').offset().top) - parseFloat($('.toolheader').offset().top) - parseFloat(35);
-            $('.itemListrow').height(scrollHeight);
-
-            $('.paybutton').css("display", "inline-block");
-            /*Get Shopping List*/
-            $scope.shoppingList = inventoryService.getShoppinList();
-            /*Get Total Items in cart*/
-            $scope.totalItems = inventoryService.getTotalCartItems();
-            /*Get Total Price*/
-            $scope.totalPrice = inventoryService.getTotalPrice();
-
-            $scope.getImage = function(imageUrl) {
-                //console.log(imageUrl);
-                return imageUrl + ".jpg";
-            }
-
-            $scope.setItemToDelete = function(itemId) {
-                $scope.iteIdToDelete = itemId;
-            }
-
-            $scope.editItems = function(itemId, itemName, totalQuantity, totalPrice, itemPrice) {
-                console.log(itemId + " " + itemName + " " + totalQuantity + " " + totalPrice);
-                $scope.edititemId = itemId;
-                $scope.edititemName = itemName;
-                $scope.edittotalPrice = totalPrice;
-                $scope.qtychange = totalQuantity;
-                $scope.cloneQuantity = totalQuantity;
-                $scope.editItemPrice = itemPrice;
-            }
-
-            $scope.changeFunction = function(intialQuantity, itemPrice, totalPrice, changedQuantity) {
-                var totalScopePrice = $scope.totalPrice;
-                console.log(intialQuantity + " " + itemPrice + " " + totalPrice + " " + changedQuantity);
-                if (intialQuantity == changedQuantity) {
-                    $scope.edittotalPrice = totalScopePrice;
-                } else if (intialQuantity > changedQuantity) {
-                    $scope.cloneQuantity = changedQuantity;
-                    $scope.edittotalPrice -= Number(itemPrice);
-                } else if (intialQuantity < changedQuantity) {
-                    $scope.cloneQuantity = changedQuantity;
-                    $scope.edittotalPrice += Number(itemPrice);
-                }
-            }
-
-            $scope.editFunction = function(itemId, changedQuantity, totalPrice) {
-                angular.forEach($scope.shoppingList, function(value, key) {
-                    if (value.itemId == itemId) {
-                        var difference = 0;
-                        if (value.totalQuantity > changedQuantity) {
-                            difference = Number(value.totalQuantity) - Number(changedQuantity);
-                            $scope.totalItems = inventoryService.updateTotalCartItems(difference, true);
-                        } else {
-                            difference = Number(changedQuantity) - Number(value.totalQuantity);
-                            $scope.totalItems = inventoryService.updateTotalCartItems(difference, false);
-                        }
-                        value.totalQuantity = changedQuantity;
-                        $scope.totalPrice = inventoryService.updateTotalPrice(totalPrice, false);;
-                        return false;
-                    }
-                });
-            }
-
-            $scope.payAndGetTransactionDetails = function(shoppingList, amountPayed, modeOfPayment, bankName) {
-                console.log($scope.selectedBank);
-                var requestData = {
-                    "storeId": "123",
-                    "userId": "321",
-                    "amountPayed": amountPayed,
-                    "modeOfPayment": modeOfPayment,
-                    "bankName": bankName,
-                    "itemsPurchased": shoppingList
-                };
-
-                console.log(JSON.stringify(requestData));
-
-                $scope.transactionData = transactionService.enterTransactionDetail(requestData, function(responseBody) {
-                    console.log(JSON.stringify(responseBody));
-                });
-                // console.log(shoppingList + " " + amountPayed + " " + modeOfPayment);
-            }
-
-            $scope.resetCardValues = function() {
-                $scope.cardnumber = null;
-                $scope.expirydate = null;
-                $scope.cvvnumber = null;
-                //$('.paybtn').prop('disabled', true);
-            }
-
-            $scope.validateFields = function() {
-                var isCardNumberValid,
-                    isDateValid,
-                    isCvvNumberValid = false;
-                if ($scope.cardnumber != null && $scope.cardnumber.length == 16) {
-                    console.log("Card");
-                    isCardNumberValid = true;
-                }
-                if ($scope.expirydate != null) {
-                    console.log("Date");
-                    isDateValid = true;
-                }
-                if ($scope.cvvnumber != null && $scope.cvvnumber.length == 3) {
-                    console.log("CVV");
-                    isCvvNumberValid = true;
-                }
-                if (isCardNumberValid && isDateValid && isCvvNumberValid) {
-                    console.log("All are valid");
-                    $('.paybtn').prop('disabled', false);
-                } else {
-                    $('.paybtn').prop('disabled', true);
-                }
-            }
-
-            $scope.removeItem = function(itemId, flag) {
-                console.log(itemId + " " + flag);
-                if (flag) {
-                    if ($scope.shoppingList.length > 0) {
-                        angular.forEach($scope.shoppingList, function(value, key) {
-                            console.log(key);
-                            if (value.itemId == itemId) {
-                                $scope.shoppingList.splice(key, 1);
-                                $scope.totalItems = inventoryService.updateTotalCartItems(value.totalQuantity, true);
-                                console.log(value.totalPrice);
-                                $scope.totalPrice = inventoryService.updateTotalPrice(value.totalPrice * value.totalQuantity, true);
-                                return false;
-                            }
-                        });
-                    }
-                }
-            }
+      $('.paymentcontainer').css('display', 'none');
+      //$('.cartsubmodel').css('display', 'none');
+      $('.paynow').click(function() {
+        $(".menudiv a").each(function(index) {
+          if ($(this).children(".col-xs-3").hasClass("customactive")) {
+            $(this).children(".col-xs-3").removeClass("customactive")
+            return false;
+          }
         });
-    </script>
-    <script type="text/javascript" src="service/inventoryservice.js"></script>
-    <script type="text/javascript" src="service/transactionservice.js"></script>
+        $('.cartsubmodel').css('display', 'none');
+        $('.paymentcontainer').css('display', 'inline');
+      });
+      $('.paycancle').click(function() {
+        $('.paymentcontainer').css('display', 'none');
+        $('.cartsubmodel').css('display', 'inline');
+      })
+      $('.cartLink').click(function() {
+        $('.paymentcontainer').css('display', 'none');
+        if ($scope.shoppingList.length == 0) {
+          $('.cartsubmodel').css('display', 'none');
+          $('.paymentsuccesscontainer').css('display', 'none');
+          $('.yourcartisempty').css('display', 'inline');
+        } else {
+          $('.cartsubmodel').css('display', 'inline');
+        }
+      })
+
+      $scope.resetImageBackdrop = function(bankselected) {
+        $('.bankcol').closest('.activeBank').removeClass("activeBank");
+        $('.paybankbtn').prop('disabled', false);
+        $scope.selectedBank = bankselected;
+      }
+
+      $('.paybtn').prop('disabled', true);
+      $('.paybankbtn').prop('disabled', true);
+      $('.bankcol').click(function() {
+        $('.bankcol').closest('.activeBank').removeClass("activeBank");
+        $(this).addClass('activeBank');
+        var val = $(this).find('img').attr('alt');
+        $scope.$apply(function() {
+          $('.paybankbtn').prop('disabled', false);
+          $scope.selectedBank = val;
+          console.log("IMG " + $scope.selectedBank);
+        })
+
+      })
+      $('.cardGroup').click(function() {
+        $('.paymentmethodbank').css('display', 'none')
+        $('.paymentmethodcash').css('display', 'none');
+        $('.paymentmethodshopcard').css('display', 'none');
+        $('.paymentmethodcard').css('display', 'inline-block')
+      });
+      $('.bankGroup').click(function() {
+        $('.paymentmethodcard').css('display', 'none');
+        $('.paymentmethodcash').css('display', 'none');
+        $('.paymentmethodshopcard').css('display', 'none');
+        $('.paymentmethodbank').css('display', 'inline-block')
+
+      });
+      $('.cashGroup').click(function() {
+        $('.paymentmethodbank').css('display', 'none')
+        $('.paymentmethodcard').css('display', 'none');
+        $('.paymentmethodshopcard').css('display', 'none');
+        $('.paymentmethodcash').css('display', 'inline-block')
+      });
+      $('.shopCardGroup').click(function() {
+        $('.paymentmethodbank').css('display', 'none')
+        $('.paymentmethodcard').css('display', 'none');
+        $('.paymentmethodcash').css('display', 'none')
+        $('.paymentmethodshopcard').css('display', 'block')
+      });
+
+      $('.cardnumber').keypress(function(event) {
+        var keycode = event.which;
+        console.log(event.currentTarget.className);
+        if (!(event.shiftKey == false && (keycode == 46 || keycode == 8 || keycode == 37 || keycode == 39 || (keycode >= 48 && keycode <= 57)))) {
+          event.preventDefault();
+        }
+      });
+
+      $(".payment-group-item").click(function() {
+        $(".payment-group-item").each(function(index) {
+          if ($(this).hasClass("activepaymentgroup")) {
+            $(this).removeClass("activepaymentgroup")
+            return false;
+          }
+        });
+        $(this).addClass('activepaymentgroup');
+      });
+      var scrollHeight = parseFloat($('.paymentfooter').offset().top) - parseFloat($('.toolheader').offset().top) - parseFloat(35);
+      $('.itemListrow').height(scrollHeight);
+
+      $('.paybutton').css("display", "inline-block");
+      /*Get Shopping List*/
+      $scope.shoppingList = inventoryService.getShoppinList();
+      /*Get Total Items in cart*/
+      $scope.totalItems = inventoryService.getTotalCartItems();
+      if ($scope.totalItems == 0) {
+        $('.paymentcontainer').css('display', 'none');
+        $('.cartsubmodel').css('display', 'none');
+        $('.paymentsuccesscontainer').css('display', 'none');
+        $('.yourcartisempty').css('display', 'inline');
+      }
+      /*Get Total Price*/
+      $scope.totalPrice = inventoryService.getTotalPrice();
+
+      $scope.getImage = function(imageUrl) {
+        //console.log(imageUrl);
+        return imageUrl + ".jpg";
+      }
+
+      $scope.setItemToDelete = function(itemId) {
+        $scope.iteIdToDelete = itemId;
+      }
+
+      $scope.editItems = function(itemId, itemName, totalQuantity, totalPrice, itemPrice) {
+        console.log(itemId + " " + itemName + " " + totalQuantity + " " + totalPrice);
+        $scope.edititemId = itemId;
+        $scope.edititemName = itemName;
+        $scope.edittotalPrice = totalPrice;
+        $scope.qtychange = totalQuantity;
+        $scope.cloneQuantity = totalQuantity;
+        $scope.editItemPrice = itemPrice;
+      }
+
+      $scope.changeFunction = function(intialQuantity, itemPrice, totalPrice, changedQuantity) {
+        var totalScopePrice = $scope.totalPrice;
+        console.log(intialQuantity + " " + itemPrice + " " + totalPrice + " " + changedQuantity);
+        if (intialQuantity == changedQuantity) {
+          $scope.edittotalPrice = totalScopePrice;
+        } else if (intialQuantity > changedQuantity) {
+          $scope.cloneQuantity = changedQuantity;
+          $scope.edittotalPrice -= Number(itemPrice);
+        } else if (intialQuantity < changedQuantity) {
+          $scope.cloneQuantity = changedQuantity;
+          $scope.edittotalPrice += Number(itemPrice);
+        }
+      }
+
+      $scope.editFunction = function(itemId, changedQuantity, totalPrice) {
+        angular.forEach($scope.shoppingList, function(value, key) {
+          if (value.itemId == itemId) {
+            var difference = 0;
+            if (value.totalQuantity > changedQuantity) {
+              difference = Number(value.totalQuantity) - Number(changedQuantity);
+              $scope.totalItems = inventoryService.updateTotalCartItems(difference, true);
+            } else {
+              difference = Number(changedQuantity) - Number(value.totalQuantity);
+              $scope.totalItems = inventoryService.updateTotalCartItems(difference, false);
+            }
+            value.totalQuantity = changedQuantity;
+            $scope.totalPrice = inventoryService.updateTotalPrice(totalPrice, false);;
+            return false;
+          }
+        });
+      }
+
+      $scope.payAndGetTransactionDetails = function(shoppingList, amountPayed, modeOfPayment, bankName) {
+        console.log($scope.selectedBank);
+        var requestData = {
+          "storeId": "123",
+          "userId": "321",
+          "amountPayed": amountPayed,
+          "modeOfPayment": modeOfPayment,
+          "bankName": bankName,
+          "itemsPurchased": shoppingList
+        };
+
+        console.log(JSON.stringify(requestData));
+
+        $scope.transactionData = transactionService.enterTransactionDetail(requestData, function(responseBody) {
+          console.log(JSON.stringify(responseBody));
+
+          $('.paymentcontainer').css('display', 'none');
+          $('.cartsubmodel').css('display', 'none');
+          $('.paymentsuccesscontainer').css('display', 'inline');
+          inventoryService.resetAll();
+          $scope.shoppingList = [];
+          $scope.totalItems = 0;
+          $scope.totalPrice = 0;
+          console.log(responseBody._id);
+          $scope.transactionId = responseBody._id;
+        });
+        // console.log(shoppingList + " " + amountPayed + " " + modeOfPayment);
+      }
+
+      $scope.resetCardValues = function() {
+        $scope.cardnumber = null;
+        $scope.expirydate = null;
+        $scope.cvvnumber = null;
+        //$('.paybtn').prop('disabled', true);
+      }
+
+      $scope.validateFields = function() {
+        var isCardNumberValid,
+          isDateValid,
+          isCvvNumberValid = false;
+        if ($scope.cardnumber != null && $scope.cardnumber.length == 16) {
+          console.log("Card");
+          isCardNumberValid = true;
+        }
+        if ($scope.expirydate != null) {
+          console.log("Date");
+          isDateValid = true;
+        }
+        if ($scope.cvvnumber != null && $scope.cvvnumber.length == 3) {
+          console.log("CVV");
+          isCvvNumberValid = true;
+        }
+        if (isCardNumberValid && isDateValid && isCvvNumberValid) {
+          console.log("All are valid");
+          $('.paybtn').prop('disabled', false);
+        } else {
+          $('.paybtn').prop('disabled', true);
+        }
+      }
+
+      $scope.removeItem = function(itemId, flag) {
+        console.log(itemId + " " + flag);
+        if (flag) {
+          if ($scope.shoppingList.length > 0) {
+            angular.forEach($scope.shoppingList, function(value, key) {
+              console.log(key);
+              if (value.itemId == itemId) {
+                $scope.shoppingList.splice(key, 1);
+                $scope.totalItems = inventoryService.updateTotalCartItems(value.totalQuantity, true);
+                if ($scope.totalItems == 0) {
+                  $('.paymentcontainer').css('display', 'none');
+                  $('.cartsubmodel').css('display', 'none');
+                  $('.paymentsuccesscontainer').css('display', 'none');
+                  $('.yourcartisempty').css('display', 'inline');
+                }
+                console.log(value.totalPrice);
+                $scope.totalPrice = inventoryService.updateTotalPrice(value.totalPrice * value.totalQuantity, true);
+                return false;
+              }
+            });
+          }
+        }
+      }
+    });
+    expressPayModule.controller("offerController", function($scope, inventoryService, transactionService) {
+      $scope.message = "View Offers"
+    });
+  </script>
+  <script type="text/javascript" src="service/inventoryservice.js"></script>
+  <script type="text/javascript" src="service/transactionservice.js"></script>
 </body>
 
 </html>

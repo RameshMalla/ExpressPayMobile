@@ -60,4 +60,10 @@ expressPayModule.service("inventoryService", function($http) {
 
     return totalCartItems;
   }
+
+  this.resetAll = function() {
+    shoppingList = [];
+    totalprice = 0;
+    totalCartItems = 0;
+  }
 });
