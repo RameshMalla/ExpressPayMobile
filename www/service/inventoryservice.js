@@ -2,6 +2,26 @@ expressPayModule.service("inventoryService", function($http) {
   var shoppingList = [];
   var totalprice = 0;
   var totalCartItems = 0;
+
+  this.testShoppingListByStoreId = function(storeId, callbackFunction) {
+    $http.get("http://localhost:3000/inventory/getItems/" + storeId)
+      .then(function(response) {
+        callbackFunction(response.data);
+      }, function(response) {
+        callbackFunction(response.data);
+      });
+  }
+
+
+  this.getInventoryDetails = function(storeId, itemId, callbackFunction) {
+    $http.get("http://localhost:3000/inventory/getItemById/" + storeId + "/" + itemId)
+      .then(function(response) {
+        callbackFunction(response.data);
+      }, function(response) {
+        callbackFunction(response.data);
+      });
+  }
+
   this.setShoppingList = function(storeId, itemId, callbackFunction) {
 
     var isSameItemAdded = false;
