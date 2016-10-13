@@ -9,9 +9,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular-route.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.3/angular-animate.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-animate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.proto.min.js"></script>
@@ -133,9 +133,9 @@
             border: 0;
             /*border-top: 6px solid #201e23;*/
             border-bottom: 1px solid #e0e0e0;
-            -webkit-box-shadow: 0 10px 26px -9px rgba(0, 0, 0, 0.75);
+            /*-webkit-box-shadow: 0 10px 26px -9px rgba(0, 0, 0, 0.75);
             -moz-box-shadow: 0 10px 26px -9px rgba(0, 0, 0, 0.75);
-            box-shadow: 0 10px 26px -9px rgba(0, 0, 0, 0.75);
+            box-shadow: 0 10px 26px -9px rgba(0, 0, 0, 0.75);*/
             padding-top: 0;
             padding-bottom: 0;
             margin-top: 2%;
@@ -156,8 +156,9 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            z-index: 2;
-            background-color: #363538;
+            z-index: 4;
+            /*background-color: #363538;*/
+            background-color: #5cb85c;
         }
 
         .paybutton {
@@ -190,6 +191,7 @@
 
         .cartpanel {
             margin-bottom: 0;
+            border: none;
         }
 
         .cartbody {
@@ -410,6 +412,39 @@
             border-bottom: 1px solid #bfbfbf;
             padding-left: 37px;
         }
+
+        .quantbtn {
+            border-radius: 0;
+            padding: 0px 4px;
+        }
+
+        .offer-list-group {
+            font-size: 10px;
+            text-align: center;
+        }
+
+        .custom-thumbnail {
+            -webkit-box-shadow: 2px 2px 19px -1px rgb(158, 156, 161);
+            -moz-box-shadow: 2px 2px 19px -1px rgb(158, 156, 161);
+            box-shadow: 2px 2px 19px -1px rgb(158, 156, 161);
+            border-radius: 0;
+        }
+
+        .appheading {
+            text-align: center;
+            color: white;
+            font-size: 74px;
+            font-family: cursive;
+        }
+
+        .coverpic {
+            position: absolute;
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+            top: 0px;
+            opacity: 0.1;
+        }
     </style>
     <script type="text/javascript">
         $(document).ready(function() {
@@ -433,13 +468,26 @@
 </head>
 
 <body ng-app="expresspayapp">
-    <!-- <div class="overlaycontent">
-      <div class="car" style="height:100%">
-        <div style="color:white;height: 100%;background-color: black;"><img src="img/c.png" alt=""  align="middle"/></div>
-        <div style="color:white;height: 100%;background-color: black;">B</div>
-
-      </div>
-    </div>-->
+    <div class="overlaycontent">
+        <div class="menu-divider">
+            <img src="img/cover.jpg" class="coverpic" alt="" />
+            <h1 class="appheading"><strong>DigiPay</strong></h1>
+            <div class="container-fluid">
+              <div class="col-xs-6">
+                A
+              </div>
+              <div class="col-xs-6">
+                B
+              </div>
+              <div class="col-xs-6">
+                C
+              </div>
+              <div class="col-xs-6">
+                D
+              </div>
+            </div>
+        </div>
+    </div>
     <div class="maincontent">
         <header class="menuheader">
             <div class="row branddiv">
@@ -686,6 +734,46 @@
                 $scope.editItemPrice = itemPrice;
             }
 
+
+            var updateFuntion = function(itemId, changedQuantity, totalPrice) {
+                angular.forEach($scope.shoppingList, function(value, key) {
+                    if (value.itemId == itemId) {
+                        var difference = 0;
+                        if (value.totalQuantity > changedQuantity) {
+                            difference = Number(value.totalQuantity) - Number(changedQuantity);
+                            $scope.totalItems = inventoryService.updateTotalCartItems(difference, true);
+                        } else {
+                            difference = Number(changedQuantity) - Number(value.totalQuantity);
+                            $scope.totalItems = inventoryService.updateTotalCartItems(difference, false);
+                        }
+                        value.totalQuantity = changedQuantity;
+                        $scope.totalPrice = inventoryService.updateTotalPrice(totalPrice, false);;
+                        return false;
+                    }
+                });
+            }
+
+            $scope.quantityIncrease = function(itemId, initQuant, itemPrice, discountPrice, totalPrice) {
+                var changedQuantity = Number(initQuant) + 1;
+                if (discountPrice != null) {
+                    itemPrice = discountPrice;
+                }
+                var totalPrice = Number(totalPrice) + Number(itemPrice);
+                updateFuntion(itemId, changedQuantity, totalPrice);
+
+            }
+            $scope.quantityDecrease = function(itemId, initQuant, itemPrice, discountPrice, totalPrice) {
+                if (initQuant > 1) {
+                    var changedQuantity = Number(initQuant) - 1;
+                    if (discountPrice != null) {
+                        itemPrice = discountPrice;
+                    }
+                    var totalPrice = Number(totalPrice) - Number(itemPrice);
+                    updateFuntion(itemId, changedQuantity, totalPrice);
+                }
+
+            }
+
             $scope.changeFunction = function(intialQuantity, itemPrice, totalPrice, changedQuantity) {
                 var totalScopePrice = $scope.totalPrice;
                 console.log(intialQuantity + " " + itemPrice + " " + totalPrice + " " + changedQuantity);
@@ -809,7 +897,7 @@
         expressPayModule.controller("offerController", function($scope, offerservice, inventoryService, newArrivalService, transactionService) {
 
             var headerHeight = $('.menuheader').outerHeight(true) + 1;
-            var offerToolsHeight = $('.offertools').outerHeight(true);
+            var offerToolsHeight = $('.offertools').outerHeight(true) + 10;
             $scope.filterBycategoryElements = [];
             $('.offertools').css('top', headerHeight + 'px');
             $('.offer-list-group').css('margin-top', offerToolsHeight + 'px');
@@ -845,16 +933,6 @@
                 });
                 return offdetails;
             })();
-            //$scope.offerAvailedProducts = [];
-            // offerservice.getOffersByStoreId("1111", function(response) {
-            //   angular.forEach(response, function(value, key) {
-            //     inventoryService.getInventoryDetails(value.storeId, value.itemId, function(response) {
-            //       response.discountPrice = response.itemPrice - ((Number(value.discountRate) / 100) * response.itemPrice);
-            //       response.discountAvailed = value.discountRate + "% off"
-            //       $scope.offerAvailedProducts.push(response);
-            //     })
-            //   })
-            // });
 
             $scope.getProductImage = function(imageUrl) {
                 return imageUrl + ".jpg";

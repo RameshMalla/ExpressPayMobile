@@ -1,90 +1,133 @@
 <div class="offerviewcontainer container-fluid" style="padding-right:0px;padding-left:0px;">
-  <div class="offers">
-    <div class="combinedoffer" style="z-index:4;background-color:white;">
-      <div class="col-xs-12 offercarousel" style="padding-top:20px;padding-left:0px;padding-right:0px;">
-        <div><img src="img/headphone.jpg" alt="Headphone" class="img-responsive"/></div>
-        <div><img src="img/sports.jpg" alt="Sports" class="img-responsive"/></div>
-        <div><img src="img/elecslide.jpg" alt="Electronics" class="img-responsive"/></div>
-      </div>
-      <div class="row offerrow">
-        <div class="col-xs-12">
-          <img ng-click="imageClick()" src="img/headspeaker.jpg" alt=""/>
+    <div class="offers">
+        <div class="combinedoffer" style="z-index:4;background-color:white;display:none;">
+            <div class="col-xs-12 offercarousel" style="padding-top:20px;padding-left:0px;padding-right:0px;">
+                <div><img src="img/headphone.jpg" alt="Headphone" class="img-responsive" /></div>
+                <div><img src="img/sports.jpg" alt="Sports" class="img-responsive" /></div>
+                <div><img src="img/elecslide.jpg" alt="Electronics" class="img-responsive" /></div>
+            </div>
+            <div class="row offerrow">
+                <div class="col-xs-12">
+                    <img ng-click="imageClick()" src="img/headspeaker.jpg" alt="" />
+                </div>
+            </div>
+            <div class="row offerrow">
+                <div class="col-xs-12">
+                    <img ng-click="imageClick()" src="img/moboffer.jpg" alt="" />
+                </div>
+            </div>
+            <div class="row offerrow">
+                <div class="col-xs-12">
+                    <img ng-click="imageClick()" src="img/bookoffer.jpg" alt="" />
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="row offerrow">
-        <div class="col-xs-12">
-          <img ng-click="imageClick()" src="img/moboffer.jpg" alt=""/>
-        </div>
-      </div>
-      <div class="row offerrow">
-        <div class="col-xs-12">
-          <img ng-click="imageClick()" src="img/bookoffer.jpg" alt=""/>
-        </div>
-      </div>
-    </div>
-    <div class="offerGroup" style="display:none;">
-      <div class="offertools">
-        <div class="col-xs-6 sortbtn" data-toggle="modal" data-target="#sortModal" style="padding:10px;text-align:center;border-right:2px solid #201e23;">
-          <span class="glyphicon glyphicon-sort"></span>&nbsp;&nbsp;Sort
-        </div>
-        <div class="col-xs-6" data-toggle="modal" data-target="#filterModal" style="padding:10px;text-align:center;">
-          <span class="glyphicon glyphicon-filter"></span>&nbsp;&nbsp;Filter
-        </div>
-        <!-- <strong>Today Deals</strong>
+        <div class="offerGroup">
+            <div class="offertools">
+                <div class="col-xs-6 sortbtn" data-toggle="modal" data-target="#sortModal" style="padding:10px;text-align:center;border-right:2px solid #201e23;">
+                    <span class="glyphicon glyphicon-sort"></span>&nbsp;&nbsp;Sort
+                </div>
+                <div class="col-xs-6" data-toggle="modal" data-target="#filterModal" style="padding:10px;text-align:center;">
+                    <span class="glyphicon glyphicon-filter"></span>&nbsp;&nbsp;Filter
+                </div>
+                <!-- <strong>Today Deals</strong>
         <button style="float:right;position:relative;top:-7px;" type="button" class="btn btn-success" data-toggle="modal" data-target="#filterModal" aria-label="Left Align">
           <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
         </button> -->
-      </div>
-      <ul class="list-group offer-list-group">
-        <li class="list-group-item offer-group-item" style="padding-left:0px;padding-right:0px;" ng-repeat="product in offerAvailedProducts | orderBy:pricesort | filter:testfilter">
-          <div class="container-fluid offerfluid">
-            <div class="col-xs-12" style="padding-left:0px;">
-              <div class="col-xs-5" style="padding-left:8px;">
-                <img ng-src="{{getProductImage(product.itemImage)}}" alt="..." class="img-thumbnail img-responsive"/>
-              </div>
-              <div class="col-xs-7">
-                <p>
-                  <strong>{{product.itemName}}</strong>
-                </p>
-                <p style="color:#f58c8c;">
-                  <strong style="color:green;">Rs.{{product.discountPrice}}</strong>
-                  &nbsp;&nbsp;&nbsp;
-                  <s>Rs.{{product.itemPrice}}</s>
-                </p>
-                <p>
-                  <strong style="font-style:italic;">
+            </div>
+            <div class="offer-list-group">
+                <div class="col-xs-6" ng-repeat="product in offerAvailedProducts | orderBy:pricesort | filter:testfilter">
+                    <div class="thumbnail custom-thumbnail">
+                        <img ng-src="{{getProductImage(product.itemImage)}}" alt="..." class="" width="100px;" />
+                        <div class="caption">
+                            <strong>{{product.itemName}}</strong>
+                            <!-- <p>{{product.itemDescription}}</p> -->
+                            <p style="color:#f58c8c;">
+                                <strong style="color:green;">Rs.{{product.discountPrice}}</strong> &nbsp;&nbsp;&nbsp;
+                                <s>Rs.{{product.itemPrice}}</s>
+                            </p>
+                            <p>
+                                <strong style="font-style:italic;">
+                                <u>{{product.discountAvailed}}</u>
+                              </strong>
+                            </p>
+                            <!-- <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- <ul class="list-group offer-list-group">
+                <li class="list-group-item offer-group-item" style="padding-left:0px;padding-right:0px;" ng-repeat="product in offerAvailedProducts | orderBy:pricesort | filter:testfilter">
+                    <div class="container-fluid offerfluid">
+                        <div class="col-xs-6">
+                            <div class="thumbnail">
+                                <img ng-src="{{getProductImage(product.itemImage)}}" alt="..." class="img-thumbnail img-responsive" />
+                                <div class="caption">
+                                    <h5>{{product.itemName}}</h5> -->
+            <!-- <p>{{product.itemDescription}}</p> -->
+            <!-- <p style="color:#f58c8c;">
+                                        <strong style="color:green;">Rs.{{product.discountPrice}}</strong> &nbsp;&nbsp;&nbsp;
+                                        <s>Rs.{{product.itemPrice}}</s>
+                                    </p>
+                                    <p>
+                                        <strong style="font-style:italic;">
+                                          <u>{{product.discountAvailed}}</u>
+                                        </strong>
+                                    </p> -->
+            <!-- <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p> -->
+            <!-- </div>
+                            </div>
+                        </div> -->
+            <!-- <div class="col-xs-12" style="padding-left:0px;">
+                            <div class="col-xs-5" style="padding-left:8px;">
+                                <img ng-src="{{getProductImage(product.itemImage)}}" alt="..." class="img-thumbnail img-responsive" />
+                            </div>
+                            <div class="col-xs-7">
+                                <p>
+                                    <strong>{{product.itemName}}</strong>
+                                </p>
+                                <p>
+                                    {{product.itemDescription}}
+                                </p>
+                                <p style="color:#f58c8c;">
+                                    <strong style="color:green;">Rs.{{product.discountPrice}}</strong> &nbsp;&nbsp;&nbsp;
+                                    <s>Rs.{{product.itemPrice}}</s>
+                                </p>
+                                <p>
+                                    <strong style="font-style:italic;">
                     <u>{{product.discountAvailed}}</u>
                   </strong>
-                </p>
-                <p>
-                  <strong>{{product.itemDescription}}</strong>
-                </p>
-              </div>
-            </div>
-          </div>
-        </li>
-      </ul>
-    </div>
-    <!-- Filter Modal -->
-    <div id="filterModal" class="modal fade" role="dialog">
-      <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content" style="border-radius:0;">
-          <div class="modal-header" style="background-color:#5cb85c;color:white;">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Filter Options</h4>
-          </div>
-          <div class="modal-body" style="padding:0px;">
-            <div class="container-fluid" style="padding:0px;">
-              <div class="col-xs-12" style="padding:0px;">
-                <div class="checkbox sortradio">
-                  <label><input type="checkbox" ng-click="changeIncategory('Electronics',electronic)" ng-model="electronic" value="Electronics">Electronics</label>
-                </div>
-                <div class="checkbox sortradio" style="margin-bottom:0px;">
-                  <label><input type="checkbox" ng-click="changeIncategory('Sports',sport)" ng-model="sport" value="Sports">Sports</label>
-                </div>
-              </div>
-              <!-- <div class="col-xs-12" style="padding:0px;">
+                                </p>
+
+                            </div>
+                        </div> -->
+            <!-- </div>
+                </li>
+            </ul> -->
+        </div>
+        <!-- Filter Modal -->
+        <div id="filterModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content" style="border-radius:0;">
+                    <div class="modal-header" style="background-color:#5cb85c;color:white;">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Filter Options</h4>
+                    </div>
+                    <div class="modal-body" style="padding:0px;">
+                        <div class="container-fluid" style="padding:0px;">
+                            <div class="col-xs-12" style="padding:0px;">
+                                <div class="checkbox sortradio">
+                                    <label>
+                                        <input type="checkbox" ng-click="changeIncategory('Electronics',electronic)" ng-model="electronic" value="Electronics">Electronics</label>
+                                </div>
+                                <div class="checkbox sortradio" style="margin-bottom:0px;">
+                                    <label>
+                                        <input type="checkbox" ng-click="changeIncategory('Sports',sport)" ng-model="sport" value="Sports">Sports</label>
+                                </div>
+                            </div>
+                            <!-- <div class="col-xs-12" style="padding:0px;">
                 <div class="radio sortradio">
                   <label><input type="radio" ng-model="pricesort" value="discountPrice" name="optradio">Price Low to High</label>
                 </div>
@@ -92,25 +135,25 @@
                   <label><input type="radio" ng-model="pricesort" value="-discountPrice" name="optradio">Price High to Low</label>
                 </div>
               </div> -->
+                        </div>
+                    </div>
+                </div>
+
             </div>
-          </div>
         </div>
+        <!-- Sort Modal -->
+        <div id="sortModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
 
-      </div>
-    </div>
-    <!-- Sort Modal -->
-    <div id="sortModal" class="modal fade" role="dialog">
-      <div class="modal-dialog">
-
-        <!-- Modal content-->
-        <div class="modal-content" style="border-radius:0;">
-          <div class="modal-header" style="background-color:#5cb85c;color:white;">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Sort Options</h4>
-          </div>
-          <div class="modal-body" style="padding:0px;">
-            <div class="container-fluid" style="padding:0px;">
-              <!-- <div class="col-xs-6">
+                <!-- Modal content-->
+                <div class="modal-content" style="border-radius:0;">
+                    <div class="modal-header" style="background-color:#5cb85c;color:white;">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Sort Options</h4>
+                    </div>
+                    <div class="modal-body" style="padding:0px;">
+                        <div class="container-fluid" style="padding:0px;">
+                            <!-- <div class="col-xs-6">
                 <div class="checkbox">
                   <label><input type="checkbox" ng-click="changeIncategory('Electronics',electronic)" ng-model="electronic" value="Electronics">Electronics</label>
                 </div>
@@ -118,27 +161,29 @@
                   <label><input type="checkbox" ng-click="changeIncategory('Sports',sport)" ng-model="sport" value="Sports">Sports</label>
                 </div>
               </div> -->
-              <div class="col-xs-12" style="padding:0px;">
-                <div class="radio sortradio">
-                  <label><input type="radio" ng-model="pricesort" value="discountPrice" name="optradio">Price Low to High</label>
+                            <div class="col-xs-12" style="padding:0px;">
+                                <div class="radio sortradio">
+                                    <label>
+                                        <input type="radio" ng-model="pricesort" value="discountPrice" name="optradio">Price Low to High</label>
+                                </div>
+                                <div class="radio sortradio" style="margin-bottom:0px;">
+                                    <label>
+                                        <input type="radio" ng-model="pricesort" value="-discountPrice" name="optradio">Price High to Low</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="radio sortradio" style="margin-bottom:0px;">
-                  <label><input type="radio" ng-model="pricesort" value="-discountPrice" name="optradio">Price High to Low</label>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
 
-      </div>
+            </div>
+        </div>
     </div>
-  </div>
-  <div class="newarrivals"></div>
-  <footer class="offernewfooter footertabs">
-    <div class="col-xs-6 offerbtn offersactive">Offers</div>
-    <div class="col-xs-6 arrivalbtn" ng-click="getNewArrivals()">New Arrivals</div>
-  </footer>
-  <footer class="offernewfooter viewallofferTab">
-    <div class="col-xs-12 offerbtn" ng-click="imageClick()">View All Offers</div>
-  </footer>
+    <div class="newarrivals"></div>
+    <footer class="offernewfooter footertabs">
+        <div class="col-xs-6 offerbtn offersactive">Offers</div>
+        <div class="col-xs-6 arrivalbtn" ng-click="getNewArrivals()">New Arrivals</div>
+    </footer>
+    <!-- <footer class="offernewfooter viewallofferTab">
+        <div class="col-xs-12 offerbtn" ng-click="imageClick()">View All Offers</div>
+    </footer> -->
 </div>
