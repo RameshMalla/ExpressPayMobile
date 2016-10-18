@@ -157,7 +157,7 @@
         z-index: 4;
         /*background-color: #363538;*/
         /*background-color: #5cb85c;*/
-        background-color: white;
+        background-color: rgb(29, 29, 29);
       }
 
       .paybutton {
@@ -529,13 +529,13 @@
         <div class="container" style="width:100%;position: absolute;bottom: 43%;">
           <div class="input-group input-group-lg myinputgroup phgroup">
             <span class="input-group-addon formspan" id="sizing-addon1">
-              <span class="glyphicon glyphicon-phone" style="color:black;"></span>
+              <span class="glyphicon glyphicon-phone" style="color:#5cb85c;"></span>
             </span>
             <input type="number" ng-model="userphonenumber" class="form-control myforminput" placeholder="Phone Number" aria-describedby="sizing-addon1">
           </div>
           <div class="input-group input-group-lg myinputgroup scangroup" style="width:100%;">
             <button type="button" class="btn btn-success btn-lg btn-block">
-              <span class="glyphicon glyphicon-qrcode" style="color:black;"></span>&nbsp;&nbsp;&nbsp;Scan Store QR Code</button>
+              <span class="glyphicon glyphicon-qrcode" style="color:white;"></span>&nbsp;&nbsp;&nbsp;Scan Store QR Code</button>
           </div>
         </div>
       </div>
@@ -611,7 +611,7 @@
         if($scope.userphonenumber!=null || $scope.userphonenumber.length >0){
 
         }else{
-          
+
         }
       }
     });
