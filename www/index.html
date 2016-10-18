@@ -14,6 +14,7 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-animate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.proto.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.js"></script>
@@ -155,7 +156,8 @@
         height: 100%;
         z-index: 4;
         /*background-color: #363538;*/
-        background-color: #5cb85c;
+        /*background-color: #5cb85c;*/
+        background-color: white;
       }
 
       .paybutton {
@@ -435,14 +437,69 @@
         width: 100%;
         height: 100%;
         top: 0;
-        opacity: 0.1;
+        opacity: 0.2;
       }
-      .logoname {
-}
+      .logo {
+        position: relative;
+        opacity: 0.0;
+        top: 200px;
+      }
+      .openinputgroup {
+        width: 100%;
+      }
+      .phoneinput {
+        border-radius: 13px !important;
+        padding: 20px;
+      }
+
+      .formspan,
+      .myforminput {
+        border-top: 0;
+        border-left: 0;
+        border-right: 0;
+        border-radius: 0 !important;
+        border-bottom: 2px solid #0b9444;
+        background-color: rgba(0, 0, 0, 0.12);
+      }
+
+      .myinputgroup {
+        padding-top: 10px;
+        left: 110%;
+      }
 
     </style>
     <script type="text/javascript">
       $(document).ready(function() {
+
+        function triggerAnimate() {
+          $('.logo').animate({
+            top: '0px',
+            opacity: '1'
+          }, "2000", "easeOutBack", function() {
+            $('.phgroup').animate({
+              left: "0%"
+            }, "2000", "easeOutBack", function() {
+              $('.scangroup').animate({
+                left: "0%"
+              }, "2000", "easeOutBack");
+            });
+          });
+
+          // $('.phgroup').animate({
+          //   left: "0%"
+          // }, "2000", "easeOutBack");
+          // $('.scangroup').animate({
+          //   left: "0%"
+          // }, "2000", "easeOutBack");
+        }
+
+        function chainedCallback() {
+          console.log("Animation Done");
+        }
+
+        setTimeout(function() {
+          triggerAnimate()
+        }, 2000);
 
         //$('.car').slick({arrows:false,mobileFirst:true});
         $(".paybutton").prop('disabled', true);
@@ -463,27 +520,24 @@
   </head>
 
   <body ng-app="expresspayapp">
-    <div class="overlaycontent">
+    <div class="overlaycontent" ng-controller="mainController">
       <div class="menu-divider">
         <img src="img/cover.jpg" class="coverpic" alt=""/>
-        <div class="logo container">
-          <img src="img\digipay.png" alt="DigiPay" />
+        <div class="logo container" style="text-align:center;">
+          <img src="img\digipay.png" alt="DigiPay" style="width:200px;"/>
         </div>
-        <!-- <h1 class="appheading"><strong>DigiPay</strong></h1> -->
-        <!-- <div class="container-fluid">
-              <div class="col-xs-6">
-                A
-              </div>
-              <div class="col-xs-6">
-                B
-              </div>
-              <div class="col-xs-6">
-                C
-              </div>
-              <div class="col-xs-6">
-                D
-              </div>
-            </div> -->
+        <div class="container" style="width:100%;position: absolute;bottom: 43%;">
+          <div class="input-group input-group-lg myinputgroup phgroup">
+            <span class="input-group-addon formspan" id="sizing-addon1">
+              <span class="glyphicon glyphicon-phone" style="color:black;"></span>
+            </span>
+            <input type="number" ng-model="userphonenumber" class="form-control myforminput" placeholder="Phone Number" aria-describedby="sizing-addon1">
+          </div>
+          <div class="input-group input-group-lg myinputgroup scangroup" style="width:100%;">
+            <button type="button" class="btn btn-success btn-lg btn-block">
+              <span class="glyphicon glyphicon-qrcode" style="color:black;"></span>&nbsp;&nbsp;&nbsp;Scan Store QR Code</button>
+          </div>
+        </div>
       </div>
     </div>
     <div class="maincontent">
@@ -491,7 +545,6 @@
         <div class="row branddiv">
           <div class="col-xs-12">
             <strong style="font-size: x-large;">Express Pay</strong>
-            <!-- <span><button type="button" class="btn btn-default paybutton" ng name="button">Pay</button></span> -->
           </div>
         </div>
         <div class="menudiv">
@@ -552,6 +605,17 @@
       }
     ]);
 
+    expressPayModule.controller("mainController", function($scope, inventoryService, $timeout) {
+      $scope.tests = 'D';
+      $scope.getStoreId=function(){
+        if($scope.userphonenumber!=null || $scope.userphonenumber.length >0){
+
+        }else{
+          
+        }
+      }
+    });
+
     expressPayModule.controller("scanController", function($scope, inventoryService, $timeout) {
       $('.paybutton').css("display", "none");
       var totalCartItems = 0;
@@ -604,7 +668,6 @@
     });
 
     expressPayModule.controller("cartController", function($scope, inventoryService, transactionService) {
-
       $('.paymentcontainer').css('display', 'none');
       //$('.cartsubmodel').css('display', 'none');
       $('.paynow').click(function() {
