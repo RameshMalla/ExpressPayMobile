@@ -15,6 +15,9 @@
         },
         "cordova-plugin-camera": {
             "PACKAGE_NAME": "com.digirupt.pay"
+        },
+        "cordova-plugin-sim": {
+            "PACKAGE_NAME": "com.digirupt.pay"
         }
     },
     "dependent_plugins": {

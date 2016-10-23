@@ -23,7 +23,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
-    <title>ExpressPay</title>
+    <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Sonsie+One" rel="stylesheet">
+    <title>DigiPay</title>
     <style>
       .scannedResult {
         height: 500px;
@@ -37,6 +39,8 @@
         /*border-bottom: 1px solid white;*/
         background-color: rgb(92, 184, 92);
         color: white;
+        /*font-family: 'Lobster', cursive;*/
+        font-family: 'Sonsie One', cursive;
       }
 
       .menuheader {
@@ -109,6 +113,10 @@
         background-color: #201e23 !important;
         color: #428039 !important;
         border-bottom: 4px solid #5cb85c !important;
+      }
+      .customactiveside {
+        background-color: #201e23 !important;
+        color: #428039 !important;
       }
 
       .toolbuttons {
@@ -460,11 +468,104 @@
         border-radius: 0 !important;
         border-bottom: 2px solid #0b9444;
         background-color: rgba(0, 0, 0, 0.12);
+        color: white;
       }
 
       .myinputgroup {
-        padding-top: 10px;
+        /*padding-top: 10px;*/
+        margin-top: 3%;
         left: 110%;
+      }
+      .myforminput:focus {
+        border-color: transparent;
+        outline: 0;
+        box-shadow: none;
+        -webkit-box-shadow: none;
+        border-bottom: 2px solid #0b9444;
+      }
+
+      .overlaycontent {
+        animation-duration: 0.5s;
+      }
+      .videocontainer {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        padding: 0;
+        margin: 0;
+        left: 0;
+        top: 0;
+        z-index: -1000;
+        overflow: hidden;
+      }
+      #myvideo {
+        min-height: 100%;
+        min-width: 100%;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+      }
+      .discovercontainer {
+        position: relative;
+      }
+      .backdrop {
+        position: fixed;
+        background-color: rgba(0, 0, 0, 0.25);
+        height: 100%;
+        width: 100%;
+        display: none;
+        opacity: 0;
+        transition: all 0.3s;
+      }
+      .backdropover {
+        display: block;
+        opacity: 1;
+      }
+      .discoversidemenu {
+        position: fixed;
+        height: 17%;
+        width: 70%;
+        top: 34%;
+        left: -59%;
+        transition: all 0.3s;
+      }
+      .sidebtnlist:first-child {
+        border-top-left-radius: 0;
+        border-top-right-radius: 15px;
+        border-top: 0;
+      }
+      .sidebtnlist:last-child {
+        border-bottom-right-radius: 15px;
+        border-bottom-left-radius: 0;
+        border-bottom: 0;
+
+      }
+      .sidebtnlist {
+        font-weight: 900;
+        border-right: 0;
+      }
+      .sidebtnlist:focus {
+        outline: none;
+      }
+      .discovermaincontent {}
+      .sidedrag {
+        position: relative;
+        top: 22px;
+        border-radius: 0;
+        border-top-right-radius: 6px;
+        border-bottom-right-radius: 6px;
+        width: 31px;
+        left: -5px;
+        background-color: #363538;
+        color: white;
+        height: 81px;
+      }
+      .sidedrag:hover {
+        background-color: #363538;
+        color: white;
+      }
+      .move {
+        left: 0;
       }
 
     </style>
@@ -484,13 +585,6 @@
               }, "2000", "easeOutBack");
             });
           });
-
-          // $('.phgroup').animate({
-          //   left: "0%"
-          // }, "2000", "easeOutBack");
-          // $('.scangroup').animate({
-          //   left: "0%"
-          // }, "2000", "easeOutBack");
         }
 
         function chainedCallback() {
@@ -515,26 +609,36 @@
           });
           $(this).children(".col-xs-3").addClass("customactive");
         });
+
+        // var elem = document.getElementById("myvideo");
+        // if (elem.requestFullscreen) {
+        //   elem.requestFullscreen();
+        // } else if (elem.mozRequestFullScreen) {
+        //   elem.mozRequestFullScreen();
+        // } else if (elem.webkitRequestFullscreen) {
+        //   elem.webkitRequestFullscreen();
+        // }
       });
     </script>
   </head>
 
   <body ng-app="expresspayapp">
-    <div class="overlaycontent" ng-controller="mainController">
+    <div class="overlaycontent" style="display:none;" ng-controller="mainController">
       <div class="menu-divider">
         <img src="img/cover.jpg" class="coverpic" alt=""/>
         <div class="logo container" style="text-align:center;">
           <img src="img\digipay.png" alt="DigiPay" style="width:200px;"/>
         </div>
         <div class="container" style="width:100%;position: absolute;bottom: 43%;">
-          <div class="input-group input-group-lg myinputgroup phgroup">
+          <div ng-if="!isPhoneNumberPresent()" class="input-group input-group-lg myinputgroup phgroup">
             <span class="input-group-addon formspan" id="sizing-addon1">
               <span class="glyphicon glyphicon-phone" style="color:#5cb85c;"></span>
             </span>
             <input type="number" ng-model="userphonenumber" class="form-control myforminput" placeholder="Phone Number" aria-describedby="sizing-addon1">
           </div>
+          <div class="phgroup"></div>
           <div class="input-group input-group-lg myinputgroup scangroup" style="width:100%;">
-            <button type="button" class="btn btn-success btn-lg btn-block">
+            <button type="button" class="btn btn-success btn-lg btn-block" ng-click="scanShopQrCode()">
               <span class="glyphicon glyphicon-qrcode" style="color:white;"></span>&nbsp;&nbsp;&nbsp;Scan Store QR Code</button>
           </div>
         </div>
@@ -543,8 +647,8 @@
     <div class="maincontent">
       <header class="menuheader">
         <div class="row branddiv">
-          <div class="col-xs-12">
-            <strong style="font-size: x-large;">Express Pay</strong>
+          <div class="col-xs-12" style="text-align:center;">
+            <strong style="font-size: x-large;">Digi Pay</strong>
           </div>
         </div>
         <div class="menudiv">
@@ -574,12 +678,14 @@
               </p>
             </div>
           </a>
-          <div class="col-xs-3" style="border-right:none">
-            <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-            <p class="descpara">
-              Discover
-            </p>
-          </div>
+          <a href="#/discover">
+            <div class="col-xs-3" style="border-right:none">
+              <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+              <p class="descpara">
+                Discover
+              </p>
+            </div>
+          </a>
         </div>
       </header>
       <div class="subcontent" ng-view></div>
@@ -601,18 +707,48 @@
         }).when('/offers', {
           templateUrl: 'view/offerview.html',
           controller: 'offerController'
+        }).when('/discover', {
+          templateUrl: 'view/discover.html',
+          controller: 'discoverController'
         }).otherwise({redirectTo: '/scan'});
       }
     ]);
 
     expressPayModule.controller("mainController", function($scope, inventoryService, $timeout) {
       $scope.tests = 'D';
-      $scope.getStoreId=function(){
-        if($scope.userphonenumber!=null || $scope.userphonenumber.length >0){
-
-        }else{
-
+      localStorage.removeItem("phoneNumber");
+      // $scope.testPlugin = function() {
+      //   window.plugins.sim.getSimInfo(function(result) {
+      //     console.log(JSON.stringify(result));
+      //     alert(JSON.stringify(result));
+      //   }, function(error) {
+      //     console.log(error);
+      //     alert(error);
+      //   });
+      // }
+      $scope.scanShopQrCode = function() {
+        localStorage.phoneNumber = $scope.userphonenumber;
+        $('.overlaycontent').addClass('animated fadeOutLeft');
+        // cordova.plugins.barcodeScanner.scan(function(result) {
+        //   if (!result.cancelled) {
+        //     var value = result.text;
+        //     console.log("SCANNED CODE " + value);
+        //
+        //     //console.log("THE VALUE IS : " + value);
+        //   }
+        // }, function(error) {
+        //   alert("Scanning failed: " + error);
+        // });
+      }
+      $scope.isPhoneNumberPresent = function() {
+        if (!angular.isUndefined(localStorage.phoneNumber) && localStorage.phoneNumber != null) {
+          return true;
+        } else {
+          return false;
         }
+      }
+      $scope.getStoreId = function() {
+        if ($scope.userphonenumber != null || $scope.userphonenumber.length > 0) {} else {}
       }
     });
 
@@ -1034,6 +1170,28 @@
       }
 
     });
+
+    expressPayModule.controller('discoverController', function($scope) {
+      $('.sidedrag').click(function() {
+        $('.discoversidemenu').toggleClass("move");
+        $('.backdrop').toggleClass("backdropover");
+      })
+      $('.backdrop').click(function() {
+        $('.discoversidemenu').toggleClass("move");
+        $('.backdrop').toggleClass("backdropover");
+      })
+      $('.sidebtnlist').click(function(){
+        $(".sidebtnlist").each(function(index) {
+          if ($(this).hasClass("customactiveside")) {
+            $(this).removeClass("customactiveside")
+            return false;
+          }
+        });
+        $(this).addClass("customactiveside");
+        //$(this).css({"background-color":"#363538","color":"white"});
+      });
+
+    })
   </script>
   <script type="text/javascript" src="service/newArrivalsService.js"></script>
   <script type="text/javascript" src="service/offerservice.js"></script>
