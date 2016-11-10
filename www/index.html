@@ -547,6 +547,9 @@
       .sidebtnlist:focus {
         outline: none;
       }
+      .sidedrag:focus {
+        outline: none;
+      }
       .discovermaincontent {}
       .sidedrag {
         position: relative;
@@ -566,6 +569,21 @@
       }
       .move {
         left: 0;
+      }
+      .transaction-group {
+        padding: 1%;
+      }
+      .trans-date-col {
+        padding: 0;
+        border-right: 2px solid #c3c3c3;
+        text-align: center;
+
+      }
+      .trans-details-col {
+        font-size: 10px;
+        padding-left: 5%;
+        padding-top: 3%;
+        padding-right: 0;
       }
 
     </style>
@@ -1004,7 +1022,7 @@
         console.log($scope.selectedBank);
         var requestData = {
           "storeId": "123",
-          "userId": "321",
+          "userId": "9940366400",
           "amountPayed": amountPayed,
           "modeOfPayment": modeOfPayment,
           "bankName": bankName,
@@ -1171,7 +1189,7 @@
 
     });
 
-    expressPayModule.controller('discoverController', function($scope) {
+    expressPayModule.controller('discoverController', function($scope, transactionService) {
       $('.sidedrag').click(function() {
         $('.discoversidemenu').toggleClass("move");
         $('.backdrop').toggleClass("backdropover");
@@ -1180,7 +1198,7 @@
         $('.discoversidemenu').toggleClass("move");
         $('.backdrop').toggleClass("backdropover");
       })
-      $('.sidebtnlist').click(function(){
+      $('.sidebtnlist').click(function() {
         $(".sidebtnlist").each(function(index) {
           if ($(this).hasClass("customactiveside")) {
             $(this).removeClass("customactiveside")
@@ -1190,6 +1208,30 @@
         $(this).addClass("customactiveside");
         //$(this).css({"background-color":"#363538","color":"white"});
       });
+
+      transactionService.getTransactionDetails("9940366400", function(responseData) {
+        $scope.transactionDetails = responseData;
+        console.log($scope.transactionDetails);
+      });
+      $scope.convertDate = function(dateval) {
+        var monthArray = [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec"
+        ];
+        $scope.transmonth = monthArray[new Date(dateval).getMonth() + 1];
+        $scope.transyear = new Date(dateval).getFullYear()
+        return new Date(dateval).getDate();
+      }
 
     })
   </script>

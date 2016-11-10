@@ -3,8 +3,8 @@
   <div class="discoversidemenu">
     <div class="col-xs-10" style="padding:0px;z-index:1;">
       <div class="list-group" style="margin-bottom:0px;">
-        <button type="button" class="sidebtnlist list-group-item">My Purchase</button>
-        <button type="button" class="sidebtnlist list-group-item customactiveside">My Recomendations</button>
+        <button type="button" class="sidebtnlist list-group-item customactiveside">My Purchase</button>
+        <button type="button" class="sidebtnlist list-group-item">My Recomendations</button>
         <button type="button" class="sidebtnlist list-group-item">My Offers</button>
       </div>
     </div>
@@ -15,7 +15,35 @@
     </div>
   </div>
   <div class="discovermaincontent">
-    <div class="transactions"></div>
+    <div class="transactions">
+      <div class="panel-group transaction-group" id="accordion" role="tablist" aria-multiselectable="true">
+        <div class="panel panel-default" ng-repeat="transaction in transactionDetails">
+          <div class="panel-heading" style="padding:5px;" role="tab" id="headingOne">
+            <div class="container-fluid" style="padding:0px;" data-toggle="collapse" data-parent="#accordion" data-target="#{{transaction._id}}">
+              <div class="col-xs-3 trans-date-col">
+                <strong style="font-size:35px;">
+                  {{convertDate(transaction.transactionDate)}}
+                </strong><br>
+                <span>{{transmonth}}</span>/<span>{{transyear}}</span>
+              </div>
+              <div class="col-xs-9 trans-details-col">
+                <p>
+                  Purchase ID&nbsp;&nbsp;:<strong>&nbsp;{{transaction._id}}</strong>
+                </p>
+                <p>
+                  Amount Payed &nbsp;&nbsp;:<strong>&nbsp;Rs.{{transaction.amountPayed}}</strong>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div id="{{transaction._id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+            <div class="panel-body">
+              Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="recomendations"></div>
     <div class="offers"></div>
   </div>

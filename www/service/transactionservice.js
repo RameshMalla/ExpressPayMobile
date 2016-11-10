@@ -7,4 +7,12 @@ expressPayModule.service("transactionService", function($http) {
     })
   }
 
+  this.getTransactionDetails = function(phoneNumber, callbackFunction) {
+    $http.get("http://localhost:3000/transaction/getTransactiondetails/" + phoneNumber).then(function(response) {
+      callbackFunction(response.data);
+    }, function(error) {
+      callbackFunction(response);
+    });
+  }
+
 });
