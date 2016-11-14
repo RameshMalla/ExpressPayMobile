@@ -25,4 +25,15 @@ expressPayModule.service("offerservice", function($http) {
         callbackFunction(response.data);
       });
   }
+
+
+  this.getOffersByOfferId = function(storeId, offerId, callbackFunction) {
+    $http.get("http://localhost:3000/offers/getOffersbyofferid/" + storeId + "/" + offerId)
+      .then(function(response) {
+        callbackFunction(response.data);
+      //callbackFunction(response.data);
+      }, function(response) {
+        callbackFunction(response.data);
+      });
+  }
 });

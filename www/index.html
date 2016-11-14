@@ -362,13 +362,14 @@
         left: 0;
       }
       .offernewfooter div:first-child {
-        border-right: 1px solid black;
+        /*border-right: 1px solid black;*/
       }
 
       .offernewfooter div {
         height: 100%;
         padding: 8px;
         font-weight: 900;
+        border-right: 1px solid #201e23;
       }
 
       .offerviewcontainer {
@@ -528,6 +529,7 @@
         top: 34%;
         left: -59%;
         transition: all 0.3s;
+        z-index: 2;
       }
       .sidebtnlist:first-child {
         border-top-left-radius: 0;
@@ -557,7 +559,7 @@
         border-radius: 0;
         border-top-right-radius: 6px;
         border-bottom-right-radius: 6px;
-        width: 31px;
+        width: 25px;
         left: -5px;
         background-color: #363538;
         color: white;
@@ -1119,13 +1121,21 @@
       $('.offercarousel').slick({arrows: false, mobileFirst: true, autoplay: true});
 
       $('.offerbtn').click(function() {
+        $('.myofferbtn').removeClass("offersactive");
         $('.arrivalbtn').removeClass("offersactive");
         $(this).addClass("offersactive");
         getOffersDetails();
       });
       $('.arrivalbtn').click(function() {
         $('.offerbtn').removeClass("offersactive");
+        $('.myofferbtn').removeClass("offersactive");
         $(this).addClass("offersactive")
+      });
+      $('.myofferbtn').click(function() {
+        $('.offerbtn').removeClass("offersactive");
+        $('.arrivalbtn').removeClass("offersactive");
+        $(this).addClass("offersactive")
+        getOffersByOfferId("1111","OFR12347");
       });
 
       $scope.message = "View Offers"
@@ -1141,6 +1151,18 @@
         });
         return offdetails;
       })();
+
+      var getOffersByOfferId = function(storeId,offerId) {
+        $scope.offerAvailedProducts = [];
+        offerservice.getOffersByOfferId(storeId,offerId, function(response) {
+          angular.forEach(response, function(value, key) {
+            inventoryService.getInventoryDetails(value.storeId, value.itemId, function(response) {
+              response.discountAvailed = value.discountRate + "% off"
+              $scope.offerAvailedProducts.push(response);
+            })
+          })
+        });
+      }
 
       $scope.getProductImage = function(imageUrl) {
         return imageUrl + ".jpg";
@@ -1228,7 +1250,7 @@
           "Nov",
           "Dec"
         ];
-        $scope.transmonth = monthArray[new Date(dateval).getMonth() + 1];
+        $scope.transmonth = monthArray[new Date(dateval).getMonth()];
         $scope.transyear = new Date(dateval).getFullYear()
         return new Date(dateval).getDate();
       }
