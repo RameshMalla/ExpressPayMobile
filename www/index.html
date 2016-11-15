@@ -896,13 +896,13 @@
         $('.paymentmethodshopcard').css('display', 'block')
       });
 
-      $('.cardnumber').keypress(function(event) {
-        var keycode = event.which;
-        console.log(event.currentTarget.className);
-        if (!(event.shiftKey == false && (keycode == 46 || keycode == 8 || keycode == 37 || keycode == 39 || (keycode >= 48 && keycode <= 57)))) {
-          event.preventDefault();
-        }
-      });
+      // $('.cardnumber').keypress(function(event) {
+      //   var keycode = event.which;
+      //   //console.log(event.currentTarget.className);
+      //   if (!(event.shiftKey == false && (keycode == 46 || keycode == 8 || keycode == 37 || keycode == 39 || (keycode >= 48 && keycode <= 57)))) {
+      //     event.preventDefault();
+      //   }
+      // });
 
       $(".payment-group-item").click(function() {
         $(".payment-group-item").each(function(index) {
@@ -1060,7 +1060,8 @@
         var isCardNumberValid,
           isDateValid,
           isCvvNumberValid = false;
-        if ($scope.cardnumber != null && $scope.cardnumber.length == 16) {
+          console.log("IN");
+        if ($scope.cardnumber != null && $scope.cardnumber.toString().length == 16) {
           console.log("Card");
           isCardNumberValid = true;
         }
