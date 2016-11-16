@@ -517,6 +517,7 @@
         display: none;
         opacity: 0;
         transition: all 0.3s;
+        z-index: 2;
       }
       .backdropover {
         display: block;
@@ -529,7 +530,7 @@
         top: 34%;
         left: -59%;
         transition: all 0.3s;
-        z-index: 2;
+        z-index: 3;
       }
       .sidebtnlist:first-child {
         border-top-left-radius: 0;
@@ -587,6 +588,27 @@
         padding-top: 3%;
         padding-right: 0;
       }
+      .qpaymodel {
+        border: none;
+      }
+      .qpaymodel > .panel-heading {
+        border: none;
+        border-radius: 0;
+        color: #fff;
+        background-color: #363538;
+      }
+      .qpaymodel .list-group-item {
+        padding: 10px 10px 10px 23px;
+        font-size: 11px;
+        font-weight: 700;
+        background-color: beige;
+      }
+      .qpbtn {
+        float: right;
+        position: relative;
+        top: -2px;
+        padding: 1px 18px;
+      }
 
     </style>
     <script type="text/javascript">
@@ -630,14 +652,6 @@
           $(this).children(".col-xs-3").addClass("customactive");
         });
 
-        // var elem = document.getElementById("myvideo");
-        // if (elem.requestFullscreen) {
-        //   elem.requestFullscreen();
-        // } else if (elem.mozRequestFullScreen) {
-        //   elem.mozRequestFullScreen();
-        // } else if (elem.webkitRequestFullscreen) {
-        //   elem.webkitRequestFullscreen();
-        // }
       });
     </script>
   </head>
@@ -1060,7 +1074,7 @@
         var isCardNumberValid,
           isDateValid,
           isCvvNumberValid = false;
-          console.log("IN");
+        console.log("IN");
         if ($scope.cardnumber != null && $scope.cardnumber.toString().length == 16) {
           console.log("Card");
           isCardNumberValid = true;
@@ -1136,7 +1150,7 @@
         $('.offerbtn').removeClass("offersactive");
         $('.arrivalbtn').removeClass("offersactive");
         $(this).addClass("offersactive")
-        getOffersByOfferId("1111","OFR12347");
+        getOffersByOfferId("1111", "OFR12347");
       });
 
       $scope.message = "View Offers"
@@ -1153,9 +1167,9 @@
         return offdetails;
       })();
 
-      var getOffersByOfferId = function(storeId,offerId) {
+      var getOffersByOfferId = function(storeId, offerId) {
         $scope.offerAvailedProducts = [];
-        offerservice.getOffersByOfferId(storeId,offerId, function(response) {
+        offerservice.getOffersByOfferId(storeId, offerId, function(response) {
           angular.forEach(response, function(value, key) {
             inventoryService.getInventoryDetails(value.storeId, value.itemId, function(response) {
               response.discountAvailed = value.discountRate + "% off"
@@ -1231,6 +1245,13 @@
         $(this).addClass("customactiveside");
         //$(this).css({"background-color":"#363538","color":"white"});
       });
+
+      $scope.toggleDiscDiv = function(divname) {
+        $('.subcontents').each(function(index) {
+          $(this).css('display', 'none');
+        })
+        $('.' + divname).css('display', 'block');
+      }
 
       transactionService.getTransactionDetails("9940366400", function(responseData) {
         $scope.transactionDetails = responseData;

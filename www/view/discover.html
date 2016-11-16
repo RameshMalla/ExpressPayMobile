@@ -3,9 +3,9 @@
   <div class="discoversidemenu">
     <div class="col-xs-10" style="padding:0px;z-index:1;">
       <div class="list-group" style="margin-bottom:0px;">
-        <button type="button" class="sidebtnlist list-group-item customactiveside">My Purchase</button>
-        <button type="button" class="sidebtnlist list-group-item">My Recomendations</button>
-        <button type="button" class="sidebtnlist list-group-item">My Offers</button>
+        <button type="button" ng-click="toggleDiscDiv('transactions')" class="sidebtnlist list-group-item customactiveside">My Purchase</button>
+        <button type="button" ng-click="toggleDiscDiv('recomendations')" class="sidebtnlist list-group-item">My Recomendations</button>
+        <button type="button" ng-click="toggleDiscDiv('qpay')" class="sidebtnlist list-group-item">Manage Q-Pay</button>
       </div>
     </div>
     <div class="col-xs-2" style="padding:0px;">
@@ -15,7 +15,7 @@
     </div>
   </div>
   <div class="discovermaincontent">
-    <div class="transactions">
+    <div class="transactions subcontents">
       <div class="panel-group transaction-group" id="accordion" role="tablist" aria-multiselectable="true">
         <div class="panel panel-default" ng-repeat="transaction in transactionDetails | orderBy:'-transactionDate'">
           <div class="panel-heading" style="padding:5px;" role="tab" id="headingOne">
@@ -65,7 +65,22 @@
         </div>
       </div>
     </div>
-    <div class="recomendations"></div>
-    <div class="offers"></div>
+    <div class="recomendations subcontents" style="display:none;">A</div>
+    <div class="qpay subcontents" style="display:none;">
+      <div class="panel panel-default qpaymodel">
+        <div class="panel-heading">Q-Pay
+          <button type="button" class="btn btn-success qpbtn" name="button">Add</button>
+        </div>
+        <!-- <div class="panel-body">
+
+        </div> -->
+        <div class="list-group">
+          <a href="#" class="list-group-item">Card</a>
+        </div>
+        <div class="list-group">
+          <a href="#" class="list-group-item">Net Banking</a>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
