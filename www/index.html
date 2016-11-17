@@ -119,6 +119,11 @@
         color: #428039 !important;
       }
 
+      .customactiveside > a {
+        background-color: #201e23 !important;
+        color: #428039 !important;
+      }
+
       .toolbuttons {
         float: right;
         position: relative;
@@ -532,7 +537,7 @@
         transition: all 0.3s;
         z-index: 3;
       }
-      .sidebtnlist:first-child {
+      /*.sidebtnlist:first-child {
         border-top-left-radius: 0;
         border-top-right-radius: 15px;
         border-top: 0;
@@ -542,7 +547,7 @@
         border-bottom-left-radius: 0;
         border-bottom: 0;
 
-      }
+      }*/
       .sidebtnlist {
         font-weight: 900;
         border-right: 0;
@@ -553,7 +558,10 @@
       .sidedrag:focus {
         outline: none;
       }
-      .discovermaincontent {}
+      .discovermaincontent {
+        position: relative;
+        top: 40px;
+      }
       .sidedrag {
         position: relative;
         top: 22px;
@@ -608,6 +616,35 @@
         position: relative;
         top: -2px;
         padding: 1px 18px;
+      }
+
+      .discovermainheading {
+        height: 40px;
+        width: 100%;
+        background-color: #363538;
+        position: fixed;
+        z-index: 2;
+      }
+      .customdrop {
+        /*display: inline;*/
+        float: right;
+        margin-top: 2%;
+        margin-right: 2%;
+      }
+      .customdrop > button {
+        float: right;
+        padding: 3px 10px;
+      }
+      .customdrop .dropdown-backdrop {
+        background-color: rgba(54, 53, 56, 0.33);
+      }
+      .customdrop hr {
+        margin-top: 0px;
+        margin-bottom: 0px;
+      }
+      .sidebtnlist a{
+        padding: 7px 23px !important;
+        font-weight: 900 !important;
       }
 
     </style>
@@ -981,16 +1018,18 @@
         });
       }
 
-      $scope.quantityIncrease = function(itemId, initQuant, itemPrice, discountPrice, totalPrice) {
+      $scope.quantityIncrease = function(itemId, initQuant, itemPrice, discountPrice, actulaQuantity, totalPrice) {
         var changedQuantity = Number(initQuant) + 1;
-        if (discountPrice != null) {
-          itemPrice = discountPrice;
+        if (actulaQuantity >= changedQuantity) {
+          if (discountPrice != null) {
+            itemPrice = discountPrice;
+          }
+          var totalPrice = Number(totalPrice) + Number(itemPrice);
+          updateFuntion(itemId, changedQuantity, totalPrice);
         }
-        var totalPrice = Number(totalPrice) + Number(itemPrice);
-        updateFuntion(itemId, changedQuantity, totalPrice);
 
       }
-      $scope.quantityDecrease = function(itemId, initQuant, itemPrice, discountPrice, totalPrice) {
+      $scope.quantityDecrease = function(itemId, initQuant, itemPrice, discountPrice, actulaQuantity, totalPrice) {
         if (initQuant > 1) {
           var changedQuantity = Number(initQuant) - 1;
           if (discountPrice != null) {
@@ -1227,6 +1266,11 @@
     });
 
     expressPayModule.controller('discoverController', function($scope, transactionService) {
+
+      var headerHeight = $('.menuheader').outerHeight(true) + 1;
+
+      $('.discovermainheading').css('top', headerHeight + 'px');
+
       $('.sidedrag').click(function() {
         $('.discoversidemenu').toggleClass("move");
         $('.backdrop').toggleClass("backdropover");
@@ -1246,10 +1290,11 @@
         //$(this).css({"background-color":"#363538","color":"white"});
       });
 
-      $scope.toggleDiscDiv = function(divname) {
+      $scope.toggleDiscDiv = function(divname,spanname) {
         $('.subcontents').each(function(index) {
           $(this).css('display', 'none');
         })
+        $('.discmodheader').html('').prepend(spanname);
         $('.' + divname).css('display', 'block');
       }
 

@@ -1,17 +1,39 @@
 <div class="discovercontainer">
-  <div class="backdrop"></div>
-  <div class="discoversidemenu">
+  <!-- <div class="backdrop"></div> -->
+  <!-- <div class="discoversidemenu">
     <div class="col-xs-10" style="padding:0px;z-index:1;">
       <div class="list-group" style="margin-bottom:0px;">
-        <button type="button" ng-click="toggleDiscDiv('transactions')" class="sidebtnlist list-group-item customactiveside">My Purchase</button>
-        <button type="button" ng-click="toggleDiscDiv('recomendations')" class="sidebtnlist list-group-item">My Recomendations</button>
-        <button type="button" ng-click="toggleDiscDiv('qpay')" class="sidebtnlist list-group-item">Manage Q-Pay</button>
+        <button type="button" ng-click="toggleDiscDiv('transactions')" class="sidebtnlists list-group-item customactiveside">My Purchase</button>
+        <button type="button" ng-click="toggleDiscDiv('recomendations')" class="sidebtnlists list-group-item">My Recomendations</button>
+        <button type="button" ng-click="toggleDiscDiv('qpay')" class="sidebtnlists list-group-item">Manage Q-Pay</button>
       </div>
     </div>
     <div class="col-xs-2" style="padding:0px;">
       <button type="button" class="btn btn-default sidedrag" aria-label="Left Align">
         <span class="glyphicon glyphicon-forward" style="margin-left: -4px;" aria-hidden="true"></span>
       </button>
+    </div>
+  </div> -->
+  <div class="discovermainheading">
+    <span class="discmodheader" style="color:white;position:relative;top:20%;left:3%;">My Purchase</span>
+
+    <!-- Extra small button group -->
+    <div class="btn-group customdrop">
+      <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+        <span class="glyphicon glyphicon-menu-hamburger"></span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-right" style="font-family: monospace;font-weight: bolder;padding:0px;">
+        <li class="sidebtnlist customactiveside">
+          <a ng-click="toggleDiscDiv('transactions','My Purchase')">My Purchase</a><hr>
+        </li>
+        <li class="sidebtnlist">
+          <a ng-click="toggleDiscDiv('recomendations','My Recomendations')" >My Recomendations</a><hr>
+        </li>
+        <li class="sidebtnlist">
+          <a ng-click="toggleDiscDiv('qpay','Q-Pay')">Manage Q-Pay</a>
+        </li>
+      </ul>
     </div>
   </div>
   <div class="discovermaincontent">
@@ -66,19 +88,21 @@
       </div>
     </div>
     <div class="recomendations subcontents" style="display:none;">A</div>
-    <div class="qpay subcontents" style="display:none;">
-      <div class="panel panel-default qpaymodel">
-        <div class="panel-heading">Q-Pay
-          <button type="button" class="btn btn-success qpbtn" name="button">Add</button>
-        </div>
-        <!-- <div class="panel-body">
+    <div class="qpay subcontents" style="display:none;"></div>
+    <!-- qpaymodal-->
+    <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Choose</h4>
+          </div>
+          <div class="modal-body">
+            <div class="list-group">
+              <button type="button" class="list-group-item">Card</button>
+              <button type="button" class="list-group-item">Net Banking</button>
+            </div>
+          </div>
 
-        </div> -->
-        <div class="list-group">
-          <a href="#" class="list-group-item">Card</a>
-        </div>
-        <div class="list-group">
-          <a href="#" class="list-group-item">Net Banking</a>
         </div>
       </div>
     </div>
