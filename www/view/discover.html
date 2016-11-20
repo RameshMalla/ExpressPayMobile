@@ -28,7 +28,7 @@
           <a ng-click="toggleDiscDiv('transactions','My Purchase')">My Purchase</a><hr>
         </li>
         <li class="sidebtnlist">
-          <a ng-click="toggleDiscDiv('recomendations','My Recomendations')" >My Recomendations</a><hr>
+          <a ng-click="toggleDiscDiv('recomendations','My Recomendations')">My Recomendations</a><hr>
         </li>
         <li class="sidebtnlist">
           <a ng-click="toggleDiscDiv('qpay','Q-Pay')">Manage Q-Pay</a>
@@ -88,22 +88,30 @@
       </div>
     </div>
     <div class="recomendations subcontents" style="display:none;">A</div>
-    <div class="qpay subcontents" style="display:none;"></div>
-    <!-- qpaymodal-->
-    <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-      <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title">Choose</h4>
-          </div>
-          <div class="modal-body">
-            <div class="list-group">
-              <button type="button" class="list-group-item">Card</button>
-              <button type="button" class="list-group-item">Net Banking</button>
-            </div>
-          </div>
-
+    <div class="qpay subcontents" style="display:none;">
+      <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading clearfix">Card
+          <button type="button" class="qpayedit btn btn-sm btn-success">Add</button>
         </div>
+        <!-- List group -->
+        <ul class="list-group">
+          <li class="list-group-item clearfix">Card One
+            <button type="button" class="qpayedit btn btn-sm btn-success">Edit</button>
+          </li>
+          <li class="list-group-item clearfix">Card Two
+            <button type="button" class="qpayedit btn btn-sm btn-success">Edit</button>
+          </li>
+        </ul>
+      </div>
+      <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">Net Banking</div>
+        <!-- List group -->
+        <ul class="list-group">
+          <li class="list-group-item">Kotak</li>
+          <li class="list-group-item">HDFC</li>
+        </ul>
       </div>
     </div>
   </div>

@@ -639,12 +639,17 @@
         background-color: rgba(54, 53, 56, 0.33);
       }
       .customdrop hr {
-        margin-top: 0px;
-        margin-bottom: 0px;
+        margin-top: 0;
+        margin-bottom: 0;
       }
-      .sidebtnlist a{
+      .sidebtnlist a {
         padding: 7px 23px !important;
         font-weight: 900 !important;
+      }
+      .qpayedit {
+        padding: 3px 4px;
+        font-weight: 900;
+        float: right;
       }
 
     </style>
@@ -1290,7 +1295,7 @@
         //$(this).css({"background-color":"#363538","color":"white"});
       });
 
-      $scope.toggleDiscDiv = function(divname,spanname) {
+      $scope.toggleDiscDiv = function(divname, spanname) {
         $('.subcontents').each(function(index) {
           $(this).css('display', 'none');
         })
@@ -1322,7 +1327,20 @@
         return new Date(dateval).getDate();
       }
 
-    })
+      $('.qpayedit').click(function() {
+        // $('.qpay').addClass("animated fadeOutLeft").queue(function(){
+        //   console.log("ANIMATION COMPLETTED");
+        // });
+        $('.qpay').queue(function() {
+          $(this).addClass("animated fadeOutLeft");
+          $(this).dequeue();
+        }).queue(function() {
+          console.log("ANIMATION COMPLETTED");
+        });
+
+      });
+
+    });
   </script>
   <script type="text/javascript" src="service/newArrivalsService.js"></script>
   <script type="text/javascript" src="service/offerservice.js"></script>
