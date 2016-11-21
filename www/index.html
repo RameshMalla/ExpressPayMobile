@@ -624,6 +624,7 @@
         background-color: #363538;
         position: fixed;
         z-index: 2;
+        border-top: 2px solid black;
       }
       .customdrop {
         /*display: inline;*/
@@ -650,6 +651,19 @@
         padding: 3px 4px;
         font-weight: 900;
         float: right;
+      }
+
+      .qpaycardpanel {
+        padding: 4px;
+        font-size: 11px;
+      }
+      .qpaybankpanel {
+        padding: 17px;
+        font-size: 11px;
+      }
+      .qpaycardpanel,
+      .qpaybankpanel {
+        display: none;
       }
 
     </style>
@@ -1272,7 +1286,7 @@
 
     expressPayModule.controller('discoverController', function($scope, transactionService) {
 
-      var headerHeight = $('.menuheader').outerHeight(true) + 1;
+      var headerHeight = $('.menuheader').outerHeight(true);
 
       $('.discovermainheading').css('top', headerHeight + 'px');
 
@@ -1301,6 +1315,11 @@
         })
         $('.discmodheader').html('').prepend(spanname);
         $('.' + divname).css('display', 'block');
+
+        $('.qpaycardpanel').css('display', 'none');
+        $('.qpaybankpanel').css('display', 'none');
+        $('.qpaydisplay').css('display', 'block');
+
       }
 
       transactionService.getTransactionDetails("9940366400", function(responseData) {
@@ -1327,18 +1346,42 @@
         return new Date(dateval).getDate();
       }
 
-      $('.qpayedit').click(function() {
-        // $('.qpay').addClass("animated fadeOutLeft").queue(function(){
-        //   console.log("ANIMATION COMPLETTED");
-        // });
-        $('.qpay').queue(function() {
-          $(this).addClass("animated fadeOutLeft");
-          $(this).dequeue();
-        }).queue(function() {
-          console.log("ANIMATION COMPLETTED");
-        });
+      $('.qpaycardedit').click(function() {
+
+        $('.qpaydisplay').css('display', 'none');
+        $('.qpaybankpanel').css('display', 'none');
+        $('.qpaycardpanel').css('display', 'block');
 
       });
+      $('.qpaybankedit').click(function() {
+
+        $('.qpaydisplay').css('display', 'none');
+        $('.qpaycardpanel').css('display', 'none');
+        $('.qpaybankpanel').css('display', 'block');
+
+      });
+
+      $scope.resetAllDiv = function() {
+        $('.qpaycardpanel').css('display', 'none');
+        $('.qpaybankpanel').css('display', 'none');
+        $('.qpaydisplay').css('display', 'block');
+      }
+
+      $scope.resetImageBackdrop = function(bankselected) {
+        $('.bankcol').closest('.activeBank').removeClass("activeBank");
+        $('.paybankbtn').prop('disabled', false);
+        $scope.selectedBank = bankselected;
+      }
+
+      $('.bankcol').click(function() {
+        $('.bankcol').closest('.activeBank').removeClass("activeBank");
+        $(this).addClass('activeBank');
+        var val = $(this).find('img').attr('alt');
+        $scope.$apply(function() {
+          $scope.selectedBank = val;
+        });
+
+      })
 
     });
   </script>

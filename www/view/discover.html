@@ -89,29 +89,80 @@
     </div>
     <div class="recomendations subcontents" style="display:none;">A</div>
     <div class="qpay subcontents" style="display:none;">
-      <div class="panel panel-default">
-        <!-- Default panel contents -->
-        <div class="panel-heading clearfix">Card
-          <button type="button" class="qpayedit btn btn-sm btn-success">Add</button>
+      <div class="qpaydisplay">
+        <div class="panel panel-default">
+          <!-- Default panel contents -->
+          <div class="panel-heading clearfix">Card
+            <button type="button" class="qpayedit qpaycardedit btn btn-sm btn-success">Add</button>
+          </div>
+          <!-- List group -->
+          <ul class="list-group">
+            <li class="list-group-item clearfix">Card One
+              <button type="button" class="qpayedit qpaycardedit btn btn-sm btn-success">Edit</button>
+            </li>
+            <li class="list-group-item clearfix">Card Two
+              <button type="button" class="qpayedit qpaycardedit btn btn-sm btn-success">Edit</button>
+            </li>
+          </ul>
         </div>
-        <!-- List group -->
-        <ul class="list-group">
-          <li class="list-group-item clearfix">Card One
-            <button type="button" class="qpayedit btn btn-sm btn-success">Edit</button>
-          </li>
-          <li class="list-group-item clearfix">Card Two
-            <button type="button" class="qpayedit btn btn-sm btn-success">Edit</button>
-          </li>
-        </ul>
+        <div class="panel panel-default">
+          <!-- Default panel contents -->
+          <div class="panel-heading clearfix">Net Banking
+            <button type="button" class="qpaybankedit qpayedit btn btn-sm btn-success">Add</button>
+          </div>
+          <!-- List group -->
+          <ul class="list-group">
+            <li class="list-group-item clearfix">Kotak
+              <button type="button" class="qpaybankedit qpayedit btn btn-sm btn-success">Edit</button>
+            </li>
+            <li class="list-group-item clearfix">HDFC
+              <button type="button" class="qpaybankedit qpayedit btn btn-sm btn-success">Edit</button>
+            </li>
+          </ul>
+        </div>
       </div>
-      <div class="panel panel-default">
-        <!-- Default panel contents -->
-        <div class="panel-heading">Net Banking</div>
-        <!-- List group -->
-        <ul class="list-group">
-          <li class="list-group-item">Kotak</li>
-          <li class="list-group-item">HDFC</li>
-        </ul>
+      <div class="qpaycardpanel">
+        <form>
+          <div class="form-group">
+            <label for="cardnumber">Card Number</label>
+            <input ng-model="mycardnumber" type="number" class="form-control" id="cardnumber" placeholder="Card Number">
+          </div>
+          <div class="form-group">
+            <label for="cardname">Card Name</label>
+            <input ng-model="mycardname" type="text" class="form-control" id="cardname" placeholder="Card Name">
+          </div>
+          <div class="form-group" style="margin-left:29%;">
+            <button type="submit" class="btn btn-default">Save</button>
+            <button type="submit" ng-click="resetAllDiv()" class="btn btn-default">Cancel</button>
+          </div>
+        </form>
+      </div>
+      <div class="qpaybankpanel">
+        <div class="row bankimages">
+          <div class="col-xs-3 bankcol"><img src="img/kotak.jpe" alt="Kotak Bank" class="img-thumbnail img-responsive"/></div>
+          <div class="col-xs-3 bankcol"><img src="img/axis.jpe" alt="Axis Bank" class="img-thumbnail img-responsive"/></div>
+          <div class="col-xs-3 bankcol"><img src="img/hdfc.png" alt="HDFC Bank" class="img-thumbnail img-responsive"/></div>
+          <div class="col-xs-3 bankcol"><img src="img/indian.jpe" alt="Indian Bank" class="img-thumbnail img-responsive"/></div>
+        </div>
+        <div class="row" style="margin: 0px;margin-top: 24px;">
+          <select ng-model="selectedBank" ng-change="resetImageBackdrop(selectedBank)" placeholder="Choose from other banks" style="border: none;border-bottom: 1px solid #bcbcbc;border-left: 1px solid #bcbcbc;border-right: 1px solid #bcbcbc;">
+            <option value="">--Choose from other banks--</option>
+            <option value="Axis Bank">Axis Bank</option>
+            <option value="Andhra Bank">Andhra Bank</option>
+            <option value="Bank of Baroda">Bank of Baroda</option>
+            <option value="Canara Bank">Canara Bank</option>
+            <option value="Deutch Bank">Deutch Bank</option>
+            <option value="Gujarat National Bank">Gujarat National Bank</option>
+            <option value="HDFC Bank">HDFC Bank</option>
+            <option value="Indian Bank">Indian Bank</option>
+            <option value="Kotak Bank">Kotak Bank</option>
+          </select>
+        </div>
+        <div class="row" style="margin-top:6%;margin-left:30%;">
+          <button type="submit" class="btn btn-default">Save</button>
+          <button type="submit" ng-click="resetAllDiv()" class="btn btn-default">Cancel</button>
+        </div>
+
       </div>
     </div>
   </div>
