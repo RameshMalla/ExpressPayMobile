@@ -92,47 +92,51 @@
       <div class="qpaydisplay">
         <div class="panel panel-default">
           <!-- Default panel contents -->
-          <div class="panel-heading clearfix">Card
+          <div class="panel-heading clearfix"><i class="fa fa-credit-card-alt" aria-hidden="true"></i>&nbsp;&nbsp;Card
             <button type="button" class="qpayedit qpaycardedit btn btn-sm btn-success">Add</button>
           </div>
           <!-- List group -->
           <ul class="list-group">
-            <li class="list-group-item clearfix">Card One
+            <li class="list-group-item clearfix" ng-repeat="o in userMainInfo.quickPay.card track by $index">{{o.cardName}} / {{o.cardNumber}}
               <button type="button" class="qpayedit qpaycardedit btn btn-sm btn-success">Edit</button>
             </li>
-            <li class="list-group-item clearfix">Card Two
+            <!-- <li class="list-group-item clearfix">Card Two
               <button type="button" class="qpayedit qpaycardedit btn btn-sm btn-success">Edit</button>
-            </li>
+            </li> -->
           </ul>
         </div>
         <div class="panel panel-default">
           <!-- Default panel contents -->
-          <div class="panel-heading clearfix">Net Banking
+          <div class="panel-heading clearfix"><i class="fa fa-university" aria-hidden="true"></i>&nbsp;&nbsp;Net Banking
             <button type="button" class="qpaybankedit qpayedit btn btn-sm btn-success">Add</button>
           </div>
           <!-- List group -->
           <ul class="list-group">
-            <li class="list-group-item clearfix">Kotak
+            <li class="list-group-item clearfix" ng-repeat="o in userMainInfo.quickPay.netBanking">{{o.bankName}}
               <button type="button" class="qpaybankedit qpayedit btn btn-sm btn-success">Edit</button>
             </li>
-            <li class="list-group-item clearfix">HDFC
+            <!-- <li class="list-group-item clearfix">HDFC
               <button type="button" class="qpaybankedit qpayedit btn btn-sm btn-success">Edit</button>
-            </li>
+            </li> -->
           </ul>
         </div>
       </div>
       <div class="qpaycardpanel">
         <form>
           <div class="form-group">
-            <label for="cardnumber">Card Number</label>
+            <!-- <label for="cardnumber">Card Number</label> -->
             <input ng-model="mycardnumber" type="number" class="form-control" id="cardnumber" placeholder="Card Number">
           </div>
           <div class="form-group">
-            <label for="cardname">Card Name</label>
+            <!-- <label for="cardname">Card Name</label> -->
             <input ng-model="mycardname" type="text" class="form-control" id="cardname" placeholder="Card Name">
           </div>
+          <div class="form-group">
+            <!-- <label for="cardname">Card Name</label> -->
+            <input ng-model="mycardexpiry" type="text" class="form-control" id="cardname" placeholder="Expiry Date">
+          </div>
           <div class="form-group" style="margin-left:29%;">
-            <button type="submit" class="btn btn-default">Save</button>
+            <button type="submit" class="btn btn-default" ng-click="updateQpayCard()">Save</button>
             <button type="submit" ng-click="resetAllDiv()" class="btn btn-default">Cancel</button>
           </div>
         </form>

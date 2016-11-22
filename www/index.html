@@ -804,7 +804,7 @@
       }
     ]);
 
-    expressPayModule.controller("mainController", function($scope, inventoryService, $timeout) {
+    expressPayModule.controller("mainController", function($scope, inventoryService, userservice, $timeout) {
       $scope.tests = 'D';
       localStorage.removeItem("phoneNumber");
       // $scope.testPlugin = function() {
@@ -816,8 +816,15 @@
       //     alert(error);
       //   });
       // }
+      //REMOVE IT WHILE ADDING OVERLAY
+      userservice.getUserInfo('9940366400', function(responsedata) {
+        console.log(responsedata);
+      });
       $scope.scanShopQrCode = function() {
         localStorage.phoneNumber = $scope.userphonenumber;
+        userservice.getUserInfo('9940366400', function(responsedata) {
+          console.log(responsedata);
+        });
         $('.overlaycontent').addClass('animated fadeOutLeft');
         // cordova.plugins.barcodeScanner.scan(function(result) {
         //   if (!result.cancelled) {
@@ -1284,7 +1291,42 @@
 
     });
 
-    expressPayModule.controller('discoverController', function($scope, transactionService) {
+    expressPayModule.controller('discoverController', function($scope, transactionService, userservice) {
+
+      $scope.userMainInfo = userservice.getUserDetails();
+
+      console.log($scope.userMainInfo.quickPay);
+
+      $scope.ob = {
+        "quickPay": {
+          "card": [
+            {
+              "cardName": "Card One",
+              "cardNumber": "123456789"
+            }, {
+              "cardName": "Card Two",
+              "cardNumber": "223256789"
+            }
+          ],
+          "netBanking": [
+            {
+              "bankName": "Kotak Bank"
+            }
+          ]
+        }
+      };
+
+      $scope.updateQpayCard= function(){
+        var qpayObject = $scope.userMainInfo.quickPay.card;
+        angular.forEach(qpayObject,function(value,key){
+          console.log(key);
+        })
+
+      }
+
+      $scope.updateQpayBank= function(){
+
+      }
 
       var headerHeight = $('.menuheader').outerHeight(true);
 
@@ -1385,6 +1427,7 @@
 
     });
   </script>
+  <script type="text/javascript" src="service/userService.js"></script>
   <script type="text/javascript" src="service/newArrivalsService.js"></script>
   <script type="text/javascript" src="service/offerservice.js"></script>
   <script type="text/javascript" src="service/inventoryservice.js"></script>
