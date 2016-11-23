@@ -278,11 +278,36 @@
             <!--Shop Card -->
             <div class="paymentmethodshopcard" style="padding-top: 10px;display:none;padding: 24px;padding-top: 82px;">
                 <div class="scancontent">
-                    <span class="glyphicon glyphicon-barcode qrcodeglyph"></span>
+                    <!-- <span class="glyphicon glyphicon-barcode qrcodeglyph"></span>
                     <div class="qrdiv" style="text-align: center;">
                         <button ng-click="scaneBarCode()" type="button" class="btn btn-success scanbutton" style="padding-left: 45px;padding-right: 45px;">
                             <span class="glyphicon glyphicon-barcode"></span>&nbsp;&nbsp;Scan</button>
+                    </div> -->
+
+                    <div class="panel panel-default">
+                        <!-- Default panel contents -->
+                        <div class="panel-heading clearfix"><i class="fa fa-credit-card-alt" aria-hidden="true"></i>&nbsp;&nbsp;Card
+
+                        </div>
+                        <!-- List group -->
+                        <div  class="list-group">
+                            <button type="button"  class="list-group-item clearfix" ng-repeat="o in userMainInfos.quickPay.card track by $index">{{o.cardName}} / {{o.cardNumber}}
+                            </button>
+                        </div >
                     </div>
+                    <div class="panel panel-default">
+                        <!-- Default panel contents -->
+                        <div class="panel-heading clearfix"><i class="fa fa-university" aria-hidden="true"></i>&nbsp;&nbsp;Net Banking
+                        </div>
+                        <!-- List group -->
+                        <div  class="list-group">
+                            <button type="button" class="list-group-item clearfix" ng-repeat="p in userMainInfos.quickPay.netBanking track by $index">{{p.bankName}}
+                            </button>
+                        </div >
+                    </div>
+
+                    <button type="button" class="btn btn-success" style="float:left;width:81px;" ng-click="payAndGetTransactionDetails(shoppingList, totalPrice, 'card',null)" data-dismiss="modal">Confirm</button>
+                    <button type="submit" class="btn btn-danger paycancle" ng-click="resetCardValues()">Cancel</button>
                 </div>
             </div>
             <!--Shop Card -->

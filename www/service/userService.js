@@ -19,8 +19,8 @@ expressPayModule.service("userservice", function($http) {
     return userInfo;
   }
 
-  this.updateUserQpayDetails - function(phoneNumber, qpayDetails, callbackFunction) {
-    $http.put("http://localhost:3000/users/updateqpay/" + phoneNumber, qpayDetails).then(function(response) {
+  this.updateUserQpayDetails = function(phoneNumber, qpayDetails, callbackFunction) {
+    $http.post("http://localhost:3000/users/updateqpay/" + phoneNumber, qpayDetails).then(function(response) {
       userInfo = response.data;
       callbackFunction(response.data);
     }, function(response) {
