@@ -1,10 +1,12 @@
 expressPayModule.service("userservice", function($http) {
   var userInfo = null;
+  //https://digipaydev.au-syd.mybluemix.net/users/finduser/9940366400
   this.getUserInfo = function(phoneNumber, callbackFunction) {
-    $http.get("http://localhost:3000/users/finduser/" + phoneNumber)
+    $http.get("https://digipaydev.au-syd.mybluemix.net/users/finduser/" + phoneNumber)
       .then(function(response) {
         if (response.data != null) {
           userInfo = response.data;
+          console.log("DONE");
           callbackFunction(response.data);
         } else {
           callbackFunction(null);
@@ -20,7 +22,7 @@ expressPayModule.service("userservice", function($http) {
   }
 
   this.updateUserQpayDetails = function(phoneNumber, qpayDetails, callbackFunction) {
-    $http.post("http://localhost:3000/users/updateqpay/" + phoneNumber, qpayDetails).then(function(response) {
+    $http.post("https://digipaydev.au-syd.mybluemix.net/users/updateqpay/" + phoneNumber, qpayDetails).then(function(response) {
       userInfo = response.data;
       callbackFunction(response.data);
     }, function(response) {

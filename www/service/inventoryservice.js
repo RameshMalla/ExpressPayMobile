@@ -4,7 +4,7 @@ expressPayModule.service("inventoryService", function($http) {
     var totalCartItems = 0;
 
     this.testShoppingListByStoreId = function(storeId, callbackFunction) {
-        $http.get("http://localhost:3000/inventory/getItems/" + storeId)
+        $http.get("https://digipaydev.au-syd.mybluemix.net/inventory/getItems/" + storeId)
             .then(function(response) {
                 callbackFunction(response.data);
             }, function(response) {
@@ -14,7 +14,7 @@ expressPayModule.service("inventoryService", function($http) {
 
 
     this.getInventoryDetails = function(storeId, itemId, callbackFunction) {
-        $http.get("http://localhost:3000/inventory/getItemById/" + storeId + "/" + itemId)
+        $http.get("https://digipaydev.au-syd.mybluemix.net/inventory/getItemById/" + storeId + "/" + itemId)
             .then(function(response) {
                 callbackFunction(response.data);
             }, function(response) {
@@ -45,7 +45,7 @@ expressPayModule.service("inventoryService", function($http) {
         }
         if (!isSameItemAdded) {
             console.log("Called");
-            $http.get("http://localhost:3000/inventory/getItemById/" + storeId + "/" + itemId)
+            $http.get("https://digipaydev.au-syd.mybluemix.net/inventory/getItemById/" + storeId + "/" + itemId)
                 .then(function(response) {
                     totalCartItems = totalCartItems + 1;
                     if (response.data.discountPrice != null) {

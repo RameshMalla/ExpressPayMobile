@@ -1,6 +1,6 @@
 expressPayModule.service("transactionService", function($http) {
   this.enterTransactionDetail = function(requestData, callbackFunction) {
-    $http.post("http://localhost:3000/transaction/insertTransaction", requestData).then(function(response) {
+    $http.post("https://digipaydev.au-syd.mybluemix.net/transaction/insertTransaction", requestData).then(function(response) {
       callbackFunction(response.data);
     }, function(response) {
       callbackFunction(response);
@@ -8,7 +8,7 @@ expressPayModule.service("transactionService", function($http) {
   }
 
   this.getTransactionDetails = function(phoneNumber, callbackFunction) {
-    $http.get("http://localhost:3000/transaction/getTransactiondetails/" + phoneNumber).then(function(response) {
+    $http.get("https://digipaydev.au-syd.mybluemix.net/transaction/getTransactiondetails/" + phoneNumber).then(function(response) {
       callbackFunction(response.data);
     }, function(error) {
       callbackFunction(response);

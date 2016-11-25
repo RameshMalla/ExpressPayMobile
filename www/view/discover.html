@@ -96,9 +96,10 @@
                 <div class="panel panel-default">
                     <!-- Default panel contents -->
                     <div class="panel-heading clearfix"><i class="fa fa-credit-card-alt" aria-hidden="true"></i>&nbsp;&nbsp;Card
-                        <button type="button" class="qpayedit qpaycardedit btn btn-sm btn-success" ng-click="setValueForCardUpdate(null)">Add</button>
+                        <button type="button" style="padding: 2px 11px;" class="qpayedit qpaycardedit btn btn-sm btn-success" ng-click="setValueForCardUpdate(null)"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
                     </div>
                     <!-- List group -->
+
                     <ul class="list-group">
                         <li class="list-group-item clearfix" ng-repeat="o in userMainInfo.quickPay.card track by $index">{{o.cardName}} / {{o.cardNumber}}
                             <button type="button" style="padding: 2px 11px;" class="qpayedit qpaycardedit btn btn-sm btn-danger" ng-click="setValueForCardUpdate($index)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
@@ -108,7 +109,7 @@
                 <div class="panel panel-default">
                     <!-- Default panel contents -->
                     <div class="panel-heading clearfix"><i class="fa fa-university" aria-hidden="true"></i>&nbsp;&nbsp;Net Banking
-                        <button type="button" class="qpaybankedit qpayedit btn btn-sm btn-success" ng-click="setValueForBankUpdate(null)">Add</button>
+                        <button type="button" style="padding: 2px 11px;" class="qpaybankedit qpayedit btn btn-sm btn-success" ng-click="setValueForBankUpdate(null)"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
                     </div>
                     <!-- List group -->
                     <ul class="list-group">

@@ -86,6 +86,7 @@
 
         .scancontent {
             text-align: center;
+            border-top: 2px solid black;
         }
 
         .scanbutton {
@@ -107,7 +108,7 @@
         .subcontent {
             top: 116px;
             position: relative;
-            border-top: 3px solid black;
+            /*border-top: 3px solid black;*/
         }
 
         .customactive {
@@ -367,7 +368,7 @@
 
         .offernewfooter {
             position: fixed;
-            top: 94%;
+            bottom: 0%;
             width: 100%;
             background-color: #363538;
             text-align: center;
@@ -652,19 +653,19 @@
         }
 
         .discovermainheading {
-            height: 40px;
+            height: 42px;
             width: 100%;
             background-color: #363538;
             position: fixed;
             z-index: 2;
-            border-top: 2px solid black;
+            border-top: 3px solid black;
         }
 
         .customdrop {
             /*display: inline;*/
             float: right;
-            margin-top: 2%;
-            margin-right: 2%;
+            margin-top: 5px;
+            margin-right: 10px;
         }
 
         .customdrop> button {
@@ -753,7 +754,7 @@
 </head>
 
 <body ng-app="expresspayapp">
-    <div class="overlaycontent" style="display:none;" ng-controller="mainController">
+    <div class="overlaycontent" style="display:block;" ng-controller="mainController">
         <div class="menu-divider">
             <img src="img/cover.jpg" class="coverpic" alt="" />
             <div class="logo container" style="text-align:center;">
@@ -776,7 +777,7 @@
     </div>
     <div class="maincontent">
         <header class="menuheader">
-            <div class="row branddiv">
+            <div class="col-xs-12 branddiv">
                 <div class="col-xs-12" style="text-align:center;">
                     <strong style="font-size: x-large;">Digi Pay</strong>
                 </div>
@@ -947,7 +948,7 @@
 
             $scope.userMainInfos = userservice.getUserDetails();
 
-            var paymenuHeight=$('.paymenu').height();
+            var paymenuHeight = $('.paymenu').height();
             $('.paymentmethods').height(paymenuHeight);
 
             $('.paymentcontainer').css('display', 'none');
@@ -1239,7 +1240,7 @@
         });
         expressPayModule.controller("offerController", function($scope, offerservice, inventoryService, newArrivalService, transactionService) {
 
-            var headerHeight = $('.menuheader').outerHeight(true) + 1;
+            var headerHeight = $('.menuheader').outerHeight(true) - 1;
             var offerToolsHeight = $('.offertools').outerHeight(true) + 10;
             $scope.filterBycategoryElements = [];
             $('.offertools').css('top', headerHeight + 'px');
@@ -1426,7 +1427,7 @@
                 });
             }
 
-            var headerHeight = $('.menuheader').outerHeight(true);
+            var headerHeight = $('.menuheader').outerHeight(true) - 1;
 
             $('.discovermainheading').css('top', headerHeight + 'px');
 
