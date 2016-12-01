@@ -18,6 +18,9 @@
         },
         "cordova-plugin-sim": {
             "PACKAGE_NAME": "com.digirupt.pay"
+        },
+        "cordova-plugin-contacts": {
+            "PACKAGE_NAME": "com.digirupt.pay"
         }
     },
     "dependent_plugins": {

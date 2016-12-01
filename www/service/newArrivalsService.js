@@ -2,7 +2,7 @@ expressPayModule.service("newArrivalService", function($http) {
 
   this.getNewArrivals = function(storeId, callbackFunction) {
 
-    $http.get("https://digipaydev.au-syd.mybluemix.net/newarrivals/getNewArrivals/" + storeId)
+    $http.get("http://localhost:4000/newarrivals/getNewArrivals/" + storeId)
       .then(function(response) {
         if (response.data != null) {
           callbackFunction(response.data);

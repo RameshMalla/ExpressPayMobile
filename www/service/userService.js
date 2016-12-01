@@ -1,8 +1,9 @@
 expressPayModule.service("userservice", function($http) {
   var userInfo = null;
+  var userContacts = null;
   //https://digipaydev.au-syd.mybluemix.net/users/finduser/9940366400
   this.getUserInfo = function(phoneNumber, callbackFunction) {
-    $http.get("https://digipaydev.au-syd.mybluemix.net/users/finduser/" + phoneNumber)
+    $http.get("http://localhost:4000/users/finduser/" + phoneNumber)
       .then(function(response) {
         if (response.data != null) {
           userInfo = response.data;
@@ -22,12 +23,20 @@ expressPayModule.service("userservice", function($http) {
   }
 
   this.updateUserQpayDetails = function(phoneNumber, qpayDetails, callbackFunction) {
-    $http.post("https://digipaydev.au-syd.mybluemix.net/users/updateqpay/" + phoneNumber, qpayDetails).then(function(response) {
+    $http.post("http://localhost:4000/users/updateqpay/" + phoneNumber, qpayDetails).then(function(response) {
       userInfo = response.data;
       callbackFunction(response.data);
     }, function(response) {
       callbackFunction(response.data);
     })
+  }
+
+  this.setUserContacts = function(caontactsList) {
+    userContacts = caontactsList;
+  }
+
+  this.getUserContacts = function() {
+    return userContacts;
   }
 
 // this.getOffersByStoreId = function(storeId, callbackFunction) {
