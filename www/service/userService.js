@@ -7,7 +7,6 @@ expressPayModule.service("userservice", function($http) {
       .then(function(response) {
         if (response.data != null) {
           userInfo = response.data;
-          console.log("DONE");
           callbackFunction(response.data);
         } else {
           callbackFunction(null);
@@ -17,6 +16,15 @@ expressPayModule.service("userservice", function($http) {
       });
 
   };
+
+  this.addNewUswer = function(requestData, callbackFunction) {
+    $http.post("http://localhost:4000/users/addnewuser", requestData).then(function(response) {
+      userInfo = response.data;
+      callbackFunction(response.data);
+    }, function(error) {
+      callbackFunction(error);
+    })
+  }
 
   this.getUserDetails = function() {
     return userInfo;

@@ -47,14 +47,13 @@
                     <button ng-click="quantityDecrease(shop.itemId,shop.totalQuantity,shop.itemPrice,shop.discountPrice,shop.itemQuantity,totalPrice)" type="button" class="btn btn-default quantbtn">
                       <span class="glyphicon glyphicon-chevron-down"></span>
                     </button>
-                    <!-- <span class="glyphicon glyphicon-chevron-down"></span> -->
                   </strong>
                 </p>
               </div>
             </div>
             <div class="panel-footer custompanelfooter">
               <div class="container-fluid" style="padding:0px;">
-                <div class="col-xs-12 toolcolumn" style="border-right: 1px solid #d6caca;">
+                <div class="col-xs-12 toolcolumn" style="border-right: 1px solid #d6caca;" ng-click="getReviewDetails(shop.itemId)">
                   <span>Who Bought this?</span>
                 </div>
               </div>
@@ -63,6 +62,35 @@
           </div>
         </li>
       </ul>
+    </div>
+
+    <!--Reviw Model-->
+    <div class="modal edmodal fade" id="reviewModel" tabindex="-1" role="dialog" aria-labelledby="editModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content" style="overflow:hidden;">
+          <div class="modal-header" style="background-color:#5cb85c;color:white;">
+            <button type="button" class="close" style="opacity:1;" data-dismiss="modal" aria-label="Close">
+              <span class="glyphicon glyphicon-remove" style="color:white;" aria-hidden="true"></span>
+            </button>
+            <h4 class="modal-title">Reviews
+            </h4>
+          </div>
+          <div class="modal-body" style="padding:0px;height:335px;overflow-y:auto;">
+            <div class="row" style="padding:10px;margin:0px;">
+              <div class="" ng-repeat="review in reviewContactList">
+                <div class="panel panel-default" style="border-radius:0px;" ng-repeat="data in review.userReviews">
+                  <div class="panel-heading">
+                    <strong class="panel-title">{{data.displayName}}</strong><strong style="float:right;">Rating:<span class="badge">{{data.userRating}}</span></strong>
+                  </div>
+                  <div class="panel-body">
+                    {{data.userComment}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Modal Edit-->
@@ -372,7 +400,7 @@
     </h3>
   </div>
   <div class="yourcartisempty container-fluid" style="text-align:center;display:none;">
-    <img src="img/emptycart.png" class="img-responsive" alt="" style="opacity:0.5;position: absolute;z-index: -1;margin-left: auto;margin-right: auto;left: 0;right: 0;top: 124%;"/>
+    <img src="img/emptycart.png" class="img-responsive" alt="" style="opacity:0.5;position: fixed;z-index: -1;margin-left: auto;margin-right: auto;left: 17px;right: 0;top: 241px;"/>
     <h2 style="font-weight:900;color:#f57168;">Your Cart is empty</h2>
   </div>
 </div>

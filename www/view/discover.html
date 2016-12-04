@@ -1,6 +1,6 @@
 <div class="discovercontainer">
-    <!-- <div class="backdrop"></div> -->
-    <!-- <div class="discoversidemenu">
+  <!-- <div class="backdrop"></div> -->
+  <!-- <div class="discoversidemenu">
     <div class="col-xs-10" style="padding:0px;z-index:1;">
       <div class="list-group" style="margin-bottom:0px;">
         <button type="button" ng-click="toggleDiscDiv('transactions')" class="sidebtnlists list-group-item customactiveside">My Purchase</button>
@@ -14,178 +14,224 @@
       </button>
     </div>
   </div> -->
-    <div class="discovermainheading">
-        <span class="discmodheader" style="color:white;position:relative;top:20%;left:3%;">My Purchase</span>
+  <div class="discovermainheading">
+    <span class="discmodheader" style="color:white;position:relative;top:20%;left:3%;">My Purchase</span>
 
-        <!-- Extra small button group -->
-        <div class="btn-group customdrop">
-            <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <!-- Extra small button group -->
+    <div class="btn-group customdrop">
+      <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
-                <span class="glyphicon glyphicon-menu-hamburger"></span>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-right" style="font-family: monospace;font-weight: bolder;padding:0px;">
-                <li class="sidebtnlist customactiveside">
-                    <a ng-click="toggleDiscDiv('transactions','My Purchase')">My Purchase</a>
-                    <hr>
-                </li>
-                <li class="sidebtnlist">
-                    <a ng-click="toggleDiscDiv('recomendations','My Recomendations')">My Recomendations</a>
-                    <hr>
-                </li>
-                <li class="sidebtnlist">
-                    <a ng-click="toggleDiscDiv('qpay','Q-Pay')">Manage Q-Pay</a>
-                </li>
-            </ul>
-        </div>
+        <span class="glyphicon glyphicon-menu-hamburger"></span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-right" style="font-family: monospace;font-weight: bolder;padding:0px;">
+        <li class="sidebtnlist customactiveside">
+          <a ng-click="toggleDiscDiv('transactions','My Purchase')">My Purchase</a>
+          <hr>
+        </li>
+        <li class="sidebtnlist">
+          <a ng-click="toggleDiscDiv('recomendations','My Recomendations')">My Recomendations</a>
+          <hr>
+        </li>
+        <li class="sidebtnlist">
+          <a ng-click="toggleDiscDiv('qpay','Q-Pay')">Manage Q-Pay</a>
+        </li>
+      </ul>
     </div>
-    <div class="discovermaincontent">
-        <div class="transactions subcontents">
-            <div class="panel-group transaction-group" id="accordion" role="tablist" aria-multiselectable="true">
-                <div class="panel panel-default" ng-repeat="transaction in transactionDetails | orderBy:'-transactionDate'">
-                    <div class="panel-heading" style="padding:5px;" role="tab" id="headingOne">
-                        <div class="container-fluid" style="padding:0px;" data-toggle="collapse" data-parent="#accordion" data-target="#{{transaction._id}}">
-                            <div class="col-xs-3 trans-date-col">
-                                <strong style="font-size:35px;">
+  </div>
+  <div class="discovermaincontent">
+    <div class="transactions subcontents">
+      <div class="panel-group transaction-group" id="accordion" role="tablist" aria-multiselectable="true">
+        <div class="panel panel-default" ng-repeat="transaction in transactionDetails | orderBy:'-transactionDate'">
+          <div class="panel-heading" style="padding:5px;" role="tab" id="headingOne">
+            <div class="container-fluid" style="padding:0px;" data-toggle="collapse" data-parent="#accordion" data-target="#{{transaction._id}}">
+              <div class="col-xs-3 trans-date-col">
+                <strong style="font-size:35px;">
                   {{convertDate(transaction.transactionDate)}}
                 </strong>
-                                <br>
-                                <span>{{transmonth}}</span>/
-                                <span>{{transyear}}</span>
-                            </div>
-                            <div class="col-xs-9 trans-details-col">
-                                <p>
-                                    Purchase ID&nbsp;&nbsp;:
-                                    <strong>&nbsp;{{transaction._id}}</strong>
-                                </p>
-                                <p>
-                                    Amount Payed &nbsp;&nbsp;:
-                                    <strong>&nbsp;Rs.{{transaction.amountPayed}}</strong>
-                                </p>
-                                <p>Store ID &nbsp;&nbsp;:
-                                    <strong>&nbsp;{{transaction.storeId}}</strong>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="{{transaction._id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                        <div class="panel-body" style="padding:0px 7px;">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Quantity</th>
-                                        <th>Price</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="shop in transaction.itemsPurchased">
-                                        <td>{{shop.itemName}}</td>
-                                        <td>{{shop.totalQuantity}}</td>
-                                        <td>{{shop.totalPrice*shop.totalQuantity}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+                <br>
+                <span>{{transmonth}}</span>/
+                <span>{{transyear}}</span>
+              </div>
+              <div class="col-xs-9 trans-details-col">
+                <p>
+                  Purchase ID&nbsp;&nbsp;:
+                  <strong>&nbsp;{{transaction._id}}</strong>
+                </p>
+                <p>
+                  Amount Payed &nbsp;&nbsp;:
+                  <strong>&nbsp;Rs.{{transaction.amountPayed}}</strong>
+                </p>
+                <p>Store ID &nbsp;&nbsp;:
+                  <strong>&nbsp;{{transaction.storeId}}</strong>
+                </p>
+              </div>
             </div>
+          </div>
+          <div id="{{transaction._id}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+            <div class="panel-body" style="padding:0px 7px;">
+              <table class="table" style="margin-bottom:0px;">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="shop in transaction.itemsPurchased">
+                    <td>{{shop.itemName}}</td>
+                    <td>{{shop.totalQuantity}}</td>
+                    <td>{{shop.totalPrice*shop.totalQuantity}}</td>
+                    <td>
+                      <button type="button" class="btn btn-sm" style="padding:3px 5px;" ng-click="showReview(shop.itemId,shop.itemName)" name="button">Review</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
-        <div class="recomendations subcontents" style="display:none;">A</div>
-        <div class="qpay subcontents" style="display:none;">
-            <div class="qpaydisplay">
-                <div class="panel panel-default">
-                    <!-- Default panel contents -->
-                    <div class="panel-heading clearfix"><i class="fa fa-credit-card-alt" aria-hidden="true"></i>&nbsp;&nbsp;Card
-                        <button type="button" style="padding: 2px 11px;" class="qpayedit qpaycardedit btn btn-sm btn-success" ng-click="setValueForCardUpdate(null)"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
-                    </div>
-                    <!-- List group -->
-
-                    <ul class="list-group">
-                        <li class="list-group-item clearfix" ng-repeat="o in userMainInfo.quickPay.card track by $index">{{o.cardName}} / {{o.cardNumber}}
-                            <button type="button" style="padding: 2px 11px;" class="qpayedit qpaycardedit btn btn-sm btn-danger" ng-click="setValueForCardUpdate($index)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-                        </li>
-                    </ul>
-                </div>
-                <div class="panel panel-default">
-                    <!-- Default panel contents -->
-                    <div class="panel-heading clearfix"><i class="fa fa-university" aria-hidden="true"></i>&nbsp;&nbsp;Net Banking
-                        <button type="button" style="padding: 2px 11px;" class="qpaybankedit qpayedit btn btn-sm btn-success" ng-click="setValueForBankUpdate(null)"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
-                    </div>
-                    <!-- List group -->
-                    <ul class="list-group">
-                        <li class="list-group-item clearfix" ng-repeat="p in userMainInfo.quickPay.netBanking track by $index">{{p.bankName}}
-                            <button type="button" style="padding: 2px 11px;" class="qpaybankedit qpayedit btn btn-sm btn-danger" ng-click="setValueForBankUpdate($index)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-                        </li>
-                    </ul>
-                </div>
+      </div>
+      <div class="modal fade reviewmodel" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-lg" role="document" style="margin-top:15%;">
+          <div class="modal-content" style="overflow:hidden;">
+            <div class="modal-header" style="background-color: #5cb85c;color: white;">
+              <button type="button" class="close" style="opacity:1;" data-dismiss="modal" aria-label="Close">
+                <span class="glyphicon glyphicon-remove" style="color:white;" aria-hidden="true"></span>
+              </button>
+              <h4 class="modal-title">{{reviewItemName}}
+              </h4>
             </div>
-            <div class="qpaycardpanel">
+            <div class="modal-body">
+              <div class="row" style="margin:0px;">
                 <form>
-                    <div class="form-group">
-                        <!-- <label for="cardnumber">Card Number</label> -->
-                        <input ng-model="mycardnumber" type="number" class="form-control" id="cardnumber" placeholder="Card Number">
-                    </div>
-                    <div class="form-group">
-                        <!-- <label for="cardname">Card Name</label> -->
-                        <input ng-model="mycardname" type="text" class="form-control" id="cardname" placeholder="Card Name">
-                    </div>
-                    <div class="form-group">
-                        <!-- <label for="cardname">Card Name</label> -->
-                        <input ng-model="mycardexpiry" type="text" ng-mousedown="enableFocus()" class="form-control" id="cardname" placeholder="Expiry Date">
-                    </div>
-                    <div class="form-group" style="margin-left:29%;">
-                        <button type="submit" class="btn btn-default" ng-click="updateQpayCard()">Save</button>
-                        <button type="submit" ng-click="resetAllDiv()" class="btn btn-default">Cancel</button>
-                    </div>
+                  <div class="form-group">
+                    <label for="rating">Rating</label>
+                    <input type="number" min="1" max="5" class="form-control" ng-model="reviewRating" id="rating" placeholder="Rating">
+                  </div>
+                  <div class="form-group">
+                    <label for="comments">Comments</label>
+                    <textarea id="comments" class="form-control" ng-model="reviewUserComment" placeholder="Enter your comments" rows="3"></textarea>
+                  </div>
                 </form>
-                <div class="modal fade datemodel" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-                    <div class="modal-dialog modal-sm" role="document" style="margin-top:50%;">
-                        <div class="modal-content">
-                            <div class="modal-body" style="padding: 37px 0px 37px 0px;">
-                                <select ng-model="selectedmonth" placeholder="Month" style="width:105px;border: none;border-bottom: 1px solid #bcbcbc;margin-left: 10%;">
-                                    <option value="" disabled selected>Month</option>
-                                    <option value="{{a}}" ng-repeat="a in [1,2,3,4,5,6,7,8,9,10,11,12]">{{a}}</option>
-                                </select>&nbsp;&nbsp;&nbsp;&nbsp; /
-                                <select ng-model="selectedyear" placeholder="Year" style="width:105px;border: none;border-bottom: 1px solid #bcbcbc;margin-left: 10%;">
-                                    <option value="" disabled selected>Year</option>
-                                    <option value="{{year}}" ng-repeat="year in yearDropValues">{{year}}</option>
-                                </select>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="formExpiry()">Enter</button>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
+              </div>
             </div>
-            <div class="qpaybankpanel">
-                <div class="row bankimages">
-                    <div class="col-xs-3 bankcol"><img src="img/kotak.jpe" alt="Kotak Bank" class="img-thumbnail img-responsive" /></div>
-                    <div class="col-xs-3 bankcol"><img src="img/axis.jpe" alt="Axis Bank" class="img-thumbnail img-responsive" /></div>
-                    <div class="col-xs-3 bankcol"><img src="img/hdfc.png" alt="HDFC Bank" class="img-thumbnail img-responsive" /></div>
-                    <div class="col-xs-3 bankcol"><img src="img/indian.jpe" alt="Indian Bank" class="img-thumbnail img-responsive" /></div>
-                </div>
-                <div class="row" style="margin: 0px;margin-top: 24px;">
-                    <select ng-model="selectedBank" ng-change="resetImageBackdrop(selectedBank)" placeholder="Choose from other banks" style="border: none;border-bottom: 1px solid #bcbcbc;border-left: 1px solid #bcbcbc;border-right: 1px solid #bcbcbc;">
-                        <option value="">--Choose from other banks--</option>
-                        <option value="Axis Bank">Axis Bank</option>
-                        <option value="Andhra Bank">Andhra Bank</option>
-                        <option value="Bank of Baroda">Bank of Baroda</option>
-                        <option value="Canara Bank">Canara Bank</option>
-                        <option value="Deutch Bank">Deutch Bank</option>
-                        <option value="Gujarat National Bank">Gujarat National Bank</option>
-                        <option value="HDFC Bank">HDFC Bank</option>
-                        <option value="Indian Bank">Indian Bank</option>
-                        <option value="Kotak Bank">Kotak Bank</option>
-                    </select>
-                </div>
-                <div class="row" style="margin-top:6%;margin-left:30%;">
-                    <button type="submit" class="btn btn-default" ng-click="updateQpayBank()">Save</button>
-                    <button type="submit" ng-click="resetAllDiv()" class="btn btn-default">Cancel</button>
-                </div>
+            <div class="modal-footer">
+              <!-- <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button> -->
+              <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="updateReview(reviewItemId,reviewRating,reviewUserComment)">Save</button>
             </div>
+          </div>
         </div>
+      </div>
     </div>
+    <div class="recomendations subcontents" style="display:none;">A</div>
+    <div class="qpay subcontents" style="display:none;">
+      <div class="qpaydisplay">
+        <div class="panel panel-default">
+          <!-- Default panel contents -->
+          <div class="panel-heading clearfix">
+            <i class="fa fa-credit-card-alt" aria-hidden="true"></i>&nbsp;&nbsp;Card
+            <button type="button" style="padding: 2px 11px;" class="qpayedit qpaycardedit btn btn-sm btn-success" ng-click="setValueForCardUpdate(null)">
+              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            </button>
+          </div>
+          <!-- List group -->
+
+          <ul class="list-group">
+            <li class="list-group-item clearfix" ng-repeat="o in userMainInfo.quickPay.card track by $index">{{o.cardName}}
+              /
+              {{o.cardNumber}}
+              <button type="button" style="padding: 2px 11px;" class="qpayedit qpaycardedit btn btn-sm btn-danger" ng-click="setValueForCardUpdate($index)">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+              </button>
+            </li>
+          </ul>
+        </div>
+        <div class="panel panel-default">
+          <!-- Default panel contents -->
+          <div class="panel-heading clearfix">
+            <i class="fa fa-university" aria-hidden="true"></i>&nbsp;&nbsp;Net Banking
+            <button type="button" style="padding: 2px 11px;" class="qpaybankedit qpayedit btn btn-sm btn-success" ng-click="setValueForBankUpdate(null)">
+              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            </button>
+          </div>
+          <!-- List group -->
+          <ul class="list-group">
+            <li class="list-group-item clearfix" ng-repeat="p in userMainInfo.quickPay.netBanking track by $index">{{p.bankName}}
+              <button type="button" style="padding: 2px 11px;" class="qpaybankedit qpayedit btn btn-sm btn-danger" ng-click="setValueForBankUpdate($index)">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="qpaycardpanel">
+        <form>
+          <div class="form-group">
+            <!-- <label for="cardnumber">Card Number</label> -->
+            <input ng-model="mycardnumber" type="number" class="form-control" id="cardnumber" placeholder="Card Number">
+          </div>
+          <div class="form-group">
+            <!-- <label for="cardname">Card Name</label> -->
+            <input ng-model="mycardname" type="text" class="form-control" id="cardname" placeholder="Card Name">
+          </div>
+          <div class="form-group">
+            <!-- <label for="cardname">Card Name</label> -->
+            <input ng-model="mycardexpiry" type="text" ng-mousedown="enableFocus()" class="form-control" id="cardname" placeholder="Expiry Date">
+          </div>
+          <div class="form-group" style="margin-left:29%;">
+            <button type="submit" class="btn btn-default" ng-click="updateQpayCard()">Save</button>
+            <button type="submit" ng-click="resetAllDiv()" class="btn btn-default">Cancel</button>
+          </div>
+        </form>
+        <div class="modal fade datemodel" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+          <div class="modal-dialog modal-sm" role="document" style="margin-top:50%;">
+            <div class="modal-content">
+              <div class="modal-body" style="padding: 37px 0px 37px 0px;">
+                <select ng-model="selectedmonth" placeholder="Month" style="width:105px;border: none;border-bottom: 1px solid #bcbcbc;margin-left: 10%;">
+                  <option value="" disabled selected>Month</option>
+                  <option value="{{a}}" ng-repeat="a in [1,2,3,4,5,6,7,8,9,10,11,12]">{{a}}</option>
+                </select>&nbsp;&nbsp;&nbsp;&nbsp; /
+                <select ng-model="selectedyear" placeholder="Year" style="width:105px;border: none;border-bottom: 1px solid #bcbcbc;margin-left: 10%;">
+                  <option value="" disabled selected>Year</option>
+                  <option value="{{year}}" ng-repeat="year in yearDropValues">{{year}}</option>
+                </select>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="formExpiry()">Enter</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="qpaybankpanel">
+        <div class="row bankimages">
+          <div class="col-xs-3 bankcol"><img src="img/kotak.jpe" alt="Kotak Bank" class="img-thumbnail img-responsive"/></div>
+          <div class="col-xs-3 bankcol"><img src="img/axis.jpe" alt="Axis Bank" class="img-thumbnail img-responsive"/></div>
+          <div class="col-xs-3 bankcol"><img src="img/hdfc.png" alt="HDFC Bank" class="img-thumbnail img-responsive"/></div>
+          <div class="col-xs-3 bankcol"><img src="img/indian.jpe" alt="Indian Bank" class="img-thumbnail img-responsive"/></div>
+        </div>
+        <div class="row" style="margin: 0px;margin-top: 24px;">
+          <select ng-model="selectedBank" ng-change="resetImageBackdrop(selectedBank)" placeholder="Choose from other banks" style="border: none;border-bottom: 1px solid #bcbcbc;border-left: 1px solid #bcbcbc;border-right: 1px solid #bcbcbc;">
+            <option value="">--Choose from other banks--</option>
+            <option value="Axis Bank">Axis Bank</option>
+            <option value="Andhra Bank">Andhra Bank</option>
+            <option value="Bank of Baroda">Bank of Baroda</option>
+            <option value="Canara Bank">Canara Bank</option>
+            <option value="Deutch Bank">Deutch Bank</option>
+            <option value="Gujarat National Bank">Gujarat National Bank</option>
+            <option value="HDFC Bank">HDFC Bank</option>
+            <option value="Indian Bank">Indian Bank</option>
+            <option value="Kotak Bank">Kotak Bank</option>
+          </select>
+        </div>
+        <div class="row" style="margin-top:6%;margin-left:30%;">
+          <button type="submit" class="btn btn-default" ng-click="updateQpayBank()">Save</button>
+          <button type="submit" ng-click="resetAllDiv()" class="btn btn-default">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
