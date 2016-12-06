@@ -1,8 +1,9 @@
 expressPayModule.service("newArrivalService", function($http) {
 
+  var urlprefix = "http://192.168.0.102:4000";
   this.getNewArrivals = function(storeId, callbackFunction) {
 
-    $http.get("http://localhost:4000/newarrivals/getNewArrivals/" + storeId)
+    $http.get(urlprefix + "/newarrivals/getNewArrivals/" + storeId)
       .then(function(response) {
         if (response.data != null) {
           callbackFunction(response.data);

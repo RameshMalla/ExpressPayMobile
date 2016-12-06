@@ -370,6 +370,7 @@
         color: white;
         height: 40px;
         left: 0;
+        z-index: 1;
       }
       .offernewfooter div:first-child {
         /*border-right: 1px solid black;*/
@@ -744,11 +745,12 @@
         border: 3px solid;
         position: absolute;
         right: 15px;
+        overflow: hidden;
       }
       .customchecklabel::before {
         content: '';
-        height: 13px;
-        width: 13px;
+        height: 15px;
+        width: 15px;
         background-color: white;
         position: absolute;
         z-index: 1;
@@ -788,9 +790,46 @@
         left: 172%;
       }
 
+      .shareoverlay {
+        position: fixed;
+        background-color: white;
+        width: 100%;
+        height: 100%;
+        bottom: 0;
+        z-index: 4;
+        display: none;
+        right: 100%;
+      }
+      .shopscancontainer {
+        position: absolute;
+        width: 213px;
+        right: 0;
+        left: 100%;
+        margin: auto;
+        bottom: 50%;
+      }
+
     </style>
     <script type="text/javascript">
       $(document).ready(function() {
+        //console.log(typeof localStorage.phoneNumber == 'undefined');
+        if (typeof localStorage.phoneNumber == 'undefined' && localStorage.phoneNumber == null) {
+          $('.overlaycontent').css('display', 'block');
+        }
+
+        var socket = io.connect('http://192.168.0.102:4000');
+        socket.on('testing', function(msg) {
+          console.log(msg);
+        });
+
+        document.addEventListener("deviceready", function() {
+          console.log("Readyyy");
+          cordova.plugins.backgroundMode.enable();
+          cordova.plugins.backgroundMode.onactivate = function() {
+            cordova.plugins.notification.local.schedule({id: 2, title: "Local Notification Example", text: "Multi Notification 2"});
+          }
+
+        }, false);
 
         function triggerAnimate() {
           $('.logo').animate({
@@ -858,13 +897,17 @@
   </head>
 
   <body ng-app="expresspayapp">
-    <div class="overlaycontent" style="display:block;" ng-controller="mainController">
+    <div class="overlaycontent" style="display:none;" ng-controller="mainController">
       <div class="menu-divider">
         <img src="img/cover.jpg" class="coverpic" alt=""/>
         <div class="logo container" style="text-align:center;">
           <img src="img\digipay.png" alt="DigiPay" style="width:200px;"/>
         </div>
-        <div class="container logincontainer" style="width:100%;position: absolute;bottom: 43%;">
+        <div class="container shopscancontainer">
+          <button type="button" class="btn btn-large btn-success" ng-click="scanShopQrCode()" name="button">
+            <i class="fa fa-qrcode" aria-hidden="true"></i>&nbsp;&nbsp;Scan Shop QR-CODE</button>
+        </div>
+        <div class="container logincontainer" style="width:100%;position:absolute;bottom: 43%;">
           <div class="input-group input-group-lg myinputgroup phgroup">
             <span class="input-group-addon formspan" id="sizing-addon1">
               <span class="glyphicon glyphicon-phone" style="color:#5cb85c;"></span>
@@ -881,6 +924,7 @@
           </div>
         </div>
         <div class="container registercontainer" style="width:100%;position: absolute;bottom: 43%;">
+          <div class="errordiv" style="color:#e73d3d;text-align:center;"></div>
           <div class="input-group input-group-lg phgroup">
             <span class="input-group-addon formspan" id="sizing-addon1">
               <span class="glyphicon glyphicon-phone" style="color:#5cb85c;"></span>
@@ -973,10 +1017,12 @@
       <div class="subcontent" ng-view></div>
     </div>
   </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-cordova/0.1.27-alpha/ng-cordova.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-cordova/0.1.27-alpha/ng-cordova-mocks.js"></script>
   <script type="text/javascript" src="cordova.js"></script>
   <script type="text/javascript" src="js/index.js"></script>
   <script type="text/javascript">
-    var expressPayModule = angular.module("expresspayapp", ["ngRoute"]);
+    var expressPayModule = angular.module("expresspayapp", ["ngRoute", "ngCordova"]);
     expressPayModule.config([
       '$routeProvider',
       function($routeProvider) {
@@ -996,9 +1042,9 @@
       }
     ]);
 
-    expressPayModule.controller("mainController", function($scope, inventoryService, userservice, $timeout, $window) {
+    expressPayModule.controller("mainController", function($scope, inventoryService, userservice, storeservice, $timeout, $window) {
       $scope.tests = 'D';
-      localStorage.removeItem("phoneNumber");
+      //localStorage.removeItem("phoneNumber");
       // $scope.testPlugin = function() {
       //   window.plugins.sim.getSimInfo(function(result) {
       //     console.log(JSON.stringify(result));
@@ -1011,10 +1057,45 @@
       //REMOVE IT WHILE ADDING OVERLAY
       $scope.checkUserExist = function(userPhoneNumber) {
         $('.indicator').html('').append('<span class="fa fa-cog fa-spin" style="color:#5cb85c;"></span>');
-        userservice.getUserInfo(userPhoneNumber, function(responsedata) {
+        var contactsList = [];
+        //userservice.setUserContacts(contactsList);
+        // navigator.contacts.find([navigator.contacts.fieldType.displayName], function(c) {
+        //   console.log("gotContacts, number of results " + c.length);
+        //   for (var i = 0, len = c.length; i < len; i++) {
+        //     if (c[i].displayName != null && c[i].phoneNumbers != null) {
+        //       var phoneNumberVal = String(c[i].phoneNumbers[0].value);
+        //       // if (phoneNumberVal.length > 10 && phoneNumberVal) {}
+        //       var contactObject = {
+        //         "displayName": c[i].displayName,
+        //         "phoneNumber": c[i].phoneNumbers[0].value
+        //       }
+        //       contactsList.push(contactObject);
+        //       console.log(c[i].displayName + " : " + c[i].phoneNumbers[0].value);
+        //     }
+        //     //console.log(c[i]);
+        //   }
+        //
+        //   console.log(contactsList);
+        //   userservice.setUserContacts(contactsList);
+        // }, function(e) {
+        //   console.log("errorHandler: " + e);
+        // });
+        userservice.checkUserInfo(userPhoneNumber, function(responsedata) {
           if (responsedata != null) {
             $('.indicator').html('').append('<span class="fa fa-thumbs-up" style="color:#5cb85c;"></span>');
-            $('.overlaycontent').addClass('animated fadeOutLeft');
+            setTimeout(function() {
+              $('.logincontainer').animate({
+                right: "110%"
+              }, "fast", "easeOutBack", function() {
+                $('.shopscancontainer').animate({
+                  left: "0%"
+                }, "fast", "easeOutBack");
+              });
+            }, 200);
+            // $('.overlaycontent').addClass('animated fadeOutLeft');
+            // setTimeout(function() {
+            //   $('.overlaycontent').css('display', 'none');
+            // }, 1000);
           } else {
             $('.registerbtn').removeClass('wobble');
             $('.indicator').html('').append('<span class="fa fa-thumbs-down" style="color:#e84747;"></span>');
@@ -1023,6 +1104,7 @@
             }, 1000);
           }
         });
+
       }
 
       $scope.addNewUser = function(phoneNumber, emailId) {
@@ -1035,6 +1117,12 @@
         }
         userservice.addNewUswer(requestObject, function(response) {
           console.log(response);
+          if (response == "User already registered") {
+            $('.errordiv').html('').append('<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>' + response);
+          } else {
+            localStorage.phoneNumber = phoneNumber;
+            $('.errordiv').html('');
+          }
         })
       }
 
@@ -1050,11 +1138,27 @@
       }
 
       $scope.scanShopQrCode = function() {
-        localStorage.phoneNumber = $scope.userphonenumber;
-        userservice.getUserInfo('9940366400', function(responsedata) {
-          console.log(responsedata);
-        });
-        $('.overlaycontent').addClass('animated fadeOutLeft');
+        console.log("Change");
+        storeservice.getStoreDetails('1111', function(response) {
+          console.log("Store Response");
+          if (response != null) {
+            $('.overlaycontent').addClass('animated fadeOutLeft');
+            setTimeout(function() {
+              $('.overlaycontent').css('display', 'none');
+            }, 1000);
+            localStorage.storeId = response.storeId;
+          } else {
+            alert('Store is not registered');
+
+          }
+          //console.log(response);
+        })
+
+        // localStorage.phoneNumber = $scope.userphonenumber;
+        // userservice.getUserInfo('9940366400', function(responsedata) {
+        //   console.log(responsedata);
+        // });
+        //$('.overlaycontent').addClass('animated fadeOutLeft');
         // cordova.plugins.barcodeScanner.scan(function(result) {
         //   if (!result.cancelled) {
         //     var value = result.text;
@@ -1098,19 +1202,19 @@
         // }, function(e) {
         //   console.log("errorHandler: " + e);
         // });
-        var contactsList = [
-          {
-            "displayName": "Ramesh Malla",
-            "phoneNumber": "9940366400"
-          }, {
-            "displayName": "Malla",
-            "phoneNumber": "9940366401"
-          }, {
-            "displayName": "Doe",
-            "phoneNumber": "9940366402"
-          }
-        ];
-        userservice.setUserContacts(contactsList);
+        // var contactsList = [
+        //   {
+        //     "displayName": "Ramesh Malla",
+        //     "phoneNumber": "9940366400"
+        //   }, {
+        //     "displayName": "Malla",
+        //     "phoneNumber": "9940366401"
+        //   }, {
+        //     "displayName": "Doe",
+        //     "phoneNumber": "9940366402"
+        //   }
+        // ];
+        // userservice.setUserContacts(contactsList);
 
         console.log("Pressed");
         // $timeout(function() {
@@ -1464,13 +1568,88 @@
         $('.cartnum').text(cartItem);
       });
     });
-    expressPayModule.controller("offerController", function($scope, offerservice, inventoryService, newArrivalService, transactionService) {
+    expressPayModule.controller("offerController", function($scope, $timeout, offerservice, inventoryService, newArrivalService, transactionService, userservice) {
 
+      var phoneNumbersToShare = [];
+
+      $scope.setToShare = function(phoneNumber) {
+        var indexofPhoneNUmber = phoneNumbersToShare.indexOf(phoneNumber);
+        if (indexofPhoneNUmber < 0) {
+          phoneNumbersToShare.push(phoneNumber);
+        } else {
+          phoneNumbersToShare.splice(indexofPhoneNUmber, 1);
+        }
+        if (phoneNumbersToShare.length > 0) {
+          $('.sharespan').html('').append('<i class="fa fa-share-alt" aria-hidden="true"></i>');
+        } else {
+          $scope.allselect = false;
+          $('.sharespan').html('')
+        }
+        //Call local notification
+        console.log(phoneNumbersToShare);
+      }
+
+      $scope.activateAll = function() {
+        // console.log($scope.allselect);
+        if ($scope.allselect) {
+          $('.contactsgroup').each(function(index) {
+            var checkbtn = $(this).children('.myfillin');
+            var thisClass = $(this).children(".customchecklabel");
+            setTimeout(function() {
+              // console.log(thisClass);
+              if (!checkbtn.prop('checked')) {
+                thisClass.trigger('click');
+              }
+
+            }, 300);
+
+          })
+        } else {
+          $('.contactsgroup').each(function(index) {
+            // console.log("INDEX :" + index);
+            var checkbtn = $(this).children('.myfillin');
+            var thisClass = $(this).children(".customchecklabel");
+            setTimeout(function() {
+              if (checkbtn.prop('checked')) {
+                thisClass.trigger('click');
+              }
+            }, 300);
+          })
+        }
+
+      }
+
+      $scope.shareOffer = function() {
+        //console.log("Action");
+        $('.shareoverlay').css('display', 'block');
+        setTimeout(function() {
+          $('.shareoverlay').animate({
+            right: '0%'
+          }, "fast", "linear");
+        }, 200);
+
+      }
+
+      $('.shareback').click(function() {
+        $('.shareoverlay').animate({
+          right: '100%'
+        }, "fast", "linear");
+        setTimeout(function() {
+          $('.shareoverlay').css('display', 'none');
+        }, 200);
+
+      })
+
+      $scope.userContacts = userservice.getUserContacts();
+      console.log($scope.userContacts);
+      //var brandHeight = Number($('body').outerHeight(true)) - Number($('.branddiv').outerHeight(true))+1;
       var headerHeight = $('.menuheader').outerHeight(true) - 1;
       var offerToolsHeight = $('.offertools').outerHeight(true) + 10;
       $scope.filterBycategoryElements = [];
       $('.offertools').css('top', headerHeight + 'px');
       $('.offer-list-group').css('margin-top', offerToolsHeight + 'px');
+
+      //$('.shareoverlay').height(brandHeight);
 
       var overFlowHeight = parseFloat($('.offernewfooter').offset().top) - parseFloat($('.offerviewcontainer').offset().top);
       $('.offerviewcontainer').height(overFlowHeight);
@@ -1819,6 +1998,7 @@
   <script type="text/javascript" src="service/inventoryservice.js"></script>
   <script type="text/javascript" src="service/transactionservice.js"></script>
   <script type="text/javascript" src="service/reviewservice.js"></script>
+  <script type="text/javascript" src="service/storeservice.js"></script>
 </body>
 
 </html>

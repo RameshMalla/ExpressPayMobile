@@ -2,9 +2,10 @@ expressPayModule.service("inventoryService", function($http) {
   var shoppingList = [];
   var totalprice = 0;
   var totalCartItems = 0;
+  var urlprefix = "http://192.168.0.102:4000";
 
   this.testShoppingListByStoreId = function(storeId, callbackFunction) {
-    $http.get("http://localhost:4000/inventory/getItems/" + storeId)
+    $http.get(urlprefix + "/inventory/getItems/" + storeId)
       .then(function(response) {
         callbackFunction(response.data);
       }, function(response) {
@@ -14,7 +15,7 @@ expressPayModule.service("inventoryService", function($http) {
 
 
   this.getInventoryDetails = function(storeId, itemId, callbackFunction) {
-    $http.get("http://localhost:4000/inventory/getItemById/" + storeId + "/" + itemId)
+    $http.get(urlprefix + "/inventory/getItemById/" + storeId + "/" + itemId)
       .then(function(response) {
         callbackFunction(response.data);
       }, function(response) {
@@ -45,7 +46,7 @@ expressPayModule.service("inventoryService", function($http) {
     }
     if (!isSameItemAdded) {
       console.log("Called");
-      $http.get("http://localhost:4000/inventory/getItemById/" + storeId + "/" + itemId)
+      $http.get(urlprefix + "/inventory/getItemById/" + storeId + "/" + itemId)
         .then(function(response) {
           totalCartItems = totalCartItems + 1;
           if (response.data.discountPrice != null) {

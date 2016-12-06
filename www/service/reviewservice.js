@@ -1,6 +1,9 @@
 expressPayModule.service("reviewservice", function($http, transactionService) {
+
+  var urlprefix = "http://192.168.0.102:4000";
+
   this.getReviewsOfUsers = function(itemId, requestData, callbackFunction) {
-    $http.post("http://localhost:4000/reviews/getallreviews/" + itemId, requestData)
+    $http.post(urlprefix + "/reviews/getallreviews/" + itemId, requestData)
       .then(function(response) {
 
         if (response.data != null) {
@@ -26,7 +29,7 @@ expressPayModule.service("reviewservice", function($http, transactionService) {
       });
   }
   this.getReview = function(itemId, phoneNumber, callbackFunction) {
-    $http.get("http://localhost:4000/reviews/getreview/" + itemId + "/" + phoneNumber)
+    $http.get(urlprefix + "/reviews/getreview/" + itemId + "/" + phoneNumber)
       .then(function(response) {
         callbackFunction(response.data);
       }, function(response) {
@@ -35,7 +38,7 @@ expressPayModule.service("reviewservice", function($http, transactionService) {
   }
 
   this.updatereviews = function(itemId, phoneNumber, requestData, callbackFunction) {
-    $http.post("http://localhost:4000/reviews/updatereviews/" + itemId + "/" + phoneNumber, requestData).then(function(response) {
+    $http.post(urlprefix + "/reviews/updatereviews/" + itemId + "/" + phoneNumber, requestData).then(function(response) {
       callbackFunction(response.data);
     }, function(error) {
       callbackFunction(error);
@@ -43,7 +46,7 @@ expressPayModule.service("reviewservice", function($http, transactionService) {
   }
 
   this.addNewReview = function(itemId, requestData, callbackFunction) {
-    $http.post("http://localhost:4000/reviews/addnewreview/" + itemId, requestData).then(function(response) {
+    $http.post(urlprefix + "/reviews/addnewreview/" + itemId, requestData).then(function(response) {
       callbackFunction(response.data);
     }, function(error) {
       callbackFunction(error);

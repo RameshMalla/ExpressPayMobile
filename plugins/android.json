@@ -21,10 +21,22 @@
         },
         "cordova-plugin-contacts": {
             "PACKAGE_NAME": "com.digirupt.pay"
+        },
+        "de.appplant.cordova.plugin.local-notification": {
+            "PACKAGE_NAME": "com.digirupt.pay"
+        },
+        "cordova-plugin-background-mode": {
+            "PACKAGE_NAME": "com.digirupt.pay"
         }
     },
     "dependent_plugins": {
         "cordova-plugin-compat": {
+            "PACKAGE_NAME": "com.digirupt.pay"
+        },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.digirupt.pay"
+        },
+        "cordova-plugin-app-event": {
             "PACKAGE_NAME": "com.digirupt.pay"
         }
     }
