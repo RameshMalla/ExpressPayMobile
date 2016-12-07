@@ -86,7 +86,7 @@
 
       .scancontent {
         text-align: center;
-        border-top: 2px solid black;
+        /*border-top: 2px solid black;*/
       }
 
       .scanbutton {
@@ -288,7 +288,7 @@
       .activepaymentgroup {
         background-color: white;
         color: #363538 !important;
-        border-left: 3px solid #5cb85c;
+        border-left: 3px solid #565956;
       }
       /*a.payment-group-item {
             color: white;
@@ -338,7 +338,7 @@
         padding-top: 16px;
         padding-left: 5px;
         padding-right: 5px;
-        border-top: 3px solid #5cb85c;
+        /*border-top: 3px solid #5cb85c;*/
       }
 
       .activeBank {
@@ -817,10 +817,14 @@
           $('.overlaycontent').css('display', 'block');
         }
 
-        var socket = io.connect('http://192.168.0.102:4000');
-        socket.on('testing', function(msg) {
-          console.log(msg);
-        });
+        // var socket = io.connect('http://192.168.0.102:4000');
+        // socket.on('testing', function(msg) {
+        //   console.log(msg);
+        // });
+
+        if (localStorage.notifications == null) {
+          localStorage.notifications = [];
+        }
 
         document.addEventListener("deviceready", function() {
           console.log("Readyyy");
@@ -976,6 +980,9 @@
           <div class="col-xs-8" style="text-align:center;">
             <strong style="font-size: x-large;">Digi Pay</strong>
           </div>
+          <!-- <div class="col-xs-2 notification" style="text-align:center;">
+            <span class="fa fa-bell" data-toggle="modal" data-target=".bs-example-modal-sm" style="font-size: 28px;position: fixed;color: white;top: 13px;right:13px;" aria-hidden="true"></span>
+          </div> -->
         </div>
         <div class="menudiv">
           <a href="#/scan" class="scanlink">
@@ -1014,6 +1021,26 @@
           </a>
         </div>
       </header>
+      <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+          <div class="modal-content" style="overflow:hidden;">
+            <div class="modal-header" style="background-color:#5cb85c;color:white;">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="modal-title" id="gridSystemModalLabel">Notifications</h4>
+            </div>
+            <div class="modal-body" style="padding:0px;">
+              <div class="list-group">
+                <a href="#" class="list-group-item" ng-repeat="notify in notificationList">{{notificationList}}</a>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="subcontent" ng-view></div>
     </div>
   </div>
@@ -1044,6 +1071,30 @@
 
     expressPayModule.controller("mainController", function($scope, inventoryService, userservice, storeservice, $timeout, $window) {
       $scope.tests = 'D';
+
+      var socket = io.connect('http://192.168.0.102:4000');
+      socket.on('testing', function(msg) {
+        console.log(msg);
+      });
+
+      //$scope.notificationList = [];
+      //console.log(typeof JSON.parse(localStorage.notifications));
+      socket.on('offernotification', function(message) {
+        //console.log("From Server");
+        //console.log(message);
+        var contactList = userservice.getUserContacts();
+        //if (message.from != "9940366400") {
+        for (var variable in contactList) {
+          if (contactList[variable].phoneNumber == message.from) {
+            console.log(contactList[variable].displayName);
+            var name = contactList[variable].displayName;
+            var notifymessage = name + " shared about " + message.message + " at " + localStorage.storeName;
+            console.log(notifymessage);
+          }
+        }
+        //}
+      })
+
       //localStorage.removeItem("phoneNumber");
       // $scope.testPlugin = function() {
       //   window.plugins.sim.getSimInfo(function(result) {
@@ -1057,7 +1108,22 @@
       //REMOVE IT WHILE ADDING OVERLAY
       $scope.checkUserExist = function(userPhoneNumber) {
         $('.indicator').html('').append('<span class="fa fa-cog fa-spin" style="color:#5cb85c;"></span>');
-        var contactsList = [];
+        //        var contactsList = [];
+
+        var contactsList = [
+          {
+            "displayName": "Ramesh Malla",
+            "phoneNumber": "9940366400"
+          }, {
+            "displayName": "Malla",
+            "phoneNumber": "9940366401"
+          }, {
+            "displayName": "Doe",
+            "phoneNumber": "9940366402"
+          }
+        ];
+        userservice.setUserContacts(contactsList);
+
         //userservice.setUserContacts(contactsList);
         // navigator.contacts.find([navigator.contacts.fieldType.displayName], function(c) {
         //   console.log("gotContacts, number of results " + c.length);
@@ -1092,6 +1158,7 @@
                 }, "fast", "easeOutBack");
               });
             }, 200);
+            localStorage.phoneNumber = userPhoneNumber;
             // $('.overlaycontent').addClass('animated fadeOutLeft');
             // setTimeout(function() {
             //   $('.overlaycontent').css('display', 'none');
@@ -1147,6 +1214,7 @@
               $('.overlaycontent').css('display', 'none');
             }, 1000);
             localStorage.storeId = response.storeId;
+            localStorage.storeName = response.storeName + " " + response.stroeAddress;
           } else {
             alert('Store is not registered');
 
@@ -1482,8 +1550,8 @@
       $scope.payAndGetTransactionDetails = function(shoppingList, amountPayed, modeOfPayment, bankName) {
         console.log($scope.selectedBank);
         var requestData = {
-          "storeId": "1111",
-          "userId": "9940366400",
+          "storeId": localStorage.storeId,
+          "userId": localStorage.phoneNumber,
           "amountPayed": amountPayed,
           "modeOfPayment": modeOfPayment,
           "bankName": bankName,
@@ -1571,6 +1639,26 @@
     expressPayModule.controller("offerController", function($scope, $timeout, offerservice, inventoryService, newArrivalService, transactionService, userservice) {
 
       var phoneNumbersToShare = [];
+      $scope.isMyoffer = false;
+
+      $scope.shareOfferInfo = function() {
+        if (phoneNumbersToShare.length > 0) {
+          var requestBody = {
+            "numbers": phoneNumbersToShare,
+            "message": $scope.shareMessgae,
+            "itemId": $scope.sharedItem
+          }
+          console.log("Gonna Share");
+          console.log(requestBody);
+          userservice.shareofferinfo(localStorage.phoneNumber, requestBody, function(sharedmessage) {
+            console.log(sharedmessage);
+          })
+        }
+      }
+
+      $scope.transferOffer = function() {
+        console.log("Called");
+      }
 
       $scope.setToShare = function(phoneNumber) {
         var indexofPhoneNUmber = phoneNumbersToShare.indexOf(phoneNumber);
@@ -1619,9 +1707,16 @@
 
       }
 
-      $scope.shareOffer = function() {
+      $scope.shareOffer = function(itemid, item, discount) {
         //console.log("Action");
         $('.shareoverlay').css('display', 'block');
+        $scope.sharedItem = itemid;
+        // $scope.sharedDiscount = item;
+        // $scope.shareItemId = discount;
+        $scope.shareMessgae = discount + " on " + item;
+
+        console.log($scope.shareMessgae);
+        console.log($scope.sharedItem);
         setTimeout(function() {
           $('.shareoverlay').animate({
             right: '0%'
@@ -1656,27 +1751,48 @@
       $('.offercarousel').slick({arrows: false, mobileFirst: true, autoplay: true});
 
       $('.offerbtn').click(function() {
+        $scope.isMyoffer = false;
+        $('.trnsferdiv').css('display', 'none');
         $('.myofferbtn').removeClass("offersactive");
         $('.arrivalbtn').removeClass("offersactive");
         $(this).addClass("offersactive");
         getOffersDetails();
       });
       $('.arrivalbtn').click(function() {
+        $scope.isMyoffer = false;
+        $('.trnsferdiv').css('display', 'none');
         $('.offerbtn').removeClass("offersactive");
         $('.myofferbtn').removeClass("offersactive");
         $(this).addClass("offersactive")
       });
       $('.myofferbtn').click(function() {
+        $scope.isMyoffer = true;
+        $('.trnsferdiv').css('display', 'none');
         $('.offerbtn').removeClass("offersactive");
         $('.arrivalbtn').removeClass("offersactive");
         $(this).addClass("offersactive")
-        getOffersByOfferId("1111", "OFR12347");
+        getOffersByOfferId(localStorage.storeId, "OFR12347");
       });
+
+
+      $scope.showTrans=function(id){
+        $scope.transItemId=id;
+        $scope.transOfferId = "OFR12347";
+      }
+
+      $scope.proceedTransfer = function(toPhoneNumber){
+        userservice.getOtherUserInfo(toPhoneNumber,function(response){
+          var offerId= response.offerId;
+          offerservice.transferOfferId(localStorage.storeId,$scope.transItemId,$scope.transOfferId,offerId,function(response){
+            getOffersByOfferId(localStorage.storeId, "OFR12347");
+          })
+        })
+      }
 
       $scope.message = "View Offers"
       var getOffersDetails = (function offdetails() {
         $scope.offerAvailedProducts = [];
-        offerservice.getOffersByStoreId("1111", function(response) {
+        offerservice.getOffersByStoreId(localStorage.storeId, function(response) {
           angular.forEach(response, function(value, key) {
             inventoryService.getInventoryDetails(value.storeId, value.itemId, function(response) {
               response.discountAvailed = value.discountRate + "% off"
@@ -1726,7 +1842,7 @@
       $scope.getNewArrivals = function() {
         console.log("New Arrivals");
         $scope.offerAvailedProducts = [];
-        newArrivalService.getNewArrivals("1111", function(newArrivals) {
+        newArrivalService.getNewArrivals(localStorage.storeId, function(newArrivals) {
           angular.forEach(newArrivals, function(value, key) {
             inventoryService.getInventoryDetails(value.storeId, value.itemId, function(response) {
               //response.discountAvailed = value.discountRate + "% off"
@@ -1754,12 +1870,12 @@
 
       $scope.updateReview = function(itemId, itemrating, itemCommnet) {
         var requestData = {
-          "phoneNumber": "9940366400",
+          "phoneNumber": localStorage.phoneNumber,
           "userRating": String(itemrating),
           "userComment": itemCommnet
         }
         if (!$scope.isPushRequired) {
-          reviewservice.updatereviews(itemId, "9940366400", requestData, function(responsedata) {
+          reviewservice.updatereviews(itemId, localStorage.phoneNumber, requestData, function(responsedata) {
             console.log("Review Updated");
           })
         } else {
@@ -1773,7 +1889,7 @@
 
       $scope.showReview = function(itemId, itemName) {
         $scope.reviewItemName = itemName;
-        reviewservice.getReview(itemId, "9940366400", function(data) {
+        reviewservice.getReview(itemId, localStorage.phoneNumber, function(data) {
           if (data != null) {
             var reviewModelData = data.userReviews[0];
             $scope.reviewRating = Number(reviewModelData.userRating);
@@ -1821,7 +1937,7 @@
           console.log("ADD CARD");
         } else {
           $scope.userMainInfo.quickPay.card.splice(indexVal, 1);
-          userservice.updateUserQpayDetails("9940366400", $scope.userMainInfo.quickPay, function(updatedUserdata) {
+          userservice.updateUserQpayDetails(localStorage.phoneNumber, $scope.userMainInfo.quickPay, function(updatedUserdata) {
             $scope.userMainInfo = updatedUserdata;
           });
           //var qpayObject = $scope.userMainInfo.quickPay.card[indexVal];
@@ -1840,7 +1956,7 @@
           console.log("ADD BANK");
         } else {
           $scope.userMainInfo.quickPay.netBanking.splice(indexVal, 1);
-          userservice.updateUserQpayDetails("9940366400", $scope.userMainInfo.quickPay, function(updatedUserdata) {
+          userservice.updateUserQpayDetails(localStorage.phoneNumber, $scope.userMainInfo.quickPay, function(updatedUserdata) {
             $scope.userMainInfo = updatedUserdata;
           });
         }
@@ -1854,7 +1970,7 @@
           "cardExpiry": $scope.mycardexpiry
         }
         qpayObject.card.push(modifiedObject);
-        userservice.updateUserQpayDetails("9940366400", qpayObject, function(updatedUserdata) {
+        userservice.updateUserQpayDetails(localStorage.phoneNumber, qpayObject, function(updatedUserdata) {
           $scope.userMainInfo = updatedUserdata;
           $scope.resetAllDiv();
         });
@@ -1866,7 +1982,7 @@
           "bankName": $scope.selectedBank
         }
         qpayObject.netBanking.push(modifiedObject);
-        userservice.updateUserQpayDetails("9940366400", qpayObject, function(updatedUserdata) {
+        userservice.updateUserQpayDetails(localStorage.phoneNumber, qpayObject, function(updatedUserdata) {
           $scope.userMainInfo = updatedUserdata;
           $scope.resetAllDiv();
         });
@@ -1908,7 +2024,7 @@
 
       }
 
-      transactionService.getTransactionDetails("9940366400", function(responseData) {
+      transactionService.getTransactionDetails(localStorage.phoneNumber, function(responseData) {
         $scope.transactionDetails = responseData;
         //console.log($scope.transactionDetails);
       });

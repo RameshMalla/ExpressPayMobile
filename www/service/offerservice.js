@@ -37,4 +37,15 @@ expressPayModule.service("offerservice", function($http) {
         callbackFunction(response.data);
       });
   }
+
+
+  this.transferOfferId = function(storeId, itemId, offerId, toOfferId, callbackFunction) {
+    $http.get(urlprefix + "/offers/transferoffer/" + storeId + "/" + itemId + "/" + offerId + "/" + toOfferId)
+      .then(function(response) {
+        callbackFunction(response.data);
+      }, function(response) {
+        callbackFunction(response.data);
+      });
+  }
+
 });

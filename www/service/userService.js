@@ -18,6 +18,20 @@ expressPayModule.service("userservice", function($http) {
 
   };
 
+  this.getOtherUserInfo = function(phoneNumber, callbackFunction) {
+    $http.get(urlprefix + "/users/finduser/" + phoneNumber)
+      .then(function(response) {
+        if (response.data != null) {
+          callbackFunction(response.data);
+        } else {
+          callbackFunction(null);
+        }
+      }, function(response) {
+        callbackFunction(response.data);
+      });
+
+  };
+
   this.checkUserInfo = function(phoneNumber, callbackFunction) {
     $http.get(urlprefix + "/users/checkuser/" + phoneNumber)
       .then(function(response) {
@@ -61,6 +75,14 @@ expressPayModule.service("userservice", function($http) {
 
   this.getUserContacts = function() {
     return userContacts;
+  }
+
+  this.shareofferinfo = function(phoneNumber, requestbody, callbackFunction) {
+    $http.post(urlprefix + "/users/shareofferinfo/" + phoneNumber, requestbody).then(function(response) {
+      callbackFunction("Shared");
+    }, function(error) {
+      callbackFunction("Error occured while sharing");
+    })
   }
 
 // this.getOffersByStoreId = function(storeId, callbackFunction) {

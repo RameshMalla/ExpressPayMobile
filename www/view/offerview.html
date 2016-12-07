@@ -4,9 +4,9 @@
       <i class="fa fa-chevron-left shareback settingback settings" aria-hidden="true"></i>
       <span class="settingspan">Contacts</span>
       <span>
-        <span class="sharespan" style="position: absolute;right: 60px;font-size: 29px;top: 3px;">
+        <span class="sharespan" ng-click="shareOfferInfo()" style="position: absolute;right: 60px;font-size: 29px;top: 3px;">
           <!-- <button type="button" class="btn btn-default btn-sm" aria-label="Left Align"> -->
-            <!-- <i class="fa fa-share-alt" aria-hidden="true"></i> -->
+          <!-- <i class="fa fa-share-alt" aria-hidden="true"></i> -->
           <!-- </button> -->
         </span>
         <input type="checkbox" ng-model="allselect" ng-click="activateAll()" class="myfillin" id="selectall" name="" value="">
@@ -76,14 +76,31 @@
                 </strong>
               </p>
               <div class="row">
-                <button type="button" class="btn btn-default btn-md" style="border:1px solid #5cb85c;width:80%;" name="button" ng-click="shareOffer()">
+                <button ng-if="!isMyoffer" type="button" class="btn btn-default btn-md" style="border:1px solid #5cb85c;width:80%;" name="button" ng-click="shareOffer(product.itemId,product.itemName,product.discountAvailed)">
                   <i class="fa fa-users" aria-hidden="true"></i>&nbsp;&nbsp;Share</button>
+                <button ng-click="showTrans(product.itemId)" ng-if="isMyoffer" type="button" data-toggle="modal" data-target=".transfermodel" class="btn btn-default btn-md" style="border:1px solid #5cb85c;width:80%;" name="button">
+                  <i class="fa fa-reply-all" aria-hidden="true"></i>&nbsp;&nbsp;Transfer</button>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <!--Transfer -->
+    <div class="modal fade transfermodel" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+      <div class="modal-dialog modal-sm" role="document" style="margin-top:50%;">
+        <div class="modal-content" style="padding:4px;">
+          <form class="form-inline">
+            <div class="form-group">
+              <input ng-model="toPhoneNumber" type="number" class="form-control" id="exampleInputAmount" placeholder="Phone number of the user to be transfered to">
+            </div>
+            <button ng-click="proceedTransfer(toPhoneNumber)" style="margin-left: 33%;" type="submit" class="btn btn-success">Transfer Offer</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <!-- Filter Modal -->
     <div id="filterModal" class="modal fade" role="dialog">
       <div class="modal-dialog">
