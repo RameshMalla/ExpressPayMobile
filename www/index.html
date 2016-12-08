@@ -809,11 +809,32 @@
         bottom: 50%;
       }
 
+      .contactsfooter {
+        position: fixed;
+        bottom: 0;
+        background-color: #5cb85c;
+        padding-top: 11px;
+        z-index: 2;
+      }
+      .contacatscolumn {
+        padding: 0;
+        /* height: 0px; */
+        height: 83%;
+        overflow-y: auto;
+      }
+      .subinfo {
+        padding: 3px 22px;
+        color: gray;
+        font-weight: 700;
+      }
+
     </style>
     <script type="text/javascript">
       $(document).ready(function() {
         //console.log(typeof localStorage.phoneNumber == 'undefined');
-        if (typeof localStorage.phoneNumber == 'undefined' && localStorage.phoneNumber == null) {
+        localStorage.phoneNumber = null;
+        console.log(localStorage.phoneNumber);
+        if (localStorage.phoneNumber == "null") {
           $('.overlaycontent').css('display', 'block');
         }
 
@@ -881,7 +902,7 @@
         $(".paybutton").prop('disabled', true);
         $('.paybutton').css("display", "none");
         $(".scanlink").children(".col-xs-3").addClass("customactive");
-        $(".scanlink").addClass("customa");
+        // $(".scanlink").addClass("customa");
         $(".menudiv a").click(function() {
           $(".menudiv a").each(function(index) {
             if ($(this).children(".col-xs-3").hasClass("customactive")) {
@@ -901,1220 +922,1280 @@
   </head>
 
   <body ng-app="expresspayapp">
-    <div class="overlaycontent" style="display:none;" ng-controller="mainController">
-      <div class="menu-divider">
-        <img src="img/cover.jpg" class="coverpic" alt=""/>
-        <div class="logo container" style="text-align:center;">
-          <img src="img\digipay.png" alt="DigiPay" style="width:200px;"/>
-        </div>
-        <div class="container shopscancontainer">
-          <button type="button" class="btn btn-large btn-success" ng-click="scanShopQrCode()" name="button">
-            <i class="fa fa-qrcode" aria-hidden="true"></i>&nbsp;&nbsp;Scan Shop QR-CODE</button>
-        </div>
-        <div class="container logincontainer" style="width:100%;position:absolute;bottom: 43%;">
-          <div class="input-group input-group-lg myinputgroup phgroup">
-            <span class="input-group-addon formspan" id="sizing-addon1">
-              <span class="glyphicon glyphicon-phone" style="color:#5cb85c;"></span>
-            </span>
-            <input type="number" ng-model="userphonenumber" class="form-control myforminput" placeholder="Phone Number" aria-describedby="sizing-addon1">
-            <span class="input-group-addon formspan indicator" id="sizing-addon1"></span>
+    <div class="" ng-controller="mainController">
+      <div class="overlaycontent" style="display:none;">
+        <div class="menu-divider">
+          <img src="img/cover.jpg" class="coverpic" alt=""/>
+          <div class="logo container" style="text-align:center;">
+            <img src="img\digipay.png" alt="DigiPay" style="width:200px;"/>
           </div>
-          <div class="phgroup"></div>
-          <div class="input-group input-group-lg myinputgroup scangroup" style="width:100%;">
-            <button type="button" class="btn btn-success btn-md" ng-click="checkUserExist(userphonenumber)">
-              <span class="fa fa-shopping-cart" style="color:white;"></span>&nbsp;&nbsp;&nbsp;Shop-IN</button>
-            <button type="button" style="float:right;" class="animated btn btn-success btn-md registerbtn">
-              <span class="fa fa-sign-in" style="color:white;"></span>&nbsp;&nbsp;&nbsp;New User</button>
+          <div class="container shopscancontainer">
+            <button type="button" class="btn btn-large btn-success" ng-click="scanShopQrCode()" name="button">
+              <i class="fa fa-qrcode" aria-hidden="true"></i>&nbsp;&nbsp;Scan Shop QR-CODE</button>
           </div>
-        </div>
-        <div class="container registercontainer" style="width:100%;position: absolute;bottom: 43%;">
-          <div class="errordiv" style="color:#e73d3d;text-align:center;"></div>
-          <div class="input-group input-group-lg phgroup">
-            <span class="input-group-addon formspan" id="sizing-addon1">
-              <span class="glyphicon glyphicon-phone" style="color:#5cb85c;"></span>
-            </span>
-            <input type="number" ng-model="userphonenumber" class="form-control myforminput" placeholder="Phone Number" aria-describedby="sizing-addon1">
+          <div class="container logincontainer" style="width:100%;position:absolute;bottom: 43%;">
+            <div class="input-group input-group-lg myinputgroup phgroup">
+              <span class="input-group-addon formspan" id="sizing-addon1">
+                <span class="glyphicon glyphicon-phone" style="color:#5cb85c;"></span>
+              </span>
+              <input type="number" ng-model="userphonenumber" class="form-control myforminput" placeholder="Phone Number" aria-describedby="sizing-addon1">
+              <span class="input-group-addon formspan indicator" id="sizing-addon1"></span>
+            </div>
+            <div class="phgroup"></div>
+            <div class="input-group input-group-lg myinputgroup scangroup" style="width:100%;">
+              <button type="button" class="btn btn-success btn-md" ng-click="checkUserExist(userphonenumber)">
+                <span class="fa fa-shopping-cart" style="color:white;"></span>&nbsp;&nbsp;&nbsp;Shop-IN</button>
+              <button type="button" style="float:right;" class="animated btn btn-success btn-md registerbtn">
+                <span class="fa fa-sign-in" style="color:white;"></span>&nbsp;&nbsp;&nbsp;New User</button>
+            </div>
           </div>
-          <div class="input-group input-group-lg emailgroup" style="margin-top: 3%;">
-            <span class="input-group-addon formspan" id="sizing-addon1">
-              <span class="fa fa-envelope" style="color:#5cb85c;"></span>
-            </span>
-            <input type="text" ng-model="useremail" class="form-control myforminput" placeholder="Email" aria-describedby="sizing-addon1">
-          </div>
-          <!-- <div class="phgroup"></div> -->
-          <div class="input-group input-group-lg myinputgroup scangroup" style="width:100%;">
-            <button type="button" class="btn btn-success btn-md backbutton">
-              <span class="fa fa-reply" style="color:white;"></span>&nbsp;&nbsp;&nbsp;Cancel</button>
-            <button type="button" style="float:right;" class="btn btn-success btn-md newuserbtn" ng-click="addNewUser(userphonenumber,useremail)">
-              <span class="fa fa-sign-in" style="color:white;"></span>&nbsp;&nbsp;&nbsp;Sign-Up</button>
-            <!-- <button type="button" class="btn btn-success btn-lg btn-block" ng-click="scanShopQrCode()">
+          <div class="container registercontainer" style="width:100%;position: absolute;bottom: 43%;">
+            <div class="errordiv" style="color:#e73d3d;text-align:center;"></div>
+            <div class="input-group input-group-lg phgroup">
+              <span class="input-group-addon formspan" id="sizing-addon1">
+                <span class="glyphicon glyphicon-phone" style="color:#5cb85c;"></span>
+              </span>
+              <input type="number" ng-model="userphonenumber" class="form-control myforminput" placeholder="Phone Number" aria-describedby="sizing-addon1">
+            </div>
+            <div class="input-group input-group-lg emailgroup" style="margin-top: 3%;">
+              <span class="input-group-addon formspan" id="sizing-addon1">
+                <span class="fa fa-envelope" style="color:#5cb85c;"></span>
+              </span>
+              <input type="text" ng-model="useremail" class="form-control myforminput" placeholder="Email" aria-describedby="sizing-addon1">
+            </div>
+            <!-- <div class="phgroup"></div> -->
+            <div class="input-group input-group-lg myinputgroup scangroup" style="width:100%;">
+              <button type="button" class="btn btn-success btn-md backbutton">
+                <span class="fa fa-reply" style="color:white;"></span>&nbsp;&nbsp;&nbsp;Cancel</button>
+              <button type="button" style="float:right;" class="btn btn-success btn-md newuserbtn" ng-click="addNewUser(userphonenumber,useremail)">
+                <span class="fa fa-sign-in" style="color:white;"></span>&nbsp;&nbsp;&nbsp;Sign-Up</button>
+              <!-- <button type="button" class="btn btn-success btn-lg btn-block" ng-click="scanShopQrCode()">
               <span class="glyphicon glyphicon-qrcode" style="color:white;"></span>&nbsp;&nbsp;&nbsp;Scan Store QR Code</button> -->
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="sidemenuoverlay">
-      <div class="col-xs-12 settingsheader">
-        <i class="fa fa-chevron-left settingback settings" aria-hidden="true"></i>
-        <span class="settingspan">Settings</span>
-      </div>
-      <div class="col-xs-12" style="padding:0px;">
-        <ul class="list-group">
-          <li class="list-group-item settingsgroup">Share your purchase Info
-            <input type="checkbox" class="myfillin" id="share" name="" value="">
-            <label class="customchecklabel" for="share"></label>
-          </li>
-          <li class="list-group-item settingsgroup">User Account</li>
-          <!-- <li class="list-group-item settingsgroup">Morbi leo risus</li>
+      <div class="sidemenuoverlay">
+        <div class="col-xs-12 settingsheader">
+          <i class="fa fa-chevron-left settingback settings" ng-click="updateSettings()" aria-hidden="true"></i>
+          <span class="settingspan">Settings</span>
+        </div>
+        <div class="col-xs-12" style="padding:0px;">
+          <ul class="list-group">
+            <li class="list-group-item settingsgroup">
+              <i class="fa fa-users" aria-hidden="true"></i>&nbsp;&nbsp;
+              <strong>Share your purchase Info</strong>
+              <input ng-model="isSharable" type="checkbox" class="myfillin" id="share">
+              <label class="customchecklabel" for="share"></label>
+            </li>
+            <li class="list-group-item settingsgroup">
+              <i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;
+              <strong>Email ID</strong>
+              <div class="subinfo">
+                <span>{{emailId}}</span>
+              </div>
+            </li>
+            <li class="list-group-item settingsgroup">
+              <i class="fa fa-tag" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;
+              <strong>Store Info</strong>
+              <div class="subinfo">
+                <span>{{storeFullAddress}}</span>
+              </div>
+            </li>
+            <!-- <li class="list-group-item settingsgroup">Morbi leo risus</li>
           <li class="list-group-item settingsgroup">Porta ac consectetur ac</li>
           <li class="list-group-item settingsgroup">Vestibulum at eros</li> -->
-        </ul>
+          </ul>
+        </div>
       </div>
-    </div>
-    <div class="maincontent">
-      <header class="menuheader">
-        <div class="col-xs-12 branddiv">
-          <div class="col-xs-2 settings" style="text-align:center;">
-            <span class="fa fa-cog" style="font-size: 28px;position: fixed;left: 16px;color: white;top: 13px;" aria-hidden="true"></span>
-          </div>
-          <div class="col-xs-8" style="text-align:center;">
-            <strong style="font-size: x-large;">Digi Pay</strong>
-          </div>
-          <!-- <div class="col-xs-2 notification" style="text-align:center;">
+      <div class="maincontent">
+        <header class="menuheader">
+          <div class="col-xs-12 branddiv">
+            <div class="col-xs-2 settings" style="text-align:center;">
+              <span class="fa fa-cog" style="font-size: 28px;position: fixed;left: 16px;color: white;top: 13px;" aria-hidden="true"></span>
+            </div>
+            <div class="col-xs-8" style="text-align:center;">
+              <strong style="font-size: x-large;">Digi Pay</strong>
+            </div>
+            <!-- <div class="col-xs-2 notification" style="text-align:center;">
             <span class="fa fa-bell" data-toggle="modal" data-target=".bs-example-modal-sm" style="font-size: 28px;position: fixed;color: white;top: 13px;right:13px;" aria-hidden="true"></span>
           </div> -->
-        </div>
-        <div class="menudiv">
-          <a href="#/scan" class="scanlink">
-            <div class="col-xs-3">
-              <!-- <a href="#/scan" class="scanlink"> -->
-              <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
-              <p class="descpara">
-                Shop
-              </p>
-            </div>
-          </a>
-          <a href="#/cart" class="cartLink" id="triggers">
-            <div class="col-xs-3 cartmenu" style="position:relative;">
-              <span class="glyphicon glyphicon-shopping-cart animated infinite pulse" aria-hidden="true"></span>
-              <span class="badge cartnum" style="position:absolute;background-color:#5cb85c;"></span>
-              <p class="descpara">
-                Cart
-              </p>
-            </div>
-          </a>
-          <a href="#/offers">
-            <div class="col-xs-3">
-              <span class="glyphicon glyphicon-sunglasses" aria-hidden="true"></span>
-              <p class="descpara">
-                Offers
-              </p>
-            </div>
-          </a>
-          <a href="#/discover">
-            <div class="col-xs-3" style="border-right:none">
-              <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-              <p class="descpara">
-                Discover
-              </p>
-            </div>
-          </a>
-        </div>
-      </header>
-      <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-        <div class="modal-dialog modal-sm" role="document">
-          <div class="modal-content" style="overflow:hidden;">
-            <div class="modal-header" style="background-color:#5cb85c;color:white;">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-              <h4 class="modal-title" id="gridSystemModalLabel">Notifications</h4>
-            </div>
-            <div class="modal-body" style="padding:0px;">
-              <div class="list-group">
-                <a href="#" class="list-group-item" ng-repeat="notify in notificationList">{{notificationList}}</a>
+          </div>
+          <div class="menudiv">
+            <a href="#/scan" class="scanlink">
+              <div class="col-xs-3">
+                <!-- <a href="#/scan" class="scanlink"> -->
+                <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
+                <p class="descpara">
+                  Shop
+                </p>
               </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </a>
+            <a href="#/cart" class="cartLink" id="triggers">
+              <div class="col-xs-3 cartmenu" style="position:relative;">
+                <span class="glyphicon glyphicon-shopping-cart animated infinite pulse" aria-hidden="true"></span>
+                <span class="badge cartnum" style="position:absolute;background-color:#5cb85c;"></span>
+                <p class="descpara">
+                  Cart
+                </p>
+              </div>
+            </a>
+            <a href="#/offers" class="offerLink">
+              <div class="col-xs-3">
+                <span class="glyphicon glyphicon-sunglasses" aria-hidden="true"></span>
+                <p class="descpara">
+                  Offers
+                </p>
+              </div>
+            </a>
+            <a href="#/discover" class="discoverlink">
+              <div class="col-xs-3" style="border-right:none">
+                <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                <p class="descpara">
+                  Discover
+                </p>
+              </div>
+            </a>
+          </div>
+        </header>
+        <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+          <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content" style="overflow:hidden;">
+              <div class="modal-header" style="background-color:#5cb85c;color:white;">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="gridSystemModalLabel">Notifications</h4>
+              </div>
+              <div class="modal-body" style="padding:0px;">
+                <div class="list-group">
+                  <a href="#" class="list-group-item" ng-repeat="notify in notificationList">{{notificationList}}</a>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
             </div>
           </div>
         </div>
+        <div class="subcontent" ng-view></div>
       </div>
-      <div class="subcontent" ng-view></div>
     </div>
-  </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-cordova/0.1.27-alpha/ng-cordova.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-cordova/0.1.27-alpha/ng-cordova-mocks.js"></script>
-  <script type="text/javascript" src="cordova.js"></script>
-  <script type="text/javascript" src="js/index.js"></script>
-  <script type="text/javascript">
-    var expressPayModule = angular.module("expresspayapp", ["ngRoute", "ngCordova"]);
-    expressPayModule.config([
-      '$routeProvider',
-      function($routeProvider) {
-        $routeProvider.when('/scan', {
-          templateUrl: 'view/scanview.html',
-          controller: 'scanController'
-        }).when('/cart', {
-          templateUrl: 'view/cartview.html',
-          controller: 'cartController'
-        }).when('/offers', {
-          templateUrl: 'view/offerview.html',
-          controller: 'offerController'
-        }).when('/discover', {
-          templateUrl: 'view/discover.html',
-          controller: 'discoverController'
-        }).otherwise({redirectTo: '/scan'});
-      }
-    ]);
-
-    expressPayModule.controller("mainController", function($scope, inventoryService, userservice, storeservice, $timeout, $window) {
-      $scope.tests = 'D';
-
-      var socket = io.connect('http://192.168.0.102:4000');
-      socket.on('testing', function(msg) {
-        console.log(msg);
-      });
-
-      //$scope.notificationList = [];
-      //console.log(typeof JSON.parse(localStorage.notifications));
-      socket.on('offernotification', function(message) {
-        //console.log("From Server");
-        //console.log(message);
-        var contactList = userservice.getUserContacts();
-        //if (message.from != "9940366400") {
-        for (var variable in contactList) {
-          if (contactList[variable].phoneNumber == message.from) {
-            console.log(contactList[variable].displayName);
-            var name = contactList[variable].displayName;
-            var notifymessage = name + " shared about " + message.message + " at " + localStorage.storeName;
-            console.log(notifymessage);
-          }
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-cordova/0.1.27-alpha/ng-cordova.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-cordova/0.1.27-alpha/ng-cordova-mocks.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript">
+      var expressPayModule = angular.module("expresspayapp", ["ngRoute", "ngCordova"]);
+      expressPayModule.config([
+        '$routeProvider',
+        function($routeProvider) {
+          $routeProvider.when('/scan', {
+            templateUrl: 'view/scanview.html',
+            controller: 'scanController'
+          }).when('/cart', {
+            templateUrl: 'view/cartview.html',
+            controller: 'cartController'
+          }).when('/offers', {
+            templateUrl: 'view/offerview.html',
+            controller: 'offerController'
+          }).when('/discover', {
+            templateUrl: 'view/discover.html',
+            controller: 'discoverController'
+          }).otherwise({redirectTo: '/scan'});
         }
-        //}
-      })
+      ]);
 
-      //localStorage.removeItem("phoneNumber");
-      // $scope.testPlugin = function() {
-      //   window.plugins.sim.getSimInfo(function(result) {
-      //     console.log(JSON.stringify(result));
-      //     alert(JSON.stringify(result));
-      //   }, function(error) {
-      //     console.log(error);
-      //     alert(error);
-      //   });
-      // }
-      //REMOVE IT WHILE ADDING OVERLAY
-      $scope.checkUserExist = function(userPhoneNumber) {
-        $('.indicator').html('').append('<span class="fa fa-cog fa-spin" style="color:#5cb85c;"></span>');
-        //        var contactsList = [];
+      expressPayModule.controller("mainController", function($scope, inventoryService, userservice, storeservice, $timeout, $window) {
+        $scope.tests = 'D';
+        $scope.isSharable = true;
 
-        var contactsList = [
-          {
-            "displayName": "Ramesh Malla",
-            "phoneNumber": "9940366400"
-          }, {
-            "displayName": "Malla",
-            "phoneNumber": "9940366401"
-          }, {
-            "displayName": "Doe",
-            "phoneNumber": "9940366402"
-          }
-        ];
-        userservice.setUserContacts(contactsList);
-
-        //userservice.setUserContacts(contactsList);
-        // navigator.contacts.find([navigator.contacts.fieldType.displayName], function(c) {
-        //   console.log("gotContacts, number of results " + c.length);
-        //   for (var i = 0, len = c.length; i < len; i++) {
-        //     if (c[i].displayName != null && c[i].phoneNumbers != null) {
-        //       var phoneNumberVal = String(c[i].phoneNumbers[0].value);
-        //       // if (phoneNumberVal.length > 10 && phoneNumberVal) {}
-        //       var contactObject = {
-        //         "displayName": c[i].displayName,
-        //         "phoneNumber": c[i].phoneNumbers[0].value
-        //       }
-        //       contactsList.push(contactObject);
-        //       console.log(c[i].displayName + " : " + c[i].phoneNumbers[0].value);
-        //     }
-        //     //console.log(c[i]);
-        //   }
-        //
-        //   console.log(contactsList);
-        //   userservice.setUserContacts(contactsList);
-        // }, function(e) {
-        //   console.log("errorHandler: " + e);
-        // });
-        userservice.checkUserInfo(userPhoneNumber, function(responsedata) {
-          if (responsedata != null) {
-            $('.indicator').html('').append('<span class="fa fa-thumbs-up" style="color:#5cb85c;"></span>');
-            setTimeout(function() {
-              $('.logincontainer').animate({
-                right: "110%"
-              }, "fast", "easeOutBack", function() {
-                $('.shopscancontainer').animate({
-                  left: "0%"
-                }, "fast", "easeOutBack");
-              });
-            }, 200);
-            localStorage.phoneNumber = userPhoneNumber;
-            // $('.overlaycontent').addClass('animated fadeOutLeft');
-            // setTimeout(function() {
-            //   $('.overlaycontent').css('display', 'none');
-            // }, 1000);
-          } else {
-            $('.registerbtn').removeClass('wobble');
-            $('.indicator').html('').append('<span class="fa fa-thumbs-down" style="color:#e84747;"></span>');
-            setTimeout(function() {
-              $('.registerbtn').addClass('wobble');
-            }, 1000);
-          }
+        var socket = io.connect('http://192.168.0.102:4000');
+        socket.on('testing', function(msg) {
+          console.log(msg);
         });
 
-      }
-
-      $scope.addNewUser = function(phoneNumber, emailId) {
-        var requestObject = {
-          "phoneNumber": phoneNumber,
-          "emailId": emailId,
-          "jointAccounts": [],
-          "meregdAccounts": [],
-          "transactionsMade": []
+        $scope.updateSettings = function() {
+          userservice.updateIsSharrable(localStorage.phoneNumber, $scope.isSharable, function(response) {
+            console.log("Upated");
+          })
         }
-        userservice.addNewUswer(requestObject, function(response) {
-          console.log(response);
-          if (response == "User already registered") {
-            $('.errordiv').html('').append('<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>' + response);
-          } else {
-            localStorage.phoneNumber = phoneNumber;
-            $('.errordiv').html('');
+
+        //$scope.notificationList = [];
+        //console.log(typeof JSON.parse(localStorage.notifications));
+        socket.on('offernotification', function(message) {
+          //console.log("From Server");
+          //console.log(message);
+          var contactList = userservice.getUserContacts();
+          //if (message.from != "9940366400") {
+          for (var variable in contactList) {
+            if (contactList[variable].phoneNumber == message.from) {
+              console.log(contactList[variable].displayName);
+              var name = contactList[variable].displayName;
+              var notifymessage = name + " shared about " + message.message + " at " + localStorage.storeName;
+              console.log(notifymessage);
+            }
           }
-        })
-      }
-
-      function errorHandler(e) {
-        console.log("errorHandler: " + e);
-      }
-
-      function gotContacts(c) {
-        console.log("gotContacts, number of results " + c.length);
-        for (var i = 0, len = c.length; i < len; i++) {
-          console.log(c[i]);
-        }
-      }
-
-      $scope.scanShopQrCode = function() {
-        console.log("Change");
-        storeservice.getStoreDetails('1111', function(response) {
-          console.log("Store Response");
-          if (response != null) {
-            $('.overlaycontent').addClass('animated fadeOutLeft');
-            setTimeout(function() {
-              $('.overlaycontent').css('display', 'none');
-            }, 1000);
-            localStorage.storeId = response.storeId;
-            localStorage.storeName = response.storeName + " " + response.stroeAddress;
-          } else {
-            alert('Store is not registered');
-
-          }
-          //console.log(response);
+          //}
         })
 
-        // localStorage.phoneNumber = $scope.userphonenumber;
-        // userservice.getUserInfo('9940366400', function(responsedata) {
-        //   console.log(responsedata);
-        // });
-        //$('.overlaycontent').addClass('animated fadeOutLeft');
-        // cordova.plugins.barcodeScanner.scan(function(result) {
-        //   if (!result.cancelled) {
-        //     var value = result.text;
-        //     console.log("SCANNED CODE " + value);
-        //
-        //     //console.log("THE VALUE IS : " + value);
-        //   }
-        // }, function(error) {
-        //   alert("Scanning failed: " + error);
-        // });
-      }
-      $scope.isPhoneNumberPresent = function() {
-        if (!angular.isUndefined(localStorage.phoneNumber) && localStorage.phoneNumber != null) {
-          return true;
-        } else {
-          return false;
+        //localStorage.removeItem("phoneNumber");
+        // $scope.testPlugin = function() {
+        //   window.plugins.sim.getSimInfo(function(result) {
+        //     console.log(JSON.stringify(result));
+        //     alert(JSON.stringify(result));
+        //   }, function(error) {
+        //     console.log(error);
+        //     alert(error);
+        //   });
+        // }
+        //REMOVE IT WHILE ADDING OVERLAY
+        $scope.checkUserExist = function(userPhoneNumber) {
+          $('.indicator').html('').append('<span class="fa fa-cog fa-spin" style="color:#5cb85c;"></span>');
+          //        var contactsList = [];
+
+          var contactsList = [
+            {
+              "displayName": "Ramesh Malla",
+              "phoneNumber": "9940366400"
+            }, {
+              "displayName": "Malla",
+              "phoneNumber": "9940366401"
+            }, {
+              "displayName": "Doe",
+              "phoneNumber": "9940366402"
+            }
+          ];
+          userservice.setUserContacts(contactsList);
+
+          //userservice.setUserContacts(contactsList);
+          // navigator.contacts.find([navigator.contacts.fieldType.displayName], function(c) {
+          //   console.log("gotContacts, number of results " + c.length);
+          //   for (var i = 0, len = c.length; i < len; i++) {
+          //     if (c[i].displayName != null && c[i].phoneNumbers != null) {
+          //       var phoneNumberVal = String(c[i].phoneNumbers[0].value);
+          //       // if (phoneNumberVal.length > 10 && phoneNumberVal) {}
+          //       var contactObject = {
+          //         "displayName": c[i].displayName,
+          //         "phoneNumber": c[i].phoneNumbers[0].value
+          //       }
+          //       contactsList.push(contactObject);
+          //       console.log(c[i].displayName + " : " + c[i].phoneNumbers[0].value);
+          //     }
+          //     //console.log(c[i]);
+          //   }
+          //
+          //   console.log(contactsList);
+          //   userservice.setUserContacts(contactsList);
+          // }, function(e) {
+          //   console.log("errorHandler: " + e);
+          // });
+          userservice.checkUserInfo(userPhoneNumber, function(responsedata) {
+            console.log(responsedata);
+            if (responsedata != null) {
+              $('.indicator').html('').append('<span class="fa fa-thumbs-up" style="color:#5cb85c;"></span>');
+              setTimeout(function() {
+                $('.logincontainer').animate({
+                  right: "110%"
+                }, "fast", "easeOutBack", function() {
+                  $('.shopscancontainer').animate({
+                    left: "0%"
+                  }, "fast", "easeOutBack");
+                });
+              }, 200);
+              localStorage.phoneNumber = userPhoneNumber;
+              $scope.emailId = responsedata.emailId;
+              //$scope.$apply(function() {
+              $scope.isSharable = responsedata.isSharable;
+              localStorage.offerId = responsedata.offerId;
+              //})
+              // $('.overlaycontent').addClass('animated fadeOutLeft');
+              // setTimeout(function() {
+              //   $('.overlaycontent').css('display', 'none');
+              // }, 1000);
+            } else {
+              $('.registerbtn').removeClass('wobble');
+              $('.indicator').html('').append('<span class="fa fa-thumbs-down" style="color:#e84747;"></span>');
+              setTimeout(function() {
+                $('.registerbtn').addClass('wobble');
+              }, 1000);
+            }
+          });
+
         }
-      }
-      $scope.getStoreId = function() {
-        if ($scope.userphonenumber != null || $scope.userphonenumber.length > 0) {} else {}
-      }
-    });
 
-    expressPayModule.controller("scanController", function($scope, inventoryService, userservice, $timeout) {
-      $('.paybutton').css("display", "none");
-      var totalCartItems = 0;
-      $scope.scaneBarCode = function() {
+        $scope.addNewUser = function(phoneNumber, emailId) {
+          var requestObject = {
+            "phoneNumber": phoneNumber,
+            "emailId": emailId,
+            "jointAccounts": [],
+            "meregdAccounts": [],
+            "transactionsMade": []
+          }
+          userservice.addNewUswer(requestObject, function(response) {
+            console.log(response);
+            if (response == "User already registered") {
+              $('.errordiv').html('').append('<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>' + response);
+            } else {
+              localStorage.phoneNumber = phoneNumber;
+              $('.errordiv').html('');
+            }
+          })
+        }
 
-        // navigator.contacts.find([navigator.contacts.fieldType.displayName], function(c) {
-        //   console.log("gotContacts, number of results " + c.length);
-        //   for (var i = 0, len = c.length; i < len; i++) {
-        //     if(c[i].displayName!=null && c[i].phoneNumbers!=null){
-        //       var phoneNumberVal=String(c[i].phoneNumbers[0].value);
-        //       if(phoneNumberVal.length > 10 && phoneNumberVal){
-        //
-        //       }
-        //       console.log(c[i].displayName+" : "+c[i].phoneNumbers[0].value);
-        //     }
-        //     //console.log(c[i]);
-        //   }
-        // }, function(e) {
-        //   console.log("errorHandler: " + e);
-        // });
-        // var contactsList = [
-        //   {
-        //     "displayName": "Ramesh Malla",
-        //     "phoneNumber": "9940366400"
-        //   }, {
-        //     "displayName": "Malla",
-        //     "phoneNumber": "9940366401"
-        //   }, {
-        //     "displayName": "Doe",
-        //     "phoneNumber": "9940366402"
-        //   }
-        // ];
-        // userservice.setUserContacts(contactsList);
+        function errorHandler(e) {
+          console.log("errorHandler: " + e);
+        }
 
-        console.log("Pressed");
-        // $timeout(function() {
-        //   angular.element('#triggers').trigger('click');
-        // }, 100);
-        //var array = ['123', '223'];
+        function gotContacts(c) {
+          console.log("gotContacts, number of results " + c.length);
+          for (var i = 0, len = c.length; i < len; i++) {
+            console.log(c[i]);
+          }
+        }
 
-        inventoryService.setShoppingList("1111", "2222", function(responseBody) {
-          //console.log("Item added in cart " + responseBody);
+        $scope.scanShopQrCode = function() {
+          console.log("Change");
+          storeservice.getStoreDetails('1111', function(response) {
+            console.log("Store Response");
+            if (response != null) {
+              $('.overlaycontent').addClass('animated fadeOutLeft');
+              setTimeout(function() {
+                $('.overlaycontent').css('display', 'none');
+              }, 1000);
+              localStorage.storeId = response.storeId;
+              localStorage.storeName = response.storeName + " " + response.stroeAddress;
+              $scope.storeFullAddress = response.storeName + " " + response.stroeAddress;
+            } else {
+              alert('Store is not registered');
 
-          $('.cartnum').text(inventoryService.getTotalCartItems());
+            }
+            //console.log(response);
+          })
 
-        });
-        inventoryService.setShoppingList("1111", "2223", function(responseBody) {
-          //console.log("Item added in cart " + responseBody);
-          // $timeout(function() {
-          //     angular.element('#triggers').trigger('click');
-          // }, 700);
-          $('.cartnum').text(inventoryService.getTotalCartItems());
-        });
-        inventoryService.setShoppingList("1111", "2224", function(responseBody) {
-          //console.log("Item added in cart " + responseBody);
-          // $timeout(function() {
-          //     angular.element('#triggers').trigger('click');
-          // }, 700);
-          $('.cartnum').text(inventoryService.getTotalCartItems());
-        });
-
-        // cordova.plugins.barcodeScanner.scan(function(result) {
-        //     if (!result.cancelled) {
-        //         var value = result.text;
-        //         console.log("SCANNED CODE " + value);
-        //         inventoryService.setShoppingList(value, function(responseBody) {
-        //             console.log("Item added in cart");
-        //             $timeout(function() {
-        //                 angular.element('#triggers').trigger('click');
-        //             }, 100);
-        //         });
-        //         //console.log("THE VALUE IS : " + value);
-        //     }
-        // }, function(error) {
-        //     alert("Scanning failed: " + error);
-        // });
-      }
-    });
-
-    expressPayModule.controller("cartController", function($scope, inventoryService, reviewservice, transactionService, userservice) {
-
-      $scope.userMainInfos = userservice.getUserDetails();
-
-      var paymenuHeight = $('.paymenu').height();
-      $('.paymentmethods').height(paymenuHeight);
-
-      $('.paymentcontainer').css('display', 'none');
-      //$('.cartsubmodel').css('display', 'none');
-      $('.paynow').click(function() {
-        $(".menudiv a").each(function(index) {
-          if ($(this).children(".col-xs-3").hasClass("customactive")) {
-            $(this).children(".col-xs-3").removeClass("customactive")
+          // localStorage.phoneNumber = $scope.userphonenumber;
+          // userservice.getUserInfo('9940366400', function(responsedata) {
+          //   console.log(responsedata);
+          // });
+          //$('.overlaycontent').addClass('animated fadeOutLeft');
+          // cordova.plugins.barcodeScanner.scan(function(result) {
+          //   if (!result.cancelled) {
+          //     var value = result.text;
+          //     console.log("SCANNED CODE " + value);
+          //
+          //     //console.log("THE VALUE IS : " + value);
+          //   }
+          // }, function(error) {
+          //   alert("Scanning failed: " + error);
+          // });
+        }
+        $scope.isPhoneNumberPresent = function() {
+          if (!angular.isUndefined(localStorage.phoneNumber) && localStorage.phoneNumber != null) {
+            return true;
+          } else {
             return false;
           }
-        });
-        $('.cartsubmodel').css('display', 'none');
-        $('.paymentcontainer').css('display', 'inline');
+        }
+        $scope.getStoreId = function() {
+          if ($scope.userphonenumber != null || $scope.userphonenumber.length > 0) {} else {}
+        }
       });
-      $('.paycancle').click(function() {
+
+      expressPayModule.controller("scanController", function($scope, inventoryService, userservice, $timeout) {
+
+        //Nav Active fix
+        $('.scanlink').children(".col-xs-3").addClass("customactive");
+        $('.cartLink').children(".col-xs-3").removeClass("customactive");
+        $('.offerLink').children(".col-xs-3").removeClass("customactive");
+        $('.discoverlink').children(".col-xs-3").removeClass("customactive");
+
+        $('.paybutton').css("display", "none");
+        var totalCartItems = 0;
+        $scope.scaneBarCode = function() {
+
+          // navigator.contacts.find([navigator.contacts.fieldType.displayName], function(c) {
+          //   console.log("gotContacts, number of results " + c.length);
+          //   for (var i = 0, len = c.length; i < len; i++) {
+          //     if(c[i].displayName!=null && c[i].phoneNumbers!=null){
+          //       var phoneNumberVal=String(c[i].phoneNumbers[0].value);
+          //       if(phoneNumberVal.length > 10 && phoneNumberVal){
+          //
+          //       }
+          //       console.log(c[i].displayName+" : "+c[i].phoneNumbers[0].value);
+          //     }
+          //     //console.log(c[i]);
+          //   }
+          // }, function(e) {
+          //   console.log("errorHandler: " + e);
+          // });
+          // var contactsList = [
+          //   {
+          //     "displayName": "Ramesh Malla",
+          //     "phoneNumber": "9940366400"
+          //   }, {
+          //     "displayName": "Malla",
+          //     "phoneNumber": "9940366401"
+          //   }, {
+          //     "displayName": "Doe",
+          //     "phoneNumber": "9940366402"
+          //   }
+          // ];
+          // userservice.setUserContacts(contactsList);
+
+          console.log("Pressed");
+          // $timeout(function() {
+          //   angular.element('#triggers').trigger('click');
+          // }, 100);
+          //var array = ['123', '223'];
+
+          inventoryService.setShoppingList("1111", "2222", function(responseBody) {
+            //console.log("Item added in cart " + responseBody);
+
+            $('.cartnum').text(inventoryService.getTotalCartItems());
+
+          });
+          inventoryService.setShoppingList("1111", "2223", function(responseBody) {
+            //console.log("Item added in cart " + responseBody);
+            // $timeout(function() {
+            //     angular.element('#triggers').trigger('click');
+            // }, 700);
+            $('.cartnum').text(inventoryService.getTotalCartItems());
+          });
+          inventoryService.setShoppingList("1111", "2224", function(responseBody) {
+            //console.log("Item added in cart " + responseBody);
+            // $timeout(function() {
+            //     angular.element('#triggers').trigger('click');
+            // }, 700);
+            $('.cartnum').text(inventoryService.getTotalCartItems());
+          });
+
+          // cordova.plugins.barcodeScanner.scan(function(result) {
+          //     if (!result.cancelled) {
+          //         var value = result.text;
+          //         console.log("SCANNED CODE " + value);
+          //         inventoryService.setShoppingList(value, function(responseBody) {
+          //             console.log("Item added in cart");
+          //             $timeout(function() {
+          //                 angular.element('#triggers').trigger('click');
+          //             }, 100);
+          //         });
+          //         //console.log("THE VALUE IS : " + value);
+          //     }
+          // }, function(error) {
+          //     alert("Scanning failed: " + error);
+          // });
+        }
+      });
+
+      expressPayModule.controller("cartController", function($scope, inventoryService, reviewservice, transactionService, userservice) {
+
+        $('.scanlink').children(".col-xs-3").removeClass("customactive");
+        $('.cartLink').children(".col-xs-3").addClass("customactive");
+        $('.offerLink').children(".col-xs-3").removeClass("customactive");
+        $('.discoverlink').children(".col-xs-3").removeClass("customactive");
+
+        $scope.userMainInfos = userservice.getUserDetails();
+
+        var paymenuHeight = $('.paymenu').height();
+        $('.paymentmethods').height(paymenuHeight);
+
         $('.paymentcontainer').css('display', 'none');
-        $('.cartsubmodel').css('display', 'inline');
-      })
-      $('.cartLink').click(function() {
-        $('.paymentcontainer').css('display', 'none');
-        if ($scope.shoppingList.length == 0) {
+        //$('.cartsubmodel').css('display', 'none');
+        $('.paynow').click(function() {
+          $(".menudiv a").each(function(index) {
+            if ($(this).children(".col-xs-3").hasClass("customactive")) {
+              $(this).children(".col-xs-3").removeClass("customactive")
+              return false;
+            }
+          });
+          $('.cartsubmodel').css('display', 'none');
+          $('.paymentcontainer').css('display', 'inline');
+        });
+        $('.paycancle').click(function() {
+          $('.paymentcontainer').css('display', 'none');
+          $('.cartsubmodel').css('display', 'inline');
+        })
+        $('.cartLink').click(function() {
+          $('.paymentcontainer').css('display', 'none');
+          if ($scope.shoppingList.length == 0) {
+            $('.cartsubmodel').css('display', 'none');
+            $('.paymentsuccesscontainer').css('display', 'none');
+            $('.yourcartisempty').css('display', 'inline');
+          } else {
+            $('.cartsubmodel').css('display', 'inline');
+          }
+        })
+
+        $scope.resetImageBackdrop = function(bankselected) {
+          $('.bankcol').closest('.activeBank').removeClass("activeBank");
+          $('.paybankbtn').prop('disabled', false);
+          $scope.selectedBank = bankselected;
+        }
+
+        $('.paybtn').prop('disabled', true);
+        $('.paybankbtn').prop('disabled', true);
+        $('.bankcol').click(function() {
+          $('.bankcol').closest('.activeBank').removeClass("activeBank");
+          $(this).addClass('activeBank');
+          var val = $(this).find('img').attr('alt');
+          $scope.$apply(function() {
+            $('.paybankbtn').prop('disabled', false);
+            $scope.selectedBank = val;
+            console.log("IMG " + $scope.selectedBank);
+          })
+
+        })
+        $('.cardGroup').click(function() {
+          $('.paymentmethodbank').css('display', 'none')
+          $('.paymentmethodcash').css('display', 'none');
+          $('.paymentmethodshopcard').css('display', 'none');
+          $('.paymentmethodcard').css('display', 'inline-block')
+        });
+        $('.bankGroup').click(function() {
+          $('.paymentmethodcard').css('display', 'none');
+          $('.paymentmethodcash').css('display', 'none');
+          $('.paymentmethodshopcard').css('display', 'none');
+          $('.paymentmethodbank').css('display', 'inline-block')
+
+        });
+        $('.cashGroup').click(function() {
+          $('.paymentmethodbank').css('display', 'none')
+          $('.paymentmethodcard').css('display', 'none');
+          $('.paymentmethodshopcard').css('display', 'none');
+          $('.paymentmethodcash').css('display', 'inline-block')
+        });
+        $('.shopCardGroup').click(function() {
+          $('.paymentmethodbank').css('display', 'none')
+          $('.paymentmethodcard').css('display', 'none');
+          $('.paymentmethodcash').css('display', 'none')
+          $('.paymentmethodshopcard').css('display', 'block')
+        });
+
+        // $('.cardnumber').keypress(function(event) {
+        //   var keycode = event.which;
+        //   //console.log(event.currentTarget.className);
+        //   if (!(event.shiftKey == false && (keycode == 46 || keycode == 8 || keycode == 37 || keycode == 39 || (keycode >= 48 && keycode <= 57)))) {
+        //     event.preventDefault();
+        //   }
+        // });
+
+        $(".payment-group-item").click(function() {
+          $(".payment-group-item").each(function(index) {
+            if ($(this).hasClass("activepaymentgroup")) {
+              $(this).removeClass("activepaymentgroup")
+              return false;
+            }
+          });
+          $(this).addClass('activepaymentgroup');
+        });
+        var scrollHeight = parseFloat($('.paymentfooter').offset().top) - parseFloat($('.toolheader').offset().top) - parseFloat(35);
+        $('.itemListrow').height(scrollHeight);
+
+        $('.paybutton').css("display", "inline-block");
+        /*Review details*/
+        $scope.getReviewDetails = function(itemId) {
+          var contacts = userservice.getUserContacts();
+          $scope.reviewContactList = [];
+          $('#reviewModel').modal('show');
+          for (var i = 0; i < contacts.length; i++) {
+            var conObj=contacts[i];
+            userservice.getOtherUserInfo(contacts[i].phoneNumber, function(userresponse) {
+              console.log(userresponse);
+              if (userresponse != null && userresponse.isSharable) {
+                reviewservice.getReviewsOfUsers(itemId, conObj, function(response) {
+                  $scope.reviewContactList.push(response);
+                  console.log($scope.reviewContactList);
+                });
+              }
+            })
+          }
+
+        }
+        /*Get Shopping List*/
+        $scope.shoppingList = inventoryService.getShoppinList();
+        /*Get Total Items in cart*/
+        $scope.totalItems = inventoryService.getTotalCartItems();
+        if ($scope.totalItems == 0) {
+          $('.paymentcontainer').css('display', 'none');
           $('.cartsubmodel').css('display', 'none');
           $('.paymentsuccesscontainer').css('display', 'none');
           $('.yourcartisempty').css('display', 'inline');
-        } else {
-          $('.cartsubmodel').css('display', 'inline');
         }
-      })
+        /*Get Total Price*/
+        $scope.totalPrice = inventoryService.getTotalPrice();
 
-      $scope.resetImageBackdrop = function(bankselected) {
-        $('.bankcol').closest('.activeBank').removeClass("activeBank");
-        $('.paybankbtn').prop('disabled', false);
-        $scope.selectedBank = bankselected;
-      }
+        $scope.getImage = function(imageUrl) {
+          //console.log(imageUrl);
+          return imageUrl + ".jpg";
+        }
 
-      $('.paybtn').prop('disabled', true);
-      $('.paybankbtn').prop('disabled', true);
-      $('.bankcol').click(function() {
-        $('.bankcol').closest('.activeBank').removeClass("activeBank");
-        $(this).addClass('activeBank');
-        var val = $(this).find('img').attr('alt');
-        $scope.$apply(function() {
-          $('.paybankbtn').prop('disabled', false);
-          $scope.selectedBank = val;
-          console.log("IMG " + $scope.selectedBank);
-        })
+        $scope.setItemToDelete = function(itemId) {
+          $scope.iteIdToDelete = itemId;
+        }
 
-      })
-      $('.cardGroup').click(function() {
-        $('.paymentmethodbank').css('display', 'none')
-        $('.paymentmethodcash').css('display', 'none');
-        $('.paymentmethodshopcard').css('display', 'none');
-        $('.paymentmethodcard').css('display', 'inline-block')
-      });
-      $('.bankGroup').click(function() {
-        $('.paymentmethodcard').css('display', 'none');
-        $('.paymentmethodcash').css('display', 'none');
-        $('.paymentmethodshopcard').css('display', 'none');
-        $('.paymentmethodbank').css('display', 'inline-block')
+        $scope.editItems = function(itemId, itemName, totalQuantity, totalPrice, itemPrice) {
+          console.log(itemId + " " + itemName + " " + totalQuantity + " " + totalPrice);
+          $scope.edititemId = itemId;
+          $scope.edititemName = itemName;
+          $scope.edittotalPrice = totalPrice;
+          $scope.qtychange = totalQuantity;
+          $scope.cloneQuantity = totalQuantity;
+          $scope.editItemPrice = itemPrice;
+        }
 
-      });
-      $('.cashGroup').click(function() {
-        $('.paymentmethodbank').css('display', 'none')
-        $('.paymentmethodcard').css('display', 'none');
-        $('.paymentmethodshopcard').css('display', 'none');
-        $('.paymentmethodcash').css('display', 'inline-block')
-      });
-      $('.shopCardGroup').click(function() {
-        $('.paymentmethodbank').css('display', 'none')
-        $('.paymentmethodcard').css('display', 'none');
-        $('.paymentmethodcash').css('display', 'none')
-        $('.paymentmethodshopcard').css('display', 'block')
-      });
-
-      // $('.cardnumber').keypress(function(event) {
-      //   var keycode = event.which;
-      //   //console.log(event.currentTarget.className);
-      //   if (!(event.shiftKey == false && (keycode == 46 || keycode == 8 || keycode == 37 || keycode == 39 || (keycode >= 48 && keycode <= 57)))) {
-      //     event.preventDefault();
-      //   }
-      // });
-
-      $(".payment-group-item").click(function() {
-        $(".payment-group-item").each(function(index) {
-          if ($(this).hasClass("activepaymentgroup")) {
-            $(this).removeClass("activepaymentgroup")
-            return false;
-          }
-        });
-        $(this).addClass('activepaymentgroup');
-      });
-      var scrollHeight = parseFloat($('.paymentfooter').offset().top) - parseFloat($('.toolheader').offset().top) - parseFloat(35);
-      $('.itemListrow').height(scrollHeight);
-
-      $('.paybutton').css("display", "inline-block");
-      /*Review details*/
-      $scope.getReviewDetails = function(itemId) {
-        var contacts = userservice.getUserContacts();
-        $scope.reviewContactList = [];
-        $('#reviewModel').modal('show');
-        for (var i = 0; i < contacts.length; i++) {
-          reviewservice.getReviewsOfUsers(itemId, contacts[i], function(response) {
-            $scope.reviewContactList.push(response);
-            console.log($scope.reviewContactList);
+        var updateFuntion = function(itemId, changedQuantity, totalPrice) {
+          angular.forEach($scope.shoppingList, function(value, key) {
+            if (value.itemId == itemId) {
+              var difference = 0;
+              if (value.totalQuantity > changedQuantity) {
+                difference = Number(value.totalQuantity) - Number(changedQuantity);
+                $scope.totalItems = inventoryService.updateTotalCartItems(difference, true);
+              } else {
+                difference = Number(changedQuantity) - Number(value.totalQuantity);
+                $scope.totalItems = inventoryService.updateTotalCartItems(difference, false);
+              }
+              value.totalQuantity = changedQuantity;
+              $scope.totalPrice = inventoryService.updateTotalPrice(totalPrice, false);;
+              return false;
+            }
           });
         }
 
-      }
-      /*Get Shopping List*/
-      $scope.shoppingList = inventoryService.getShoppinList();
-      /*Get Total Items in cart*/
-      $scope.totalItems = inventoryService.getTotalCartItems();
-      if ($scope.totalItems == 0) {
-        $('.paymentcontainer').css('display', 'none');
-        $('.cartsubmodel').css('display', 'none');
-        $('.paymentsuccesscontainer').css('display', 'none');
-        $('.yourcartisempty').css('display', 'inline');
-      }
-      /*Get Total Price*/
-      $scope.totalPrice = inventoryService.getTotalPrice();
-
-      $scope.getImage = function(imageUrl) {
-        //console.log(imageUrl);
-        return imageUrl + ".jpg";
-      }
-
-      $scope.setItemToDelete = function(itemId) {
-        $scope.iteIdToDelete = itemId;
-      }
-
-      $scope.editItems = function(itemId, itemName, totalQuantity, totalPrice, itemPrice) {
-        console.log(itemId + " " + itemName + " " + totalQuantity + " " + totalPrice);
-        $scope.edititemId = itemId;
-        $scope.edititemName = itemName;
-        $scope.edittotalPrice = totalPrice;
-        $scope.qtychange = totalQuantity;
-        $scope.cloneQuantity = totalQuantity;
-        $scope.editItemPrice = itemPrice;
-      }
-
-      var updateFuntion = function(itemId, changedQuantity, totalPrice) {
-        angular.forEach($scope.shoppingList, function(value, key) {
-          if (value.itemId == itemId) {
-            var difference = 0;
-            if (value.totalQuantity > changedQuantity) {
-              difference = Number(value.totalQuantity) - Number(changedQuantity);
-              $scope.totalItems = inventoryService.updateTotalCartItems(difference, true);
-            } else {
-              difference = Number(changedQuantity) - Number(value.totalQuantity);
-              $scope.totalItems = inventoryService.updateTotalCartItems(difference, false);
+        $scope.quantityIncrease = function(itemId, initQuant, itemPrice, discountPrice, actulaQuantity, totalPrice) {
+          var changedQuantity = Number(initQuant) + 1;
+          if (actulaQuantity >= changedQuantity) {
+            if (discountPrice != null) {
+              itemPrice = discountPrice;
             }
-            value.totalQuantity = changedQuantity;
-            $scope.totalPrice = inventoryService.updateTotalPrice(totalPrice, false);;
-            return false;
+            var totalPrice = Number(totalPrice) + Number(itemPrice);
+            updateFuntion(itemId, changedQuantity, totalPrice);
           }
-        });
-      }
 
-      $scope.quantityIncrease = function(itemId, initQuant, itemPrice, discountPrice, actulaQuantity, totalPrice) {
-        var changedQuantity = Number(initQuant) + 1;
-        if (actulaQuantity >= changedQuantity) {
-          if (discountPrice != null) {
-            itemPrice = discountPrice;
-          }
-          var totalPrice = Number(totalPrice) + Number(itemPrice);
-          updateFuntion(itemId, changedQuantity, totalPrice);
         }
-
-      }
-      $scope.quantityDecrease = function(itemId, initQuant, itemPrice, discountPrice, actulaQuantity, totalPrice) {
-        if (initQuant > 1) {
-          var changedQuantity = Number(initQuant) - 1;
-          if (discountPrice != null) {
-            itemPrice = discountPrice;
-          }
-          var totalPrice = Number(totalPrice) - Number(itemPrice);
-          updateFuntion(itemId, changedQuantity, totalPrice);
-        }
-
-      }
-
-      $scope.changeFunction = function(intialQuantity, itemPrice, totalPrice, changedQuantity) {
-        var totalScopePrice = $scope.totalPrice;
-        console.log(intialQuantity + " " + itemPrice + " " + totalPrice + " " + changedQuantity);
-        if (intialQuantity == changedQuantity) {
-          $scope.edittotalPrice = totalScopePrice;
-        } else if (intialQuantity > changedQuantity) {
-          $scope.cloneQuantity = changedQuantity;
-          $scope.edittotalPrice -= Number(itemPrice);
-        } else if (intialQuantity < changedQuantity) {
-          $scope.cloneQuantity = changedQuantity;
-          $scope.edittotalPrice += Number(itemPrice);
-        }
-      }
-
-      $scope.editFunction = function(itemId, changedQuantity, totalPrice) {
-        angular.forEach($scope.shoppingList, function(value, key) {
-          if (value.itemId == itemId) {
-            var difference = 0;
-            if (value.totalQuantity > changedQuantity) {
-              difference = Number(value.totalQuantity) - Number(changedQuantity);
-              $scope.totalItems = inventoryService.updateTotalCartItems(difference, true);
-            } else {
-              difference = Number(changedQuantity) - Number(value.totalQuantity);
-              $scope.totalItems = inventoryService.updateTotalCartItems(difference, false);
+        $scope.quantityDecrease = function(itemId, initQuant, itemPrice, discountPrice, actulaQuantity, totalPrice) {
+          if (initQuant > 1) {
+            var changedQuantity = Number(initQuant) - 1;
+            if (discountPrice != null) {
+              itemPrice = discountPrice;
             }
-            value.totalQuantity = changedQuantity;
-            $scope.totalPrice = inventoryService.updateTotalPrice(totalPrice, false);;
-            return false;
+            var totalPrice = Number(totalPrice) - Number(itemPrice);
+            updateFuntion(itemId, changedQuantity, totalPrice);
           }
-        });
-      }
 
-      $scope.payAndGetTransactionDetails = function(shoppingList, amountPayed, modeOfPayment, bankName) {
-        console.log($scope.selectedBank);
-        var requestData = {
-          "storeId": localStorage.storeId,
-          "userId": localStorage.phoneNumber,
-          "amountPayed": amountPayed,
-          "modeOfPayment": modeOfPayment,
-          "bankName": bankName,
-          "itemsPurchased": shoppingList
+        }
+
+        $scope.changeFunction = function(intialQuantity, itemPrice, totalPrice, changedQuantity) {
+          var totalScopePrice = $scope.totalPrice;
+          console.log(intialQuantity + " " + itemPrice + " " + totalPrice + " " + changedQuantity);
+          if (intialQuantity == changedQuantity) {
+            $scope.edittotalPrice = totalScopePrice;
+          } else if (intialQuantity > changedQuantity) {
+            $scope.cloneQuantity = changedQuantity;
+            $scope.edittotalPrice -= Number(itemPrice);
+          } else if (intialQuantity < changedQuantity) {
+            $scope.cloneQuantity = changedQuantity;
+            $scope.edittotalPrice += Number(itemPrice);
+          }
+        }
+
+        $scope.editFunction = function(itemId, changedQuantity, totalPrice) {
+          angular.forEach($scope.shoppingList, function(value, key) {
+            if (value.itemId == itemId) {
+              var difference = 0;
+              if (value.totalQuantity > changedQuantity) {
+                difference = Number(value.totalQuantity) - Number(changedQuantity);
+                $scope.totalItems = inventoryService.updateTotalCartItems(difference, true);
+              } else {
+                difference = Number(changedQuantity) - Number(value.totalQuantity);
+                $scope.totalItems = inventoryService.updateTotalCartItems(difference, false);
+              }
+              value.totalQuantity = changedQuantity;
+              $scope.totalPrice = inventoryService.updateTotalPrice(totalPrice, false);;
+              return false;
+            }
+          });
+        }
+
+        $scope.payAndGetTransactionDetails = function(shoppingList, amountPayed, modeOfPayment, bankName) {
+          console.log($scope.selectedBank);
+          var requestData = {
+            "storeId": localStorage.storeId,
+            "userId": localStorage.phoneNumber,
+            "amountPayed": amountPayed,
+            "modeOfPayment": modeOfPayment,
+            "offerId": localStorage.offerId,
+            "bankName": bankName,
+            "itemsPurchased": shoppingList
+          };
+
+          console.log(JSON.stringify(requestData));
+
+          $scope.transactionData = transactionService.enterTransactionDetail(requestData, function(responseBody) {
+            console.log(JSON.stringify(responseBody));
+
+            $('.paymentcontainer').css('display', 'none');
+            $('.cartsubmodel').css('display', 'none');
+            $('.paymentsuccesscontainer').css('display', 'inline');
+            inventoryService.resetAll();
+            $scope.shoppingList = [];
+            $scope.totalItems = 0;
+            $scope.totalPrice = 0;
+            console.log(responseBody._id);
+            $scope.transactionId = responseBody._id;
+          });
+          // console.log(shoppingList + " " + amountPayed + " " + modeOfPayment);
+        }
+
+        $scope.resetCardValues = function() {
+          $scope.cardnumber = null;
+          $scope.expirydate = null;
+          $scope.cvvnumber = null;
+          //$('.paybtn').prop('disabled', true);
+        }
+
+        $scope.validateFields = function() {
+          var isCardNumberValid,
+            isDateValid,
+            isCvvNumberValid = false;
+          console.log("IN");
+          if ($scope.cardnumber != null && $scope.cardnumber.toString().length == 16) {
+            console.log("Card");
+            isCardNumberValid = true;
+          }
+          if ($scope.expirydate != null) {
+            console.log("Date");
+            isDateValid = true;
+          }
+          if ($scope.cvvnumber != null && $scope.cvvnumber.length == 3) {
+            console.log("CVV");
+            isCvvNumberValid = true;
+          }
+          if (isCardNumberValid && isDateValid && isCvvNumberValid) {
+            console.log("All are valid");
+            $('.paybtn').prop('disabled', false);
+          } else {
+            $('.paybtn').prop('disabled', true);
+          }
+        }
+
+        $scope.removeItem = function(itemId, flag) {
+          console.log(itemId + " " + flag);
+          if (flag) {
+            if ($scope.shoppingList.length > 0) {
+              angular.forEach($scope.shoppingList, function(value, key) {
+                console.log(key);
+                if (value.itemId == itemId) {
+                  $scope.shoppingList.splice(key, 1);
+                  $scope.totalItems = inventoryService.updateTotalCartItems(value.totalQuantity, true);
+                  if ($scope.totalItems == 0) {
+                    $('.paymentcontainer').css('display', 'none');
+                    $('.cartsubmodel').css('display', 'none');
+                    $('.paymentsuccesscontainer').css('display', 'none');
+                    $('.yourcartisempty').css('display', 'inline');
+                  }
+                  console.log(value.totalPrice);
+                  $scope.totalPrice = inventoryService.updateTotalPrice(value.totalPrice * value.totalQuantity, true);
+                  return false;
+                }
+              });
+            }
+          }
+        }
+        $scope.$watch("totalItems", function() {
+          var cartItem = $scope.totalItems;
+          $('.cartnum').text(cartItem);
+        });
+      });
+
+      expressPayModule.controller("offerController", function($scope, $timeout, offerservice, inventoryService, newArrivalService, transactionService, userservice) {
+
+        $('.scanlink').children(".col-xs-3").removeClass("customactive");
+        $('.cartLink').children(".col-xs-3").removeClass("customactive");
+        $('.offerLink').children(".col-xs-3").addClass("customactive");
+        $('.discoverlink').children(".col-xs-3").removeClass("customactive");
+
+        var phoneNumbersToShare = [];
+        $scope.isMyoffer = false;
+        console.log($('.contactsheader').outerHeight());
+        // $('.contacatscolumn').css('top', $('.contactsheader').outerHeight() + 'px');
+        $scope.shareOfferInfo = function() {
+          if (phoneNumbersToShare.length > 0) {
+            var requestBody = {
+              "numbers": phoneNumbersToShare,
+              "message": $scope.shareMessgae,
+              "itemId": $scope.sharedItem
+            }
+            console.log("Gonna Share");
+            console.log(requestBody);
+            userservice.shareofferinfo(localStorage.phoneNumber, requestBody, function(sharedmessage) {
+              console.log(sharedmessage);
+            })
+          }
+        }
+
+        $scope.transferOffer = function() {
+          console.log("Called");
+        }
+
+        $scope.setToShare = function(phoneNumber) {
+          var indexofPhoneNUmber = phoneNumbersToShare.indexOf(phoneNumber);
+          if (indexofPhoneNUmber < 0) {
+            phoneNumbersToShare.push(phoneNumber);
+          } else {
+            phoneNumbersToShare.splice(indexofPhoneNUmber, 1);
+          }
+          if (phoneNumbersToShare.length > 0) {
+            $('.sharespan').html('').append('<i class="fa fa-share-alt" aria-hidden="true"></i>');
+          } else {
+            $scope.allselect = false;
+            $('.sharespan').html('')
+          }
+          //Call local notification
+          console.log(phoneNumbersToShare);
+        }
+
+        $scope.activateAll = function() {
+          // console.log($scope.allselect);
+          if ($scope.allselect) {
+            $('.contactsgroup').each(function(index) {
+              var checkbtn = $(this).children('.myfillin');
+              var thisClass = $(this).children(".customchecklabel");
+              setTimeout(function() {
+                // console.log(thisClass);
+                if (!checkbtn.prop('checked')) {
+                  thisClass.trigger('click');
+                }
+
+              }, 300);
+
+            })
+          } else {
+            $('.contactsgroup').each(function(index) {
+              // console.log("INDEX :" + index);
+              var checkbtn = $(this).children('.myfillin');
+              var thisClass = $(this).children(".customchecklabel");
+              setTimeout(function() {
+                if (checkbtn.prop('checked')) {
+                  thisClass.trigger('click');
+                }
+              }, 300);
+            })
+          }
+
+        }
+
+        $scope.shareOffer = function(itemid, item, discount) {
+          //console.log("Action");
+          $('.shareoverlay').css('display', 'block');
+          $scope.sharedItem = itemid;
+          // $scope.sharedDiscount = item;
+          // $scope.shareItemId = discount;
+          $scope.shareMessgae = discount + " on " + item;
+
+          console.log($scope.shareMessgae);
+          console.log($scope.sharedItem);
+          setTimeout(function() {
+            $('.shareoverlay').animate({
+              right: '0%'
+            }, "fast", "linear");
+          }, 200);
+
+        }
+
+        $('.shareback').click(function() {
+          $('.shareoverlay').animate({
+            right: '100%'
+          }, "fast", "linear");
+          setTimeout(function() {
+            $('.shareoverlay').css('display', 'none');
+          }, 200);
+
+        })
+
+        $scope.userContacts = userservice.getUserContacts();
+        console.log($scope.userContacts);
+        //var brandHeight = Number($('body').outerHeight(true)) - Number($('.branddiv').outerHeight(true))+1;
+        var headerHeight = $('.menuheader').outerHeight(true) - 1;
+        var offerToolsHeight = $('.offertools').outerHeight(true) + 10;
+        $scope.filterBycategoryElements = [];
+        $('.offertools').css('top', headerHeight + 'px');
+        $('.offer-list-group').css('margin-top', offerToolsHeight + 'px');
+
+        //$('.shareoverlay').height(brandHeight);
+
+        var overFlowHeight = parseFloat($('.offernewfooter').offset().top) - parseFloat($('.offerviewcontainer').offset().top);
+        $('.offerviewcontainer').height(overFlowHeight);
+        $('.offercarousel').slick({arrows: false, mobileFirst: true, autoplay: true});
+
+        $('.offerbtn').click(function() {
+          $scope.isMyoffer = false;
+          $('.trnsferdiv').css('display', 'none');
+          $('.myofferbtn').removeClass("offersactive");
+          $('.arrivalbtn').removeClass("offersactive");
+          $(this).addClass("offersactive");
+          getOffersDetails();
+        });
+        $('.arrivalbtn').click(function() {
+          $scope.isMyoffer = false;
+          $('.trnsferdiv').css('display', 'none');
+          $('.offerbtn').removeClass("offersactive");
+          $('.myofferbtn').removeClass("offersactive");
+          $(this).addClass("offersactive")
+        });
+        $('.myofferbtn').click(function() {
+          $scope.isMyoffer = true;
+          $('.trnsferdiv').css('display', 'none');
+          $('.offerbtn').removeClass("offersactive");
+          $('.arrivalbtn').removeClass("offersactive");
+          $(this).addClass("offersactive")
+          getOffersByOfferId(localStorage.storeId, "OFR12347");
+        });
+
+        $scope.showTrans = function(id) {
+          $scope.transItemId = id;
+          $scope.transOfferId = "OFR12347";
+        }
+
+        $scope.proceedTransfer = function(toPhoneNumber) {
+          userservice.getOtherUserInfo(toPhoneNumber, function(response) {
+            var offerId = response.offerId;
+            offerservice.transferOfferId(localStorage.storeId, $scope.transItemId, $scope.transOfferId, offerId, function(response) {
+              getOffersByOfferId(localStorage.storeId, "OFR12347");
+            })
+          })
+        }
+
+        $scope.message = "View Offers"
+        var getOffersDetails = (function offdetails() {
+          $scope.offerAvailedProducts = [];
+          offerservice.getOffersByStoreId(localStorage.storeId, function(response) {
+            angular.forEach(response, function(value, key) {
+              inventoryService.getInventoryDetails(value.storeId, value.itemId, function(response) {
+                response.discountAvailed = value.discountRate + "% off"
+                $scope.offerAvailedProducts.push(response);
+              })
+            })
+          });
+          return offdetails;
+        })();
+
+        var getOffersByOfferId = function(storeId, offerId) {
+          $scope.offerAvailedProducts = [];
+          offerservice.getOffersByOfferId(storeId, offerId, function(response) {
+            angular.forEach(response, function(value, key) {
+              inventoryService.getInventoryDetails(value.storeId, value.itemId, function(response) {
+                response.discountAvailed = value.discountRate + "% off"
+                $scope.offerAvailedProducts.push(response);
+              })
+            })
+          });
+        }
+
+        $scope.getProductImage = function(imageUrl) {
+          return imageUrl + ".jpg";
+        }
+
+        $scope.changeIncategory = function(category, flag) {
+          //test();
+          console.log(category + " " + flag);
+          if (category != null && flag) {
+            if ($.inArray(category, $scope.filterBycategoryElements) == -1) {
+              $scope.filterBycategoryElements.push(category);
+            }
+          } else if (category != null && !flag) {
+            var i = $.inArray(category, $scope.filterBycategoryElements);
+            if (i > -1) {
+              $scope.filterBycategoryElements.splice(i, 1);
+            }
+          }
+        }
+        $scope.imageClick = function() {
+          $(".combinedoffer").toggle("slide", 100);
+          $('.viewallofferTab').toggle("slide", 100);
+          $('.footertabs').css('display', 'inline');
+          $('.offerGroup').css('display', 'inline');
+        }
+        $scope.getNewArrivals = function() {
+          console.log("New Arrivals");
+          $scope.offerAvailedProducts = [];
+          newArrivalService.getNewArrivals(localStorage.storeId, function(newArrivals) {
+            angular.forEach(newArrivals, function(value, key) {
+              inventoryService.getInventoryDetails(value.storeId, value.itemId, function(response) {
+                //response.discountAvailed = value.discountRate + "% off"
+                $scope.offerAvailedProducts.push(response);
+              })
+            })
+          })
+        }
+
+        $scope.testfilter = function(product) {
+          //  console.log(JSON.stringify(product));
+          if ($scope.filterBycategoryElements.length != 0 && ($.inArray(product.itemCategory, $scope.filterBycategoryElements) == -1)) {
+            return;
+          }
+          return product;
+        }
+
+      });
+
+      expressPayModule.controller('discoverController', function($scope, transactionService, userservice, reviewservice) {
+
+        $('.scanlink').children(".col-xs-3").removeClass("customactive");
+        $('.cartLink').children(".col-xs-3").removeClass("customactive");
+        $('.offerLink').children(".col-xs-3").removeClass("customactive");
+        $('.discoverlink').children(".col-xs-3").addClass("customactive");
+
+        $scope.userMainInfo = userservice.getUserDetails();
+
+        //console.log($scope.userMainInfo.quickPay);
+
+        $scope.updateReview = function(itemId, itemrating, itemCommnet) {
+          var requestData = {
+            "phoneNumber": localStorage.phoneNumber,
+            "userRating": String(itemrating),
+            "userComment": itemCommnet
+          }
+          if (!$scope.isPushRequired) {
+            reviewservice.updatereviews(itemId, localStorage.phoneNumber, requestData, function(responsedata) {
+              console.log("Review Updated");
+            })
+          } else {
+            reviewservice.addNewReview(itemId, requestData, function(responsedata) {
+              console.log("Review Added");
+              console.log(responsedata);
+            })
+
+          }
+        }
+
+        $scope.showReview = function(itemId, itemName) {
+          $scope.reviewItemName = itemName;
+          reviewservice.getReview(itemId, localStorage.phoneNumber, function(data) {
+            if (data != null) {
+              var reviewModelData = data.userReviews[0];
+              $scope.reviewRating = Number(reviewModelData.userRating);
+              $scope.reviewUserComment = reviewModelData.userComment;
+              $scope.reviewItemId = itemId;
+              $scope.isPushRequired = false;
+              $('.reviewmodel').modal('show');
+            } else {
+              $scope.isPushRequired = true;
+              // $scope.reviewModelData = null;
+              $scope.reviewRating = null;
+              $scope.reviewUserComment = null;
+              $scope.reviewItemId = itemId;
+              $('.reviewmodel').modal('show');
+            }
+          })
+        }
+
+        $scope.ob = {
+          "quickPay": {
+            "card": [
+              {
+                "cardName": "Card One",
+                "cardNumber": "123456789"
+              }, {
+                "cardName": "Card Two",
+                "cardNumber": "223256789"
+              }
+            ],
+            "netBanking": [
+              {
+                "bankName": "Kotak Bank"
+              }
+            ]
+          }
         };
 
-        console.log(JSON.stringify(requestData));
+        $scope.setValueForCardUpdate = function(indexVal) {
 
-        $scope.transactionData = transactionService.enterTransactionDetail(requestData, function(responseBody) {
-          console.log(JSON.stringify(responseBody));
+          if (indexVal == null) {
+            $('.qpaydisplay').css('display', 'none');
+            $('.qpaybankpanel').css('display', 'none');
+            $('.qpaycardpanel').css('display', 'block');
 
-          $('.paymentcontainer').css('display', 'none');
-          $('.cartsubmodel').css('display', 'none');
-          $('.paymentsuccesscontainer').css('display', 'inline');
-          inventoryService.resetAll();
-          $scope.shoppingList = [];
-          $scope.totalItems = 0;
-          $scope.totalPrice = 0;
-          console.log(responseBody._id);
-          $scope.transactionId = responseBody._id;
-        });
-        // console.log(shoppingList + " " + amountPayed + " " + modeOfPayment);
-      }
-
-      $scope.resetCardValues = function() {
-        $scope.cardnumber = null;
-        $scope.expirydate = null;
-        $scope.cvvnumber = null;
-        //$('.paybtn').prop('disabled', true);
-      }
-
-      $scope.validateFields = function() {
-        var isCardNumberValid,
-          isDateValid,
-          isCvvNumberValid = false;
-        console.log("IN");
-        if ($scope.cardnumber != null && $scope.cardnumber.toString().length == 16) {
-          console.log("Card");
-          isCardNumberValid = true;
+            console.log("ADD CARD");
+          } else {
+            $scope.userMainInfo.quickPay.card.splice(indexVal, 1);
+            userservice.updateUserQpayDetails(localStorage.phoneNumber, $scope.userMainInfo.quickPay, function(updatedUserdata) {
+              $scope.userMainInfo = updatedUserdata;
+            });
+            //var qpayObject = $scope.userMainInfo.quickPay.card[indexVal];
+            //console.log(qpayObject.cardNumber+" "+qpayObject.cardName);
+            //$scope.mycardnumber = Number(qpayObject.cardNumber);
+            //$scope.mycardname = qpayObject.cardName;
+            //$scope.mycardexpiry = qpayObject.cardExpiry;
+          }
         }
-        if ($scope.expirydate != null) {
-          console.log("Date");
-          isDateValid = true;
-        }
-        if ($scope.cvvnumber != null && $scope.cvvnumber.length == 3) {
-          console.log("CVV");
-          isCvvNumberValid = true;
-        }
-        if (isCardNumberValid && isDateValid && isCvvNumberValid) {
-          console.log("All are valid");
-          $('.paybtn').prop('disabled', false);
-        } else {
-          $('.paybtn').prop('disabled', true);
-        }
-      }
 
-      $scope.removeItem = function(itemId, flag) {
-        console.log(itemId + " " + flag);
-        if (flag) {
-          if ($scope.shoppingList.length > 0) {
-            angular.forEach($scope.shoppingList, function(value, key) {
-              console.log(key);
-              if (value.itemId == itemId) {
-                $scope.shoppingList.splice(key, 1);
-                $scope.totalItems = inventoryService.updateTotalCartItems(value.totalQuantity, true);
-                if ($scope.totalItems == 0) {
-                  $('.paymentcontainer').css('display', 'none');
-                  $('.cartsubmodel').css('display', 'none');
-                  $('.paymentsuccesscontainer').css('display', 'none');
-                  $('.yourcartisempty').css('display', 'inline');
-                }
-                console.log(value.totalPrice);
-                $scope.totalPrice = inventoryService.updateTotalPrice(value.totalPrice * value.totalQuantity, true);
-                return false;
-              }
+        $scope.setValueForBankUpdate = function(indexVal) {
+          if (indexVal == null) {
+            $('.qpaydisplay').css('display', 'none');
+            $('.qpaycardpanel').css('display', 'none');
+            $('.qpaybankpanel').css('display', 'block');
+            console.log("ADD BANK");
+          } else {
+            $scope.userMainInfo.quickPay.netBanking.splice(indexVal, 1);
+            userservice.updateUserQpayDetails(localStorage.phoneNumber, $scope.userMainInfo.quickPay, function(updatedUserdata) {
+              $scope.userMainInfo = updatedUserdata;
             });
           }
         }
-      }
-      $scope.$watch("totalItems", function() {
-        var cartItem = $scope.totalItems;
-        $('.cartnum').text(cartItem);
-      });
-    });
-    expressPayModule.controller("offerController", function($scope, $timeout, offerservice, inventoryService, newArrivalService, transactionService, userservice) {
 
-      var phoneNumbersToShare = [];
-      $scope.isMyoffer = false;
-
-      $scope.shareOfferInfo = function() {
-        if (phoneNumbersToShare.length > 0) {
-          var requestBody = {
-            "numbers": phoneNumbersToShare,
-            "message": $scope.shareMessgae,
-            "itemId": $scope.sharedItem
+        $scope.updateQpayCard = function() {
+          var qpayObject = $scope.userMainInfo.quickPay;
+          var modifiedObject = {
+            "cardNumber": String($scope.mycardnumber),
+            "cardName": $scope.mycardname,
+            "cardExpiry": $scope.mycardexpiry
           }
-          console.log("Gonna Share");
-          console.log(requestBody);
-          userservice.shareofferinfo(localStorage.phoneNumber, requestBody, function(sharedmessage) {
-            console.log(sharedmessage);
-          })
-        }
-      }
-
-      $scope.transferOffer = function() {
-        console.log("Called");
-      }
-
-      $scope.setToShare = function(phoneNumber) {
-        var indexofPhoneNUmber = phoneNumbersToShare.indexOf(phoneNumber);
-        if (indexofPhoneNUmber < 0) {
-          phoneNumbersToShare.push(phoneNumber);
-        } else {
-          phoneNumbersToShare.splice(indexofPhoneNUmber, 1);
-        }
-        if (phoneNumbersToShare.length > 0) {
-          $('.sharespan').html('').append('<i class="fa fa-share-alt" aria-hidden="true"></i>');
-        } else {
-          $scope.allselect = false;
-          $('.sharespan').html('')
-        }
-        //Call local notification
-        console.log(phoneNumbersToShare);
-      }
-
-      $scope.activateAll = function() {
-        // console.log($scope.allselect);
-        if ($scope.allselect) {
-          $('.contactsgroup').each(function(index) {
-            var checkbtn = $(this).children('.myfillin');
-            var thisClass = $(this).children(".customchecklabel");
-            setTimeout(function() {
-              // console.log(thisClass);
-              if (!checkbtn.prop('checked')) {
-                thisClass.trigger('click');
-              }
-
-            }, 300);
-
-          })
-        } else {
-          $('.contactsgroup').each(function(index) {
-            // console.log("INDEX :" + index);
-            var checkbtn = $(this).children('.myfillin');
-            var thisClass = $(this).children(".customchecklabel");
-            setTimeout(function() {
-              if (checkbtn.prop('checked')) {
-                thisClass.trigger('click');
-              }
-            }, 300);
-          })
+          qpayObject.card.push(modifiedObject);
+          userservice.updateUserQpayDetails(localStorage.phoneNumber, qpayObject, function(updatedUserdata) {
+            $scope.userMainInfo = updatedUserdata;
+            $scope.resetAllDiv();
+          });
         }
 
-      }
+        $scope.updateQpayBank = function(index) {
+          var qpayObject = $scope.userMainInfo.quickPay;
+          var modifiedObject = {
+            "bankName": $scope.selectedBank
+          }
+          qpayObject.netBanking.push(modifiedObject);
+          userservice.updateUserQpayDetails(localStorage.phoneNumber, qpayObject, function(updatedUserdata) {
+            $scope.userMainInfo = updatedUserdata;
+            $scope.resetAllDiv();
+          });
+        }
 
-      $scope.shareOffer = function(itemid, item, discount) {
-        //console.log("Action");
-        $('.shareoverlay').css('display', 'block');
-        $scope.sharedItem = itemid;
-        // $scope.sharedDiscount = item;
-        // $scope.shareItemId = discount;
-        $scope.shareMessgae = discount + " on " + item;
+        var headerHeight = $('.menuheader').outerHeight(true) - 1;
 
-        console.log($scope.shareMessgae);
-        console.log($scope.sharedItem);
-        setTimeout(function() {
-          $('.shareoverlay').animate({
-            right: '0%'
-          }, "fast", "linear");
-        }, 200);
+        $('.discovermainheading').css('top', headerHeight + 'px');
 
-      }
-
-      $('.shareback').click(function() {
-        $('.shareoverlay').animate({
-          right: '100%'
-        }, "fast", "linear");
-        setTimeout(function() {
-          $('.shareoverlay').css('display', 'none');
-        }, 200);
-
-      })
-
-      $scope.userContacts = userservice.getUserContacts();
-      console.log($scope.userContacts);
-      //var brandHeight = Number($('body').outerHeight(true)) - Number($('.branddiv').outerHeight(true))+1;
-      var headerHeight = $('.menuheader').outerHeight(true) - 1;
-      var offerToolsHeight = $('.offertools').outerHeight(true) + 10;
-      $scope.filterBycategoryElements = [];
-      $('.offertools').css('top', headerHeight + 'px');
-      $('.offer-list-group').css('margin-top', offerToolsHeight + 'px');
-
-      //$('.shareoverlay').height(brandHeight);
-
-      var overFlowHeight = parseFloat($('.offernewfooter').offset().top) - parseFloat($('.offerviewcontainer').offset().top);
-      $('.offerviewcontainer').height(overFlowHeight);
-      $('.offercarousel').slick({arrows: false, mobileFirst: true, autoplay: true});
-
-      $('.offerbtn').click(function() {
-        $scope.isMyoffer = false;
-        $('.trnsferdiv').css('display', 'none');
-        $('.myofferbtn').removeClass("offersactive");
-        $('.arrivalbtn').removeClass("offersactive");
-        $(this).addClass("offersactive");
-        getOffersDetails();
-      });
-      $('.arrivalbtn').click(function() {
-        $scope.isMyoffer = false;
-        $('.trnsferdiv').css('display', 'none');
-        $('.offerbtn').removeClass("offersactive");
-        $('.myofferbtn').removeClass("offersactive");
-        $(this).addClass("offersactive")
-      });
-      $('.myofferbtn').click(function() {
-        $scope.isMyoffer = true;
-        $('.trnsferdiv').css('display', 'none');
-        $('.offerbtn').removeClass("offersactive");
-        $('.arrivalbtn').removeClass("offersactive");
-        $(this).addClass("offersactive")
-        getOffersByOfferId(localStorage.storeId, "OFR12347");
-      });
-
-
-      $scope.showTrans=function(id){
-        $scope.transItemId=id;
-        $scope.transOfferId = "OFR12347";
-      }
-
-      $scope.proceedTransfer = function(toPhoneNumber){
-        userservice.getOtherUserInfo(toPhoneNumber,function(response){
-          var offerId= response.offerId;
-          offerservice.transferOfferId(localStorage.storeId,$scope.transItemId,$scope.transOfferId,offerId,function(response){
-            getOffersByOfferId(localStorage.storeId, "OFR12347");
-          })
+        $('.sidedrag').click(function() {
+          $('.discoversidemenu').toggleClass("move");
+          $('.backdrop').toggleClass("backdropover");
         })
-      }
-
-      $scope.message = "View Offers"
-      var getOffersDetails = (function offdetails() {
-        $scope.offerAvailedProducts = [];
-        offerservice.getOffersByStoreId(localStorage.storeId, function(response) {
-          angular.forEach(response, function(value, key) {
-            inventoryService.getInventoryDetails(value.storeId, value.itemId, function(response) {
-              response.discountAvailed = value.discountRate + "% off"
-              $scope.offerAvailedProducts.push(response);
-            })
-          })
-        });
-        return offdetails;
-      })();
-
-      var getOffersByOfferId = function(storeId, offerId) {
-        $scope.offerAvailedProducts = [];
-        offerservice.getOffersByOfferId(storeId, offerId, function(response) {
-          angular.forEach(response, function(value, key) {
-            inventoryService.getInventoryDetails(value.storeId, value.itemId, function(response) {
-              response.discountAvailed = value.discountRate + "% off"
-              $scope.offerAvailedProducts.push(response);
-            })
-          })
-        });
-      }
-
-      $scope.getProductImage = function(imageUrl) {
-        return imageUrl + ".jpg";
-      }
-
-      $scope.changeIncategory = function(category, flag) {
-        //test();
-        console.log(category + " " + flag);
-        if (category != null && flag) {
-          if ($.inArray(category, $scope.filterBycategoryElements) == -1) {
-            $scope.filterBycategoryElements.push(category);
-          }
-        } else if (category != null && !flag) {
-          var i = $.inArray(category, $scope.filterBycategoryElements);
-          if (i > -1) {
-            $scope.filterBycategoryElements.splice(i, 1);
-          }
-        }
-      }
-      $scope.imageClick = function() {
-        $(".combinedoffer").toggle("slide", 100);
-        $('.viewallofferTab').toggle("slide", 100);
-        $('.footertabs').css('display', 'inline');
-        $('.offerGroup').css('display', 'inline');
-      }
-      $scope.getNewArrivals = function() {
-        console.log("New Arrivals");
-        $scope.offerAvailedProducts = [];
-        newArrivalService.getNewArrivals(localStorage.storeId, function(newArrivals) {
-          angular.forEach(newArrivals, function(value, key) {
-            inventoryService.getInventoryDetails(value.storeId, value.itemId, function(response) {
-              //response.discountAvailed = value.discountRate + "% off"
-              $scope.offerAvailedProducts.push(response);
-            })
-          })
+        $('.backdrop').click(function() {
+          $('.discoversidemenu').toggleClass("move");
+          $('.backdrop').toggleClass("backdropover");
         })
-      }
-
-      $scope.testfilter = function(product) {
-        //  console.log(JSON.stringify(product));
-        if ($scope.filterBycategoryElements.length != 0 && ($.inArray(product.itemCategory, $scope.filterBycategoryElements) == -1)) {
-          return;
-        }
-        return product;
-      }
-
-    });
-
-    expressPayModule.controller('discoverController', function($scope, transactionService, userservice, reviewservice) {
-
-      $scope.userMainInfo = userservice.getUserDetails();
-
-      //console.log($scope.userMainInfo.quickPay);
-
-      $scope.updateReview = function(itemId, itemrating, itemCommnet) {
-        var requestData = {
-          "phoneNumber": localStorage.phoneNumber,
-          "userRating": String(itemrating),
-          "userComment": itemCommnet
-        }
-        if (!$scope.isPushRequired) {
-          reviewservice.updatereviews(itemId, localStorage.phoneNumber, requestData, function(responsedata) {
-            console.log("Review Updated");
-          })
-        } else {
-          reviewservice.addNewReview(itemId, requestData, function(responsedata) {
-            console.log("Review Added");
-            console.log(responsedata);
-          })
-
-        }
-      }
-
-      $scope.showReview = function(itemId, itemName) {
-        $scope.reviewItemName = itemName;
-        reviewservice.getReview(itemId, localStorage.phoneNumber, function(data) {
-          if (data != null) {
-            var reviewModelData = data.userReviews[0];
-            $scope.reviewRating = Number(reviewModelData.userRating);
-            $scope.reviewUserComment = reviewModelData.userComment;
-            $scope.reviewItemId = itemId;
-            $scope.isPushRequired = false;
-            $('.reviewmodel').modal('show');
-          } else {
-            $scope.isPushRequired = true;
-            // $scope.reviewModelData = null;
-            $scope.reviewRating = null;
-            $scope.reviewUserComment = null;
-            $scope.reviewItemId = itemId;
-            $('.reviewmodel').modal('show');
-          }
-        })
-      }
-
-      $scope.ob = {
-        "quickPay": {
-          "card": [
-            {
-              "cardName": "Card One",
-              "cardNumber": "123456789"
-            }, {
-              "cardName": "Card Two",
-              "cardNumber": "223256789"
+        $('.sidebtnlist').click(function() {
+          $(".sidebtnlist").each(function(index) {
+            if ($(this).hasClass("customactiveside")) {
+              $(this).removeClass("customactiveside")
+              return false;
             }
-          ],
-          "netBanking": [
-            {
-              "bankName": "Kotak Bank"
-            }
-          ]
+          });
+          $(this).addClass("customactiveside");
+          //$(this).css({"background-color":"#363538","color":"white"});
+        });
+
+        $scope.toggleDiscDiv = function(divname, spanname) {
+          $('.subcontents').each(function(index) {
+            $(this).css('display', 'none');
+          })
+          $('.discmodheader').html('').prepend(spanname);
+          $('.' + divname).css('display', 'block');
+
+          $('.qpaycardpanel').css('display', 'none');
+          $('.qpaybankpanel').css('display', 'none');
+          $('.qpaydisplay').css('display', 'block');
+
         }
-      };
 
-      $scope.setValueForCardUpdate = function(indexVal) {
-
-        if (indexVal == null) {
+        transactionService.getTransactionDetails(localStorage.phoneNumber, function(responseData) {
+          $scope.transactionDetails = responseData;
+          //console.log($scope.transactionDetails);
+        });
+        $scope.convertDate = function(dateval) {
+          var monthArray = [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec"
+          ];
+          $scope.transmonth = monthArray[new Date(dateval).getMonth()];
+          $scope.transyear = new Date(dateval).getFullYear()
+          return new Date(dateval).getDate();
+        }
+        $('.qpaycardedit').click(function() {
           $('.qpaydisplay').css('display', 'none');
           $('.qpaybankpanel').css('display', 'none');
           $('.qpaycardpanel').css('display', 'block');
 
-          console.log("ADD CARD");
-        } else {
-          $scope.userMainInfo.quickPay.card.splice(indexVal, 1);
-          userservice.updateUserQpayDetails(localStorage.phoneNumber, $scope.userMainInfo.quickPay, function(updatedUserdata) {
-            $scope.userMainInfo = updatedUserdata;
-          });
-          //var qpayObject = $scope.userMainInfo.quickPay.card[indexVal];
-          //console.log(qpayObject.cardNumber+" "+qpayObject.cardName);
-          //$scope.mycardnumber = Number(qpayObject.cardNumber);
-          //$scope.mycardname = qpayObject.cardName;
-          //$scope.mycardexpiry = qpayObject.cardExpiry;
-        }
-      }
+        });
 
-      $scope.setValueForBankUpdate = function(indexVal) {
-        if (indexVal == null) {
+        $('.qpaybankedit').click(function() {
+
           $('.qpaydisplay').css('display', 'none');
           $('.qpaycardpanel').css('display', 'none');
           $('.qpaybankpanel').css('display', 'block');
-          console.log("ADD BANK");
-        } else {
-          $scope.userMainInfo.quickPay.netBanking.splice(indexVal, 1);
-          userservice.updateUserQpayDetails(localStorage.phoneNumber, $scope.userMainInfo.quickPay, function(updatedUserdata) {
-            $scope.userMainInfo = updatedUserdata;
-          });
-        }
-      }
 
-      $scope.updateQpayCard = function() {
-        var qpayObject = $scope.userMainInfo.quickPay;
-        var modifiedObject = {
-          "cardNumber": String($scope.mycardnumber),
-          "cardName": $scope.mycardname,
-          "cardExpiry": $scope.mycardexpiry
-        }
-        qpayObject.card.push(modifiedObject);
-        userservice.updateUserQpayDetails(localStorage.phoneNumber, qpayObject, function(updatedUserdata) {
-          $scope.userMainInfo = updatedUserdata;
-          $scope.resetAllDiv();
         });
-      }
 
-      $scope.updateQpayBank = function(index) {
-        var qpayObject = $scope.userMainInfo.quickPay;
-        var modifiedObject = {
-          "bankName": $scope.selectedBank
+        $scope.resetAllDiv = function() {
+          $scope.mycardnumber = null;
+          $scope.mycardname = null;
+          $scope.mycardexpiry = null;
+          $scope.selectedBank = null;
+          $('.qpaycardpanel').css('display', 'none');
+          $('.qpaybankpanel').css('display', 'none');
+          $('.qpaydisplay').css('display', 'block');
         }
-        qpayObject.netBanking.push(modifiedObject);
-        userservice.updateUserQpayDetails(localStorage.phoneNumber, qpayObject, function(updatedUserdata) {
-          $scope.userMainInfo = updatedUserdata;
-          $scope.resetAllDiv();
-        });
-      }
 
-      var headerHeight = $('.menuheader').outerHeight(true) - 1;
-
-      $('.discovermainheading').css('top', headerHeight + 'px');
-
-      $('.sidedrag').click(function() {
-        $('.discoversidemenu').toggleClass("move");
-        $('.backdrop').toggleClass("backdropover");
-      })
-      $('.backdrop').click(function() {
-        $('.discoversidemenu').toggleClass("move");
-        $('.backdrop').toggleClass("backdropover");
-      })
-      $('.sidebtnlist').click(function() {
-        $(".sidebtnlist").each(function(index) {
-          if ($(this).hasClass("customactiveside")) {
-            $(this).removeClass("customactiveside")
-            return false;
+        $scope.enableFocus = function() {
+          var dateOb = new Date();
+          var fullYear = dateOb.getFullYear();
+          //console.log(fullYear);
+          $scope.yearDropValues = [];
+          for (var i = 0; i < 100; i++) {
+            $scope.yearDropValues.push(fullYear + i);
           }
-        });
-        $(this).addClass("customactiveside");
-        //$(this).css({"background-color":"#363538","color":"white"});
-      });
+          //console.log($scope.yearDropValues);
+          $('.datemodel').modal('show');
+        }
 
-      $scope.toggleDiscDiv = function(divname, spanname) {
-        $('.subcontents').each(function(index) {
-          $(this).css('display', 'none');
+        $scope.resetImageBackdrop = function(bankselected) {
+          $('.bankcol').closest('.activeBank').removeClass("activeBank");
+          $('.paybankbtn').prop('disabled', false);
+          $scope.selectedBank = bankselected;
+        }
+
+        $scope.formExpiry = function() {
+          if (!angular.isUndefined($scope.selectedmonth) && !angular.isUndefined($scope.selectedyear)) {
+            $scope.mycardexpiry = $scope.selectedmonth + "  /  " + $scope.selectedyear;
+          }
+        }
+
+        $('.bankcol').click(function() {
+          $('.bankcol').closest('.activeBank').removeClass("activeBank");
+          $(this).addClass('activeBank');
+          var val = $(this).find('img').attr('alt');
+          $scope.$apply(function() {
+            $scope.selectedBank = val;
+          });
+
         })
-        $('.discmodheader').html('').prepend(spanname);
-        $('.' + divname).css('display', 'block');
-
-        $('.qpaycardpanel').css('display', 'none');
-        $('.qpaybankpanel').css('display', 'none');
-        $('.qpaydisplay').css('display', 'block');
-
-      }
-
-      transactionService.getTransactionDetails(localStorage.phoneNumber, function(responseData) {
-        $scope.transactionDetails = responseData;
-        //console.log($scope.transactionDetails);
-      });
-      $scope.convertDate = function(dateval) {
-        var monthArray = [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-          "Nov",
-          "Dec"
-        ];
-        $scope.transmonth = monthArray[new Date(dateval).getMonth()];
-        $scope.transyear = new Date(dateval).getFullYear()
-        return new Date(dateval).getDate();
-      }
-      $('.qpaycardedit').click(function() {
-        $('.qpaydisplay').css('display', 'none');
-        $('.qpaybankpanel').css('display', 'none');
-        $('.qpaycardpanel').css('display', 'block');
 
       });
-
-      $('.qpaybankedit').click(function() {
-
-        $('.qpaydisplay').css('display', 'none');
-        $('.qpaycardpanel').css('display', 'none');
-        $('.qpaybankpanel').css('display', 'block');
-
-      });
-
-      $scope.resetAllDiv = function() {
-        $scope.mycardnumber = null;
-        $scope.mycardname = null;
-        $scope.mycardexpiry = null;
-        $scope.selectedBank = null;
-        $('.qpaycardpanel').css('display', 'none');
-        $('.qpaybankpanel').css('display', 'none');
-        $('.qpaydisplay').css('display', 'block');
-      }
-
-      $scope.enableFocus = function() {
-        var dateOb = new Date();
-        var fullYear = dateOb.getFullYear();
-        //console.log(fullYear);
-        $scope.yearDropValues = [];
-        for (var i = 0; i < 100; i++) {
-          $scope.yearDropValues.push(fullYear + i);
-        }
-        //console.log($scope.yearDropValues);
-        $('.datemodel').modal('show');
-      }
-
-      $scope.resetImageBackdrop = function(bankselected) {
-        $('.bankcol').closest('.activeBank').removeClass("activeBank");
-        $('.paybankbtn').prop('disabled', false);
-        $scope.selectedBank = bankselected;
-      }
-
-      $scope.formExpiry = function() {
-        if (!angular.isUndefined($scope.selectedmonth) && !angular.isUndefined($scope.selectedyear)) {
-          $scope.mycardexpiry = $scope.selectedmonth + "  /  " + $scope.selectedyear;
-        }
-      }
-
-      $('.bankcol').click(function() {
-        $('.bankcol').closest('.activeBank').removeClass("activeBank");
-        $(this).addClass('activeBank');
-        var val = $(this).find('img').attr('alt');
-        $scope.$apply(function() {
-          $scope.selectedBank = val;
-        });
-
-      })
-
-    });
-  </script>
-  <script type="text/javascript" src="service/userService.js"></script>
-  <script type="text/javascript" src="service/newArrivalsService.js"></script>
-  <script type="text/javascript" src="service/offerservice.js"></script>
-  <script type="text/javascript" src="service/inventoryservice.js"></script>
-  <script type="text/javascript" src="service/transactionservice.js"></script>
-  <script type="text/javascript" src="service/reviewservice.js"></script>
-  <script type="text/javascript" src="service/storeservice.js"></script>
-</body>
+    </script>
+    <script type="text/javascript" src="service/userService.js"></script>
+    <script type="text/javascript" src="service/newArrivalsService.js"></script>
+    <script type="text/javascript" src="service/offerservice.js"></script>
+    <script type="text/javascript" src="service/inventoryservice.js"></script>
+    <script type="text/javascript" src="service/transactionservice.js"></script>
+    <script type="text/javascript" src="service/reviewservice.js"></script>
+    <script type="text/javascript" src="service/storeservice.js"></script>
+  </body>
 
 </html>

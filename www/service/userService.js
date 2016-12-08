@@ -18,6 +18,14 @@ expressPayModule.service("userservice", function($http) {
 
   };
 
+  this.updateIsSharrable = function(phoneNumber, flag, callbackFunction) {
+    $http.get(urlprefix + "/users/updatesharrable/" + phoneNumber + "/" + flag).then(function(response) {
+      callbackFunction(response.data)
+    }, function(error) {
+      callbackFunction(error)
+    });
+  }
+
   this.getOtherUserInfo = function(phoneNumber, callbackFunction) {
     $http.get(urlprefix + "/users/finduser/" + phoneNumber)
       .then(function(response) {

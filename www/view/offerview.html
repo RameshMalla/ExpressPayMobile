@@ -1,6 +1,6 @@
 <div class="offerviewcontainer container-fluid" style="padding-right:0px;padding-left:0px;">
   <div class="shareoverlay">
-    <div class="col-xs-12 settingsheader">
+    <div class="col-xs-12 settingsheader contactsheader">
       <i class="fa fa-chevron-left shareback settingback settings" aria-hidden="true"></i>
       <span class="settingspan">Contacts</span>
       <span>
@@ -13,9 +13,9 @@
         <label class="customchecklabel" style="color: #333333;margin-top: 5px;" for="selectall"></label>
       </span>
     </div>
-    <div class="col-xs-12" style="padding:0px;">
+    <div class="col-xs-12 contacatscolumn" style="padding:0px;">
       <ul class="list-group">
-        <li class="list-group-item contactsgroup settingsgroup" ng-repeat="contacts in userContacts">
+        <li class="list-group-item contactsgroup settingsgroup" ng-repeat="contacts in userContacts|filter:searchcontactmodel">
           <label for="{{contacts.displayName}}">{{contacts.displayName}}</label>
           <input type="checkbox" class="myfillin" id="{{contacts.displayName}}" name="" value="">
           <label ng-click="setToShare(contacts.phoneNumber)" class="customchecklabel" for="{{contacts.displayName}}"></label>
@@ -24,6 +24,11 @@
         <li class="list-group-item settingsgroup">Porta ac consectetur ac</li>
         <li class="list-group-item settingsgroup">Vestibulum at eros</li> -->
       </ul>
+    </div>
+    <div class="col-xs-12 contactsfooter">
+      <div class="form-group">
+        <input type="text" ng-model="searchcontactmodel" class="form-control" placeholder="Search Contacts">
+      </div>
     </div>
   </div>
   <div class="offers">
