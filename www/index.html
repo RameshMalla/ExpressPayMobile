@@ -823,7 +823,7 @@
         overflow-y: auto;
       }
       .subinfo {
-        padding: 3px 22px;
+        padding: 3px 27px;
         color: gray;
         font-weight: 700;
       }
@@ -1110,7 +1110,7 @@
         $scope.tests = 'D';
         $scope.isSharable = true;
 
-        var socket = io.connect('http://192.168.0.102:4000');
+        var socket = io.connect('http://192.168.43.234:4000');
         socket.on('testing', function(msg) {
           console.log(msg);
         });
@@ -1152,44 +1152,74 @@
         //REMOVE IT WHILE ADDING OVERLAY
         $scope.checkUserExist = function(userPhoneNumber) {
           $('.indicator').html('').append('<span class="fa fa-cog fa-spin" style="color:#5cb85c;"></span>');
-          //        var contactsList = [];
+          var contactsList = [];
 
-          var contactsList = [
-            {
-              "displayName": "Ramesh Malla",
-              "phoneNumber": "9940366400"
-            }, {
-              "displayName": "Malla",
-              "phoneNumber": "9940366401"
-            }, {
-              "displayName": "Doe",
-              "phoneNumber": "9940366402"
-            }
-          ];
-          userservice.setUserContacts(contactsList);
+          // var contactsList = [
+          //   {
+          //     "displayName": "Ramesh Malla",
+          //     "phoneNumber": "9940366400"
+          //   }, {
+          //     "displayName": "Malla",
+          //     "phoneNumber": "9940366401"
+          //   }, {
+          //     "displayName": "Doe",
+          //     "phoneNumber": "9940366402"
+          //   }
+          // ];
+          // userservice.setUserContacts(contactsList);
 
           //userservice.setUserContacts(contactsList);
-          // navigator.contacts.find([navigator.contacts.fieldType.displayName], function(c) {
-          //   console.log("gotContacts, number of results " + c.length);
-          //   for (var i = 0, len = c.length; i < len; i++) {
-          //     if (c[i].displayName != null && c[i].phoneNumbers != null) {
-          //       var phoneNumberVal = String(c[i].phoneNumbers[0].value);
-          //       // if (phoneNumberVal.length > 10 && phoneNumberVal) {}
-          //       var contactObject = {
-          //         "displayName": c[i].displayName,
-          //         "phoneNumber": c[i].phoneNumbers[0].value
-          //       }
-          //       contactsList.push(contactObject);
-          //       console.log(c[i].displayName + " : " + c[i].phoneNumbers[0].value);
-          //     }
-          //     //console.log(c[i]);
-          //   }
-          //
-          //   console.log(contactsList);
-          //   userservice.setUserContacts(contactsList);
-          // }, function(e) {
-          //   console.log("errorHandler: " + e);
-          // });
+          navigator.contacts.find([navigator.contacts.fieldType.displayName], function(c) {
+            console.log("gotContacts, number of results " + c.length);
+            for (var i = 0, len = c.length; i < len; i++) {
+              var contactDisplayName = c[i].displayName;
+              var contactPhoneNumber = c[i].phoneNumbers != null
+                ? String(c[i].phoneNumbers[0].value).replace(/\D/g, '')
+                : null;
+              console.log("DisplayName: " + contactDisplayName);
+              console.log("PhoneNumber: " + contactPhoneNumber);
+              if (contactDisplayName != null && contactPhoneNumber != null) {
+                console.log("Valid PhoneNumber: " + contactPhoneNumber);
+                //userservice.getOtherUserInfo(contactPhoneNumber, function(responsedata) {
+                  //if (responsedata != null) {
+                    var contactObject = {
+                      "displayName": contactDisplayName,
+                      "phoneNumber": contactPhoneNumber
+                    }
+                    console.log("OK :"+contactPhoneNumber);
+                    //if (contactsList.indexOf(phoneNumber) < 0) {
+                      //contactsList.push(contactObject);
+                    //}
+                    //console.log(contactsList);
+                    userservice.getUserContacts().push(contactObject);
+                    //userservice.setUserContacts(null);
+                    //userservice.setUserContacts(contactsList);
+                    console.log(userservice.getUserContacts());
+                  //}
+                //})
+              }
+              // if (c[i].displayName != null && c[i].phoneNumbers != null) {
+              //   var phoneNumberVal = String(c[i].phoneNumbers[0].value);
+              //   userservice.getOtherUserInfo
+              //   // if (phoneNumberVal.length > 10 && phoneNumberVal) {}
+              //   var contactObject = {
+              //     "displayName": c[i].displayName,
+              //     "phoneNumber": c[i].phoneNumbers[0].value
+              //   }
+              //   contactsList.push(contactObject);
+              //   console.log(c[i].displayName + " : " + c[i].phoneNumbers[0].value);
+              // }
+              //console.log(c[i]);
+            }
+
+            // console.log(contactsList);
+            // userservice.setUserContacts(contactsList);
+          }, function(e) {
+            console.log("errorHandler: " + e);
+          });
+
+
+
           userservice.checkUserInfo(userPhoneNumber, function(responsedata) {
             console.log(responsedata);
             if (responsedata != null) {
@@ -1498,7 +1528,7 @@
           $scope.reviewContactList = [];
           $('#reviewModel').modal('show');
           for (var i = 0; i < contacts.length; i++) {
-            var conObj=contacts[i];
+            var conObj = contacts[i];
             userservice.getOtherUserInfo(contacts[i].phoneNumber, function(userresponse) {
               console.log(userresponse);
               if (userresponse != null && userresponse.isSharable) {
@@ -1718,6 +1748,19 @@
         $scope.isMyoffer = false;
         console.log($('.contactsheader').outerHeight());
         // $('.contacatscolumn').css('top', $('.contactsheader').outerHeight() + 'px');
+
+
+        $scope.checkUserWithDb=function(phoneNumber){
+          userservice.getOtherUserInfo(phoneNumber,function(responsedata){
+            if(responsedata!=null){
+              return true;
+            }else{
+              return false;
+            }
+          })
+        }
+
+
         $scope.shareOfferInfo = function() {
           if (phoneNumbersToShare.length > 0) {
             var requestBody = {

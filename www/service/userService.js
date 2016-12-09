@@ -1,7 +1,7 @@
 expressPayModule.service("userservice", function($http) {
   var userInfo = null;
-  var userContacts = null;
-  var urlprefix = "http://192.168.0.102:4000";
+  var userContacts = [];
+  var urlprefix = "http://192.168.43.234:4000";
   //https://digipaydev.au-syd.mybluemix.net/users/finduser/9940366400
   this.getUserInfo = function(phoneNumber, callbackFunction) {
     $http.get(urlprefix + "/users/finduser/" + phoneNumber)

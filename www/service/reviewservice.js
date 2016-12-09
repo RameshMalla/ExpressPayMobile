@@ -1,6 +1,6 @@
 expressPayModule.service("reviewservice", function($http, transactionService) {
 
-  var urlprefix = "http://192.168.0.102:4000";
+  var urlprefix = "http://192.168.43.234:4000";
 
   this.getReviewsOfUsers = function(itemId, requestData, callbackFunction) {
     $http.post(urlprefix + "/reviews/getallreviews/" + itemId, requestData)

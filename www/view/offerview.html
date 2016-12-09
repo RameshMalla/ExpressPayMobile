@@ -71,13 +71,15 @@
               <strong>{{product.itemName}}</strong>
               <!-- <p>{{product.itemDescription}}</p> -->
               <p style="color:#f58c8c;">
-                <strong style="color:green;">Rs.{{product.discountPrice}}</strong>
+                <strong style="color:green;" ng-if="product.discountPrice!=null">Rs.{{product.discountPrice}}</strong>
+                <strong style="color:green;" ng-if="product.discountPrice==null">Rs.{{product.itemPrice}}</strong>
                 &nbsp;&nbsp;&nbsp;
-                <s>Rs.{{product.itemPrice}}</s>
+                <s ng-if="product.discountPrice!=null">Rs.{{product.itemPrice}}</s>
               </p>
               <p>
                 <strong style="font-style:italic;">
-                  <u>{{product.discountAvailed}}</u>
+                  <u ng-if="product.discountPrice!=null">{{product.discountAvailed}}</u>
+                  <u ng-if="product.discountPrice==null">No-Offers</u>
                 </strong>
               </p>
               <div class="row">

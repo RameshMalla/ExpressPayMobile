@@ -1,5 +1,5 @@
 expressPayModule.service("transactionService", function($http) {
-  var urlprefix = "http://192.168.0.102:4000";
+  var urlprefix = "http://192.168.43.234:4000";
   this.enterTransactionDetail = function(requestData, callbackFunction) {
     $http.post(urlprefix + "/transaction/insertTransaction", requestData).then(function(response) {
       callbackFunction(response.data);

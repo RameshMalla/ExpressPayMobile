@@ -1,6 +1,6 @@
 expressPayModule.service("offerservice", function($http) {
 
-  var urlprefix = "http://192.168.0.102:4000";
+  var urlprefix = "http://192.168.43.234:4000";
   this.applyOffers = function(storeId, itemId, callbackFunction) {
 
     $http.get(urlprefix + "/offers/getOffers/" + storeId + "/" + itemId)
