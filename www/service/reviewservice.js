@@ -1,6 +1,19 @@
 expressPayModule.service("reviewservice", function($http, transactionService) {
 
-  var urlprefix = "http://192.168.43.234:4000";
+  //var urlprefix = "http://192.168.43.234:4000";
+  //var urlprefix = "http://digipay-gurunathanm.c9users.io"
+  var urlprefix = "http://digipay.mybluemix.net";
+
+
+  this.getAllthereviews = function(itemId, callbackFunction) {
+    $http.get(urlprefix + "/reviews/getreviewsbyid/" + itemId).then(function(response) {
+      if (response.data != null) {
+        callbackFunction(response.data.userReviews);
+      }
+    }, function(error) {
+      callbackFunction(null);
+    })
+  }
 
   this.getReviewsOfUsers = function(itemId, requestData, callbackFunction) {
     $http.post(urlprefix + "/reviews/getallreviews/" + itemId, requestData)
@@ -10,7 +23,7 @@ expressPayModule.service("reviewservice", function($http, transactionService) {
           callbackFunction(response.data);
         } else {
           transactionService.getTransactionDetailsWithItemId(requestData.phoneNumber, itemId, function(response) {
-            if (response) {
+            if (response != null) {
               var listData = {
                 "userReviews": [{
                   "displayName": requestData.displayName,

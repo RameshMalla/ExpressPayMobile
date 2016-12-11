@@ -1,6 +1,8 @@
 expressPayModule.service("offerservice", function($http) {
 
-  var urlprefix = "http://192.168.43.234:4000";
+  //  var urlprefix = "http://192.168.43.234:4000";
+  //var urlprefix = "http://digipay-gurunathanm.c9users.io"
+  var urlprefix = "http://digipay.mybluemix.net";
   this.applyOffers = function(storeId, itemId, callbackFunction) {
 
     $http.get(urlprefix + "/offers/getOffers/" + storeId + "/" + itemId)
@@ -39,8 +41,8 @@ expressPayModule.service("offerservice", function($http) {
   }
 
 
-  this.transferOfferId = function(storeId, itemId, offerId, toOfferId, callbackFunction) {
-    $http.get(urlprefix + "/offers/transferoffer/" + storeId + "/" + itemId + "/" + offerId + "/" + toOfferId)
+  this.transferOfferId = function(storeId, phoneNumber, itemId, offerId, toOfferId, callbackFunction) {
+    $http.get(urlprefix + "/offers/transferoffer/" + storeId + "/" + phoneNumber + "/" + itemId + "/" + offerId + "/" + toOfferId)
       .then(function(response) {
         callbackFunction(response.data);
       }, function(response) {

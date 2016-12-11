@@ -12,6 +12,7 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.min.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-animate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-filter/0.5.8/angular-filter.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
@@ -167,9 +168,9 @@
       }
 
       .overlaycontent {
-        position: absolute;
-        width: 100%;
+        position: fixed;
         height: 100%;
+        width: 100%;
         z-index: 4;
         /*background-color: #363538;*/
         /*background-color: #5cb85c;*/
@@ -458,12 +459,14 @@
         height: 100%;
         top: 0;
         opacity: 0.07;
+        transition: all 0.3s;
       }
 
       .logo {
         position: relative;
         opacity: 0.0;
         top: 200px;
+        transition: all 0.3s;
       }
 
       .openinputgroup {
@@ -814,7 +817,7 @@
         bottom: 0;
         background-color: #5cb85c;
         padding-top: 11px;
-        z-index: 2;
+        z-index: 20;
       }
       .contacatscolumn {
         padding: 0;
@@ -828,33 +831,64 @@
         font-weight: 700;
       }
 
+      .loaderoverlay {
+        position: fixed;
+        height: 100%;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.58);
+        z-index: 17;
+      }
+      .loadergif {
+        /* left: 0; */
+        position: relative;
+        top: 40%;
+        left: 10%;
+        height: 35px;
+        width: 325px;
+      }
+
     </style>
     <script type="text/javascript">
       $(document).ready(function() {
         //console.log(typeof localStorage.phoneNumber == 'undefined');
         localStorage.phoneNumber = null;
+
         console.log(localStorage.phoneNumber);
         if (localStorage.phoneNumber == "null") {
           $('.overlaycontent').css('display', 'block');
         }
+
+        localStorage.removeItem("phoneNumber");
+        localStorage.removeItem("offerId");
 
         // var socket = io.connect('http://192.168.0.102:4000');
         // socket.on('testing', function(msg) {
         //   console.log(msg);
         // });
 
+        $('.myforminput').focus(function() {
+          $('.coverpic').css('opacity', '0.01');
+          $('.logo').css('opacity', '0.1');
+        })
+
+        $('.myforminput').focusout(function() {
+          $('.coverpic').css('opacity', '0.07');
+          $('.logo').css('opacity', '1');
+        })
+
         if (localStorage.notifications == null) {
           localStorage.notifications = [];
         }
 
-        document.addEventListener("deviceready", function() {
-          console.log("Readyyy");
-          cordova.plugins.backgroundMode.enable();
-          cordova.plugins.backgroundMode.onactivate = function() {
-            cordova.plugins.notification.local.schedule({id: 2, title: "Local Notification Example", text: "Multi Notification 2"});
-          }
-
-        }, false);
+        // document.addEventListener("deviceready", function() {
+        //   alert("Readyyy");
+        //   cordova.plugins.backgroundMode.enable();
+        //   cordova.plugins.notification.local.schedule({id: 2, title: "Local Notification Example", text: "Multi Notification 2"});
+        //   // cordova.plugins.backgroundMode.onactivate = function() {
+        //   //   cordova.plugins.notification.local.schedule({id: 2, title: "Local Notification Example", text: "Multi Notification 2"});
+        //   // }
+        //
+        // }, false);
 
         function triggerAnimate() {
           $('.logo').animate({
@@ -923,6 +957,9 @@
 
   <body ng-app="expresspayapp">
     <div class="" ng-controller="mainController">
+      <div class="loaderoverlay" style="display:none;">
+        <img src="img\135.gif" class="loadergif" alt="">
+      </div>
       <div class="overlaycontent" style="display:none;">
         <div class="menu-divider">
           <img src="img/cover.jpg" class="coverpic" alt=""/>
@@ -949,7 +986,7 @@
                 <span class="fa fa-sign-in" style="color:white;"></span>&nbsp;&nbsp;&nbsp;New User</button>
             </div>
           </div>
-          <div class="container registercontainer" style="width:100%;position: absolute;bottom: 43%;">
+          <div class="container registercontainer" style="width:100%;position: absolute;bottom: 35%;">
             <div class="errordiv" style="color:#e73d3d;text-align:center;"></div>
             <div class="input-group input-group-lg phgroup">
               <span class="input-group-addon formspan" id="sizing-addon1">
@@ -1086,7 +1123,7 @@
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
     <script type="text/javascript">
-      var expressPayModule = angular.module("expresspayapp", ["ngRoute", "ngCordova"]);
+      var expressPayModule = angular.module("expresspayapp", ["ngRoute", "ngCordova", "angular.filter"]);
       expressPayModule.config([
         '$routeProvider',
         function($routeProvider) {
@@ -1110,9 +1147,33 @@
         $scope.tests = 'D';
         $scope.isSharable = true;
 
-        var socket = io.connect('http://192.168.43.234:4000');
+        var socket = io.connect('http://digipay.mybluemix.net');
         socket.on('testing', function(msg) {
           console.log(msg);
+        });
+
+        socket.on('transferNotification', function(message) {
+          cordova.plugins.backgroundMode.enable();
+
+          if (localStorage.offerId == message.toOfferId) {
+            var contactList = userservice.getUserContacts();
+            for (var variable in contactList) {
+              if (contactList[variable].phoneNumber == message.fromNumber) {
+                var transmessage = contactList[variable].displayName + " has transfered an offer to you.";
+                if (cordova.plugins.backgroundMode.isActive()) {
+                  cordova.plugins.backgroundMode.onactivate = function() {
+                    cordova.plugins.notification.local.schedule({id: 3, title: "New Offer", text: transmessage});
+                  }
+                } else {
+                  cordova.plugins.notification.local.schedule({id: 3, title: "New Offer", text: transmessage});
+                }
+                console.log(transmessage);
+                break;
+              }
+            }
+          }
+
+
         });
 
         $scope.updateSettings = function() {
@@ -1126,18 +1187,42 @@
         socket.on('offernotification', function(message) {
           //console.log("From Server");
           //console.log(message);
+          //  cordova.plugins.notification.local.schedule({id: 2, title: "Local Notification Example", text: "Multi Notification 2"});
           var contactList = userservice.getUserContacts();
           //if (message.from != "9940366400") {
-          for (var variable in contactList) {
-            if (contactList[variable].phoneNumber == message.from) {
-              console.log(contactList[variable].displayName);
-              var name = contactList[variable].displayName;
-              var notifymessage = name + " shared about " + message.message + " at " + localStorage.storeName;
-              console.log(notifymessage);
+          //for (var variable in contactList) {
+          console.log("Offer share event occured");
+
+          if ((message.number.length > 10 && "91" + localStorage.phoneNumber == message.number) || (message.number == localStorage.phoneNumber)) {
+            console.log("Offer share One");
+            for (var variable in contactList) {
+
+              if (contactList[variable].phoneNumber == message.from) {
+                console.log("Offer share Two");
+                console.log(contactList[variable].displayName);
+                var name = contactList[variable].displayName;
+                var notifymessage = name + " shared about " + message.message + " at " + localStorage.storeName;
+                //cordova.plugins.notification.local.schedule({id: 3, title: "Offer Details", text: notifymessage});
+                localNotify(notifymessage);
+                console.log(notifymessage);
+              }
             }
+
           }
-          //}
+
+
         })
+
+        function localNotify(notifymessage) {
+          cordova.plugins.backgroundMode.enable();
+          if (cordova.plugins.backgroundMode.isActive()) {
+            cordova.plugins.backgroundMode.onactivate = function() {
+              cordova.plugins.notification.local.schedule({id: 2, title: "Offer details", text: notifymessage});
+            }
+          } else {
+            cordova.plugins.notification.local.schedule({id: 2, title: "Offer details", text: notifymessage});
+          }
+        }
 
         //localStorage.removeItem("phoneNumber");
         // $scope.testPlugin = function() {
@@ -1181,35 +1266,24 @@
               if (contactDisplayName != null && contactPhoneNumber != null) {
                 console.log("Valid PhoneNumber: " + contactPhoneNumber);
                 //userservice.getOtherUserInfo(contactPhoneNumber, function(responsedata) {
-                  //if (responsedata != null) {
-                    var contactObject = {
-                      "displayName": contactDisplayName,
-                      "phoneNumber": contactPhoneNumber
-                    }
-                    console.log("OK :"+contactPhoneNumber);
-                    //if (contactsList.indexOf(phoneNumber) < 0) {
-                      //contactsList.push(contactObject);
-                    //}
-                    //console.log(contactsList);
-                    userservice.getUserContacts().push(contactObject);
-                    //userservice.setUserContacts(null);
-                    //userservice.setUserContacts(contactsList);
-                    console.log(userservice.getUserContacts());
-                  //}
+                //if (responsedata != null) {
+                var contactObject = {
+                  "displayName": contactDisplayName,
+                  "phoneNumber": contactPhoneNumber
+                }
+                console.log("OK :" + contactPhoneNumber);
+                //if (contactsList.indexOf(phoneNumber) < 0) {
+                //contactsList.push(contactObject);
+                //}
+                //console.log(contactsList);
+                userservice.getUserContacts().push(contactObject);
+                //userservice.setUserContacts(null);
+                //userservice.setUserContacts(contactsList);
+                console.log(userservice.getUserContacts());
+                //}
                 //})
               }
-              // if (c[i].displayName != null && c[i].phoneNumbers != null) {
-              //   var phoneNumberVal = String(c[i].phoneNumbers[0].value);
-              //   userservice.getOtherUserInfo
-              //   // if (phoneNumberVal.length > 10 && phoneNumberVal) {}
-              //   var contactObject = {
-              //     "displayName": c[i].displayName,
-              //     "phoneNumber": c[i].phoneNumbers[0].value
-              //   }
-              //   contactsList.push(contactObject);
-              //   console.log(c[i].displayName + " : " + c[i].phoneNumbers[0].value);
-              // }
-              //console.log(c[i]);
+
             }
 
             // console.log(contactsList);
@@ -1217,8 +1291,6 @@
           }, function(e) {
             console.log("errorHandler: " + e);
           });
-
-
 
           userservice.checkUserInfo(userPhoneNumber, function(responsedata) {
             console.log(responsedata);
@@ -1260,7 +1332,11 @@
             "emailId": emailId,
             "jointAccounts": [],
             "meregdAccounts": [],
-            "transactionsMade": []
+            "transactionsMade": [],
+            "quickPay": {
+              "netBanking": [],
+              "card": []
+            }
           }
           userservice.addNewUswer(requestObject, function(response) {
             console.log(response);
@@ -1268,6 +1344,13 @@
               $('.errordiv').html('').append('<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>' + response);
             } else {
               localStorage.phoneNumber = phoneNumber;
+              $('.registercontainer').animate({
+                left: "-110%"
+              }, "fast", "easeOutBack", function() {
+                $('.shopscancontainer').animate({
+                  left: "0%"
+                }, "fast", "easeOutBack");
+              });
               $('.errordiv').html('');
             }
           })
@@ -1286,38 +1369,53 @@
 
         $scope.scanShopQrCode = function() {
           console.log("Change");
-          storeservice.getStoreDetails('1111', function(response) {
-            console.log("Store Response");
-            if (response != null) {
-              $('.overlaycontent').addClass('animated fadeOutLeft');
-              setTimeout(function() {
-                $('.overlaycontent').css('display', 'none');
-              }, 1000);
-              localStorage.storeId = response.storeId;
-              localStorage.storeName = response.storeName + " " + response.stroeAddress;
-              $scope.storeFullAddress = response.storeName + " " + response.stroeAddress;
-            } else {
-              alert('Store is not registered');
 
-            }
-            //console.log(response);
-          })
+          // storeservice.getStoreDetails('1111', function(response) {
+          //   console.log("Store Response");
+          //   if (response != null) {
+          //     $('.overlaycontent').addClass('animated fadeOutLeft');
+          //     setTimeout(function() {
+          //       $('.overlaycontent').css('display', 'none');
+          //     }, 1000);
+          //     localStorage.storeId = response.storeId;
+          //     localStorage.storeName = response.storeName + " " + response.stroeAddress;
+          //     $scope.storeFullAddress = response.storeName + " " + response.stroeAddress;
+          //   } else {
+          //     alert('Store is not registered');
+          //
+          //   }
+          //   //console.log(response);
+          // })
 
           // localStorage.phoneNumber = $scope.userphonenumber;
           // userservice.getUserInfo('9940366400', function(responsedata) {
           //   console.log(responsedata);
           // });
-          //$('.overlaycontent').addClass('animated fadeOutLeft');
-          // cordova.plugins.barcodeScanner.scan(function(result) {
-          //   if (!result.cancelled) {
-          //     var value = result.text;
-          //     console.log("SCANNED CODE " + value);
-          //
-          //     //console.log("THE VALUE IS : " + value);
-          //   }
-          // }, function(error) {
-          //   alert("Scanning failed: " + error);
-          // });
+          // $('.overlaycontent').addClass('animated fadeOutLeft');
+          cordova.plugins.barcodeScanner.scan(function(result) {
+            if (!result.cancelled) {
+              var value = result.text;
+              console.log("SCANNED CODE " + value);
+              storeservice.getStoreDetails(value, function(response) {
+                console.log("Store Response");
+                if (response != null) {
+                  $('.overlaycontent').addClass('animated fadeOutLeft');
+                  setTimeout(function() {
+                    $('.overlaycontent').css('display', 'none');
+                  }, 1000);
+                  localStorage.storeId = response.storeId;
+                  localStorage.storeName = response.storeName + " " + response.stroeAddress;
+                  $scope.storeFullAddress = response.storeName + " " + response.stroeAddress;
+                } else {
+                  alert('Store is not registered');
+
+                }
+                //console.log(response);
+              })
+            }
+          }, function(error) {
+            alert("Scanning failed: " + error);
+          });
         }
         $scope.isPhoneNumberPresent = function() {
           if (!angular.isUndefined(localStorage.phoneNumber) && localStorage.phoneNumber != null) {
@@ -1378,42 +1476,43 @@
           // }, 100);
           //var array = ['123', '223'];
 
-          inventoryService.setShoppingList("1111", "2222", function(responseBody) {
-            //console.log("Item added in cart " + responseBody);
-
-            $('.cartnum').text(inventoryService.getTotalCartItems());
-
-          });
-          inventoryService.setShoppingList("1111", "2223", function(responseBody) {
-            //console.log("Item added in cart " + responseBody);
-            // $timeout(function() {
-            //     angular.element('#triggers').trigger('click');
-            // }, 700);
-            $('.cartnum').text(inventoryService.getTotalCartItems());
-          });
-          inventoryService.setShoppingList("1111", "2224", function(responseBody) {
-            //console.log("Item added in cart " + responseBody);
-            // $timeout(function() {
-            //     angular.element('#triggers').trigger('click');
-            // }, 700);
-            $('.cartnum').text(inventoryService.getTotalCartItems());
-          });
-
-          // cordova.plugins.barcodeScanner.scan(function(result) {
-          //     if (!result.cancelled) {
-          //         var value = result.text;
-          //         console.log("SCANNED CODE " + value);
-          //         inventoryService.setShoppingList(value, function(responseBody) {
-          //             console.log("Item added in cart");
-          //             $timeout(function() {
-          //                 angular.element('#triggers').trigger('click');
-          //             }, 100);
-          //         });
-          //         //console.log("THE VALUE IS : " + value);
-          //     }
-          // }, function(error) {
-          //     alert("Scanning failed: " + error);
+          // inventoryService.setShoppingList("1111", "2222", function(responseBody) {
+          //   //console.log("Item added in cart " + responseBody);
+          //
+          //   $('.cartnum').text(inventoryService.getTotalCartItems());
+          //
           // });
+          // inventoryService.setShoppingList("1111", "2223", function(responseBody) {
+          //   //console.log("Item added in cart " + responseBody);
+          //   // $timeout(function() {
+          //   //     angular.element('#triggers').trigger('click');
+          //   // }, 700);
+          //   $('.cartnum').text(inventoryService.getTotalCartItems());
+          // });
+          // inventoryService.setShoppingList("1111", "2224", function(responseBody) {
+          //   //console.log("Item added in cart " + responseBody);
+          //   // $timeout(function() {
+          //   //     angular.element('#triggers').trigger('click');
+          //   // }, 700);
+          //   $('.cartnum').text(inventoryService.getTotalCartItems());
+          // });
+
+          cordova.plugins.barcodeScanner.scan(function(result) {
+            if (!result.cancelled) {
+              var value = result.text;
+              console.log("SCANNED CODE " + value);
+              inventoryService.setShoppingList(localStorage.storeId, value, function(responseBody) {
+                console.log("Item added in cart");
+                // $timeout(function() {
+                //     angular.element('#triggers').trigger('click');
+                // }, 100);
+                $('.cartnum').text(inventoryService.getTotalCartItems());
+              });
+              //console.log("THE VALUE IS : " + value);
+            }
+          }, function(error) {
+            alert("Scanning failed: " + error);
+          });
         }
       });
 
@@ -1529,7 +1628,7 @@
           $('#reviewModel').modal('show');
           for (var i = 0; i < contacts.length; i++) {
             var conObj = contacts[i];
-            userservice.getOtherUserInfo(contacts[i].phoneNumber, function(userresponse) {
+            userservice.getOtherUserInfo(conObj.phoneNumber, function(userresponse) {
               console.log(userresponse);
               if (userresponse != null && userresponse.isSharable) {
                 reviewservice.getReviewsOfUsers(itemId, conObj, function(response) {
@@ -1555,8 +1654,12 @@
         $scope.totalPrice = inventoryService.getTotalPrice();
 
         $scope.getImage = function(imageUrl) {
-          //console.log(imageUrl);
-          return imageUrl + ".jpg";
+          if (imageUrl.indexOf(".jpg") > 0) {
+            return imageUrl;
+          } else {
+            return imageUrl + ".jpg";
+          }
+
         }
 
         $scope.setItemToDelete = function(itemId) {
@@ -1659,10 +1762,10 @@
           };
 
           console.log(JSON.stringify(requestData));
-
+          $('.loaderoverlay').css('display', 'block');
           $scope.transactionData = transactionService.enterTransactionDetail(requestData, function(responseBody) {
             console.log(JSON.stringify(responseBody));
-
+            $('.loaderoverlay').css('display', 'none');
             $('.paymentcontainer').css('display', 'none');
             $('.cartsubmodel').css('display', 'none');
             $('.paymentsuccesscontainer').css('display', 'inline');
@@ -1749,17 +1852,15 @@
         console.log($('.contactsheader').outerHeight());
         // $('.contacatscolumn').css('top', $('.contactsheader').outerHeight() + 'px');
 
-
-        $scope.checkUserWithDb=function(phoneNumber){
-          userservice.getOtherUserInfo(phoneNumber,function(responsedata){
-            if(responsedata!=null){
+        $scope.checkUserWithDb = function(phoneNumber) {
+          userservice.getOtherUserInfo(phoneNumber, function(responsedata) {
+            if (responsedata != null) {
               return true;
-            }else{
+            } else {
               return false;
             }
           })
         }
-
 
         $scope.shareOfferInfo = function() {
           if (phoneNumbersToShare.length > 0) {
@@ -1891,19 +1992,19 @@
           $('.offerbtn').removeClass("offersactive");
           $('.arrivalbtn').removeClass("offersactive");
           $(this).addClass("offersactive")
-          getOffersByOfferId(localStorage.storeId, "OFR12347");
+          getOffersByOfferId(localStorage.storeId, localStorage.offerId);
         });
 
         $scope.showTrans = function(id) {
           $scope.transItemId = id;
-          $scope.transOfferId = "OFR12347";
+          $scope.transOfferId = localStorage.offerId;
         }
 
         $scope.proceedTransfer = function(toPhoneNumber) {
           userservice.getOtherUserInfo(toPhoneNumber, function(response) {
             var offerId = response.offerId;
-            offerservice.transferOfferId(localStorage.storeId, $scope.transItemId, $scope.transOfferId, offerId, function(response) {
-              getOffersByOfferId(localStorage.storeId, "OFR12347");
+            offerservice.transferOfferId(localStorage.storeId, localStorage.phoneNumber, $scope.transItemId, $scope.transOfferId, offerId, function(response) {
+              getOffersByOfferId(localStorage.storeId, localStorage.offerId);
             })
           })
         }
@@ -1911,6 +2012,7 @@
         $scope.message = "View Offers"
         var getOffersDetails = (function offdetails() {
           $scope.offerAvailedProducts = [];
+          $('.loaderoverlay').css('display', 'block');
           offerservice.getOffersByStoreId(localStorage.storeId, function(response) {
             angular.forEach(response, function(value, key) {
               inventoryService.getInventoryDetails(value.storeId, value.itemId, function(response) {
@@ -1919,10 +2021,12 @@
               })
             })
           });
+          $('.loaderoverlay').css('display', 'none');
           return offdetails;
         })();
 
         var getOffersByOfferId = function(storeId, offerId) {
+          $('.loaderoverlay').css('display', 'block');
           $scope.offerAvailedProducts = [];
           offerservice.getOffersByOfferId(storeId, offerId, function(response) {
             angular.forEach(response, function(value, key) {
@@ -1931,11 +2035,18 @@
                 $scope.offerAvailedProducts.push(response);
               })
             })
+            $('.loaderoverlay').css('display', 'none');
           });
+
         }
 
         $scope.getProductImage = function(imageUrl) {
-          return imageUrl + ".jpg";
+          if (imageUrl.indexOf(".jpg") > 0) {
+            return imageUrl;
+          } else {
+            return imageUrl + ".jpg";
+          }
+
         }
 
         $scope.changeIncategory = function(category, flag) {
@@ -1962,6 +2073,8 @@
           console.log("New Arrivals");
           $scope.offerAvailedProducts = [];
           newArrivalService.getNewArrivals(localStorage.storeId, function(newArrivals) {
+            console.log(localStorage.storeId);
+            console.log(newArrivals);
             angular.forEach(newArrivals, function(value, key) {
               inventoryService.getInventoryDetails(value.storeId, value.itemId, function(response) {
                 //response.discountAvailed = value.discountRate + "% off"
@@ -1981,14 +2094,32 @@
 
       });
 
-      expressPayModule.controller('discoverController', function($scope, transactionService, userservice, reviewservice) {
+      expressPayModule.controller('discoverController', function($scope, transactionService, userservice, reviewservice, recomendationsService, inventoryService) {
 
         $('.scanlink').children(".col-xs-3").removeClass("customactive");
         $('.cartLink').children(".col-xs-3").removeClass("customactive");
         $('.offerLink').children(".col-xs-3").removeClass("customactive");
         $('.discoverlink').children(".col-xs-3").addClass("customactive");
 
+        $scope.getProductImage = function(imageUrl) {
+          if (imageUrl.indexOf(".jpg") > 0) {
+            return imageUrl;
+          } else {
+            return imageUrl + ".jpg";
+          }
+
+        }
+
         $scope.userMainInfo = userservice.getUserDetails();
+        $scope.reccomendationProducts = [];
+        recomendationsService.getuserRecomendations(localStorage.phoneNumber, function(responsedata) {
+          angular.forEach(responsedata.inventory, function(value, key) {
+            inventoryService.getInventoryDetails(value.storeId, value.itemId, function(response) {
+              //response.discountAvailed = value.discountRate + "% off"
+              $scope.reccomendationProducts.push(response);
+            })
+          })
+        });
 
         //console.log($scope.userMainInfo.quickPay);
 
@@ -2032,24 +2163,7 @@
           })
         }
 
-        $scope.ob = {
-          "quickPay": {
-            "card": [
-              {
-                "cardName": "Card One",
-                "cardNumber": "123456789"
-              }, {
-                "cardName": "Card Two",
-                "cardNumber": "223256789"
-              }
-            ],
-            "netBanking": [
-              {
-                "bankName": "Kotak Bank"
-              }
-            ]
-          }
-        };
+
 
         $scope.setValueForCardUpdate = function(indexVal) {
 
@@ -2239,6 +2353,7 @@
     <script type="text/javascript" src="service/transactionservice.js"></script>
     <script type="text/javascript" src="service/reviewservice.js"></script>
     <script type="text/javascript" src="service/storeservice.js"></script>
+    <script type="text/javascript" src="service/recomendationsService.js"></script>
   </body>
 
 </html>

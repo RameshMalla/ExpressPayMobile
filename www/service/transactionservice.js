@@ -1,5 +1,7 @@
 expressPayModule.service("transactionService", function($http) {
-  var urlprefix = "http://192.168.43.234:4000";
+  //var urlprefix = "http://192.168.43.234:4000";
+  //var urlprefix = "http://digipay-gurunathanm.c9users.io"
+  var urlprefix = "http://digipay.mybluemix.net";
   this.enterTransactionDetail = function(requestData, callbackFunction) {
     $http.post(urlprefix + "/transaction/insertTransaction", requestData).then(function(response) {
       callbackFunction(response.data);
@@ -20,7 +22,7 @@ expressPayModule.service("transactionService", function($http) {
     $http.get(urlprefix + "/transaction/getTransactiondetailwithitemid/" + phoneNumber + "/" + itemId).then(function(response) {
       callbackFunction(response.data);
     }, function(error) {
-      callbackFunction(response);
+      callbackFunction(null);
     });
   }
 

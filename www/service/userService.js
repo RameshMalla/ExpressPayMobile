@@ -1,7 +1,10 @@
 expressPayModule.service("userservice", function($http) {
   var userInfo = null;
   var userContacts = [];
-  var urlprefix = "http://192.168.43.234:4000";
+  //var urlprefix = "http://192.168.43.234:4000";
+  //var urlprefix = "http://digipay-gurunathanm.c9users.io"
+  //var urlprefix = "https://digipaydev.au-syd.mybluemix.net";
+  var urlprefix = "http://digipay.mybluemix.net";
   //https://digipaydev.au-syd.mybluemix.net/users/finduser/9940366400
   this.getUserInfo = function(phoneNumber, callbackFunction) {
     $http.get(urlprefix + "/users/finduser/" + phoneNumber)
@@ -54,6 +57,14 @@ expressPayModule.service("userservice", function($http) {
       });
 
   };
+
+  this.getUserInfoByOfferId = function(offerId, callbackFunction) {
+    $http.get(urlprefix + "/users/getuserbyofferid/" + offerId).then(function(response) {
+      callbackFunction(response.data);
+    }, function(err) {
+      callbackFunction(err);
+    })
+  }
 
   this.addNewUswer = function(requestData, callbackFunction) {
     $http.post(urlprefix + "/users/addnewuser", requestData).then(function(response) {

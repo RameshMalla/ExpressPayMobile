@@ -78,9 +78,12 @@
           <div class="modal-body" style="padding:0px;height:335px;overflow-y:auto;">
             <div class="row" style="padding:10px;margin:0px;">
               <div class="" ng-repeat="review in reviewContactList">
-                <div class="panel panel-default" style="border-radius:0px;" ng-repeat="data in review.userReviews">
+                <div class="panel panel-default" style="border-radius:0px;" ng-repeat="data in review.userReviews | unique:'phoneNumber'">
                   <div class="panel-heading">
-                    <strong class="panel-title">{{data.displayName}}</strong><strong style="float:right;">Rating:<span class="badge">{{data.userRating}}</span></strong>
+                    <strong class="panel-title">{{data.displayName}}</strong>
+                    <strong style="float:right;">Rating:
+                      <span class="badge">{{data.userRating}}</span>
+                    </strong>
                   </div>
                   <div class="panel-body">
                     {{data.userComment}}
