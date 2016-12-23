@@ -1147,7 +1147,7 @@
         $scope.tests = 'D';
         $scope.isSharable = true;
 
-        var socket = io.connect('http://digipay.mybluemix.net');
+        var socket = io.connect('https://digi-pay.mybluemix.net');
         socket.on('testing', function(msg) {
           console.log(msg);
         });

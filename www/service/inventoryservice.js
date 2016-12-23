@@ -4,7 +4,8 @@ expressPayModule.service("inventoryService", function($http) {
   var totalCartItems = 0;
   //var urlprefix = "http://192.168.43.234:4000";
   //var urlprefix = "http://digipay-gurunathanm.c9users.io"
-  var urlprefix = "http://digipay.mybluemix.net";
+  //var urlprefix = "http://digipay.mybluemix.net";
+  var urlprefix = "https://digi-pay.mybluemix.net";
   this.testShoppingListByStoreId = function(storeId, callbackFunction) {
     $http.get(urlprefix + "/inventory/getItems/" + storeId)
       .then(function(response) {

@@ -2,7 +2,8 @@ expressPayModule.service("recomendationsService", function($http) {
 
   //var urlprefix = "http://192.168.43.234:4000";
   //var urlprefix = "http://digipay-gurunathanm.c9users.io"
-  var urlprefix = "http://digipay.mybluemix.net";
+  //var urlprefix = "http://digipay.mybluemix.net";
+  var urlprefix = "https://digi-pay.mybluemix.net";
   this.getuserRecomendations = function(phoneNumber, callbackFunction) {
 
     $http.get(urlprefix + "/recomendations/getRecommendations/" + phoneNumber)
